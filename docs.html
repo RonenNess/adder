@@ -24,168 +24,70 @@
         </section>
         <section class="main-content">
 
-            <p><img src="img/logo-sm.png" alt="AdderScript" title="AdderScript" /></p>
-
-<h1>AdderScript</h1>
-
-<p>Executing untrusted code with ease.</p>
-
-<h2>What is it</h2>
-
-<p>Adder is a lightweight python-like language, implemented on top of JavaScript and designed to be safe to execute untrusted code.</p>
-
-<h3>Why?</h3>
-
-<p>The main purpose of Adder is to let you execute untrusted code on other users's browsers and even on your Node.js server, without worrying about security complications.</p>
-
-<p>Adder will not let the untrusted code access anything you don't want it to access, will not allow it to get stuck or hog resources, and will make sure it can't do any harm or go outside its boundaries.</p>
-
-<p>The main reason Adder is secured is that <em>no JavaScript code is ever executed using plain eval()</em>.
-Instead, everything is parsed and interpreted by the Adder interpreter, which is built and designed to be limited and safe.</p>
-
-<h2>Advantages</h2>
-
-<p>Here are the key features of Adder:</p>
-
-<ul>
-<li>Beautiful Pythonic syntax - if you know Python, you know Adder.</li>
-<li>Secured by design (Adder is designed to run untrusted code).</li>
-<li>Works on both Node.js and Browsers.</li>
-<li>No need for any sub-processes.</li>
-<li>Simple &amp; accessible interface.</li>
-<li>Easy to extend, and easy to remove builtins and limit.</li>
-<li>Agnostic to JavaScript changes and versions.</li>
-<li>Easy to limit memory usage, commands per run, execution time, etc..</li>
-<li>Caching and Optimizations makes it pretty fast for multiple executions.</li>
-</ul>
-
-<h2>Platforms</h2>
-
-<p>Adder works and heavily tested on the following browsers / platforms:</p>
-
-<ul>
-<li>Chrome 53</li>
-<li>IE Edge</li>
-<li>FireFox 45</li>
-<li>Opera 40</li>
-<li>Node.js 4.1.1</li>
-</ul>
-
-<p><img src="img/supported.png" alt="platforms" title="Platforms" /></p>
-
-<h2>Tests &amp; Examples</h2>
-
-<h3>Tests</h3>
-
-<p>To run Adder tests, you can open the html file <em>tests/test.html</em> in the browser of your choice.</p>
-
-<p>To test in Node.js, run the following command (requires <em>Node.js</em> and <em>qunit-cli</em> installed):</p>
-
-<p><code>
-qunit-cli tests/test.js
-</code></p>
-
-<h3>Performance Tests</h3>
-
-<p>To run performance tests, open the html file <em>tests/performance.html</em> in the browser of your choice.
-To test performance in Node.js, execute file <em>tests/performance-node.js</em> in Node.</p>
-
-<p>Note that results may vary from run to run, so its recommended to execute several times and do an average.</p>
-
-<h3>Interactive Shell</h3>
-
-<p>To get an interactive shell and play with the language, you can open <em>examples/shell.html</em> in the browser of your choice.</p>
-
-<h3>Sandbox</h3>
-
-<p>To get a rich Adder sandbox with code examples and minimal editor, you can open <em>examples/sandbox.html</em> in the browser of your choice.</p>
-
-<h2>Performance</h2>
-
-<p>In overall, Adder appears to be 3-5 times slower than executing plain JavaScript, <strong>on multiple executions</strong>. On FireFox it appears to be much faster, due to caching of expressions.</p>
-
-<p>The following is a summary of performance tests I conducted on windows 8:</p>
-
-<p><img src="img/performance.png" alt="Performance table" title="Performance table" /></p>
-
-<p>These tests execute the same logic with Adder and JavaScript couple thousands of times, and measure the time it took to execute each code. For more info check out <em>tests/performance.html</em>.</p>
-
-<hr />
-
-<h1>Executing Adder - Host application side</h1>
+<h1><a id="user-content-executing-adder---host-application-side" class="anchor" href="#executing-adder---host-application-side" aria-hidden="true"></a>Executing Adder - Host application side</h1>
 
 <p>This part of the docs explain how to setup and execute Adder from the host application side, eg the client JavaScript or your Node.js server.</p>
 
 <p>Later in these docs we'll learn the language itself and how to write Adder scripts.</p>
 
-<h2>Quick Example</h2>
+<h2><a id="user-content-quick-example" class="anchor" href="#quick-example" aria-hidden="true"></a>Quick Example</h2>
 
 <p>Before diving into the APIs, lets start with a simple example:</p>
 
-<p>```JavaScript
-// init Adder environment (connect output to alerts)
-AdderScript.init({
-    outputFunc: function(text) {alert("output from script: " + text);},
-});</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// init Adder environment (connect output to alerts)</span>
+<span class="pl-smi">AdderScript</span>.<span class="pl-en">init</span>({
+    <span class="pl-en">outputFunc</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">text</span>) {<span class="pl-en">alert</span>(<span class="pl-s"><span class="pl-pds">"</span>output from script: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> text);},
+});
 
-<p>// create a simple script and compile it
-compiledCode = AdderScript.compile('print("Hello World!")');</p>
+<span class="pl-c">// create a simple script and compile it</span>
+compiledCode <span class="pl-k">=</span> <span class="pl-smi">AdderScript</span>.<span class="pl-c1">compile</span>(<span class="pl-s"><span class="pl-pds">'</span>print("Hello World!")<span class="pl-pds">'</span></span>);
 
-<p>// spawn a program and execute it
-// the result will be an alert with the text "Hello World!".
-var program = AdderScript.newProgram(compiledCode);
-program.execute();
-```</p>
+<span class="pl-c">// spawn a program and execute it</span>
+<span class="pl-c">// the result will be an alert with the text "Hello World!".</span>
+<span class="pl-k">var</span> program <span class="pl-k">=</span> <span class="pl-smi">AdderScript</span>.<span class="pl-en">newProgram</span>(compiledCode);
+<span class="pl-smi">program</span>.<span class="pl-en">execute</span>();</pre></div>
 
 <p>Pretty simple right? Now lets dive in a little deeper.</p>
 
-<h2>Init Environment</h2>
+<h2><a id="user-content-init-environment" class="anchor" href="#init-environment" aria-hidden="true"></a>Init Environment</h2>
 
 <p>To run Adder scripts you first need to init environment:</p>
 
-<p><code>JavaScript
-// if you don't provide any params output will go to console.log and default flags will apply
-AdderScript.init();
-</code></p>
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// if you don't provide any params output will go to console.log and default flags will apply</span>
+<span class="pl-smi">AdderScript</span>.<span class="pl-en">init</span>();</pre></div>
 
-<h2>Compile Code</h2>
+<h2><a id="user-content-compile-code" class="anchor" href="#compile-code" aria-hidden="true"></a>Compile Code</h2>
 
 <p>Once the environment is ready, you can compile Adder codes using the compile function:</p>
 
-<p><code>JavaScript
-var compiled = AdderScript.compile(someCodeString);
-</code></p>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> compiled <span class="pl-k">=</span> <span class="pl-smi">AdderScript</span>.<span class="pl-c1">compile</span>(someCodeString);</pre></div>
 
-<h2>Save / Load pre-compiled code</h2>
+<h2><a id="user-content-save--load-pre-compiled-code" class="anchor" href="#save--load-pre-compiled-code" aria-hidden="true"></a>Save / Load pre-compiled code</h2>
 
 <p>If you want to save the compiled code for later usage, you can simply JSON.stringify() it into a file:</p>
 
-<p>```JavaScript
-// require fs
-var fs = require('fs');</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// require fs</span>
+<span class="pl-k">var</span> fs <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>fs<span class="pl-pds">'</span></span>);
 
-<p>// save compiled code:
-fs.writeFile(filename, JSON.stringify(compiledCode), function(err) {
-    // handle errors...
-});</p>
-
-<p>// load compiled code you previously saved
-fs.readFile(filename, 'utf8', function(err, data) {
-    if (err) // handle errors...
-    compiledCode = JSON.parse(data);
+<span class="pl-c">// save compiled code:</span>
+<span class="pl-smi">fs</span>.<span class="pl-en">writeFile</span>(filename, <span class="pl-c1">JSON</span>.<span class="pl-en">stringify</span>(compiledCode), <span class="pl-k">function</span>(<span class="pl-smi">err</span>) {
+    <span class="pl-c">// handle errors...</span>
 });
-```</p>
 
-<h2>Create &amp; Execute Programs</h2>
+<span class="pl-c">// load compiled code you previously saved</span>
+<span class="pl-smi">fs</span>.<span class="pl-en">readFile</span>(filename, <span class="pl-s"><span class="pl-pds">'</span>utf8<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">err</span>, <span class="pl-smi">data</span>) {
+    <span class="pl-k">if</span> (err) <span class="pl-c">// handle errors...</span>
+    compiledCode <span class="pl-k">=</span> <span class="pl-c1">JSON</span>.<span class="pl-c1">parse</span>(data);
+});</pre></div>
+
+<h2><a id="user-content-create--execute-programs" class="anchor" href="#create--execute-programs" aria-hidden="true"></a>Create &amp; Execute Programs</h2>
 
 <p>An Adder <code>Program</code> can be think of as a process executing a single Adder script one or more times.
 However, the Adder <code>program</code> is not a real process but an object living on the same memory space as the host application.</p>
 
 <p>To spawn a new program from a compiled code, use <code>newProgram()</code>:</p>
 
-<p><code>JavaScript
-var program = AdderScript.newProgram(compiledCode);
-</code></p>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> program <span class="pl-k">=</span> <span class="pl-smi">AdderScript</span>.<span class="pl-en">newProgram</span>(compiledCode);</pre></div>
 
 <p>The program will now live in memory and you can execute it as many times as needed and access its internal memory and variables.</p>
 
@@ -194,81 +96,65 @@ In addition, global scope variables will stay alive between different executions
 
 <p>To execute the program code once, use execute:</p>
 
-<p><code>JavaScript
-program.execute();
-</code></p>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">program</span>.<span class="pl-en">execute</span>();</pre></div>
 
 <p>If you want to clear your program's context (eg remove all user defined variables from global scope), use <code>resetContext()</code>:</p>
 
-<p><code>JavaScript
-program.resetContext();
-</code></p>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">program</span>.<span class="pl-en">resetContext</span>();</pre></div>
 
-<h2>Get values and execution errors</h2>
+<h2><a id="user-content-get-values-and-execution-errors" class="anchor" href="#get-values-and-execution-errors" aria-hidden="true"></a>Get values and execution errors</h2>
 
 <p>You can easily access the last evaluated result and get it as a native JavaScript object, using <code>getLastValue()</code>:</p>
 
-<p><code>JavaScript
-var lastVal = program.getLastValue();
-</code></p>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> lastVal <span class="pl-k">=</span> <span class="pl-smi">program</span>.<span class="pl-en">getLastValue</span>();</pre></div>
 
 <p>In addition, you can read any variable in the program's global scope using <code>getGlobalVar()</code>:</p>
 
-<p><code>JavaScript
-// get variable from global scope as native javascript object
-var value = program.getGlobalVar("var_name");
-</code></p>
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// get variable from global scope as native javascript object</span>
+<span class="pl-k">var</span> value <span class="pl-k">=</span> <span class="pl-smi">program</span>.<span class="pl-en">getGlobalVar</span>(<span class="pl-s"><span class="pl-pds">"</span>var_name<span class="pl-pds">"</span></span>);</pre></div>
 
 <p>Or, you can set any variable in the program's global scope using <code>setGlobalVar()</code>:</p>
 
-<p><code>JavaScript
-// set variable in program global scope
-program.setGlobalVar("var_name", value, isReadonly);
-</code></p>
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// set variable in program global scope</span>
+<span class="pl-smi">program</span>.<span class="pl-en">setGlobalVar</span>(<span class="pl-s"><span class="pl-pds">"</span>var_name<span class="pl-pds">"</span></span>, value, isReadonly);</pre></div>
 
 <p>In addition, you can check if any error occurred during the last execution, using <code>getLastError()</code>:</p>
 
-<p><code>JavaScript
-var lastError = program.getLastError();
-if (lastError) {
-    console.log(lastError.message);
-}
-</code></p>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> lastError <span class="pl-k">=</span> <span class="pl-smi">program</span>.<span class="pl-en">getLastError</span>();
+<span class="pl-k">if</span> (lastError) {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">lastError</span>.<span class="pl-smi">message</span>);
+}</pre></div>
 
 <p>You can see all Adder error types in object <code>AdderScript.Errors</code>, or in file <em>errors.js</em>.</p>
 
-<h2>Advanced init settings</h2>
+<h2><a id="user-content-advanced-init-settings" class="anchor" href="#advanced-init-settings" aria-hidden="true"></a>Advanced init settings</h2>
 
 <p>When init Adder environment you can provide a dictionary with the following settings:</p>
 
-<p><code>JavaScript
-AdderScript.init({
-    flags: {},                  // different compiler / interpreter flags you can set (explained later).
-    modules: ["ALL"],           // which modules to load. ['ALL'] will load all built-in modules.
-    outputFunc: printOutput,    // function to handle scripts output, when print() is called.
-    showDebugConsole: true,     // if true, Adder will dump some extra debug data to console.
-});
-</code></p>
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">AdderScript</span>.<span class="pl-en">init</span>({
+    flags<span class="pl-k">:</span> {},                  <span class="pl-c">// different compiler / interpreter flags you can set (explained later).</span>
+    modules<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">"</span>ALL<span class="pl-pds">"</span></span>],           <span class="pl-c">// which modules to load. ['ALL'] will load all built-in modules.</span>
+    outputFunc<span class="pl-k">:</span> printOutput,    <span class="pl-c">// function to handle scripts output, when print() is called.</span>
+    showDebugConsole<span class="pl-k">:</span> <span class="pl-c1">true</span>,     <span class="pl-c">// if true, Adder will dump some extra debug data to console.</span>
+});</pre></div>
 
-<h3>flags</h3>
+<h3><a id="user-content-flags" class="anchor" href="#flags" aria-hidden="true"></a>flags</h3>
 
 <p>The following are all the flags you can set when you init Adder environment (as the 'flags' option):</p>
 
-<p><code>JavaScript
-var flags = {
-    stackLimit: 256,                // Stack depth limit. If exceeded will throw 'StackOverflow' exception.
-    maxStatementsPerRun: 2048,      // Maximum statements that can be executed in a single run. If exceeded will throw 'ExceededStatementsLimit' exception.
-    maxStringLen: 5000,             // Maximum allowed string lengths. If exceeded will throw 'ExceedMemoryLimit' exception.
-    maxContainersLen: 1000,         // Maximum values allowed in lists, sets and dictionaries. If exceeded will throw 'ExceedMemoryLimit' exception.
-    maxVarsInScope: 100,            // Limit number of variables allowed per scope. If exceeded will throw 'ExceedMemoryLimit' exception.
-    executionTimeLimit: 1000,       // Time limit for a single execution (in milliseconds). If exceeded will throw 'ExceededTimeLimit' exception.
-    memoryAllocationLimit: 10000,   // Memory limit, very roughly estimated, in bytes (per execution). If exceeded will throw 'ExceedMemoryLimit' exception.
-    removeBuiltins: [],             // An optional list of builtin function and const names you want to remove from the language.
-    throwErrors: false,             // If true, will throw exceptions from Adder execution if occur. If false, you need to check errors with getLastError().
-}
-</code></p>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> flags <span class="pl-k">=</span> {
+    stackLimit<span class="pl-k">:</span> <span class="pl-c1">256</span>,                <span class="pl-c">// Stack depth limit. If exceeded will throw 'StackOverflow' exception.</span>
+    maxStatementsPerRun<span class="pl-k">:</span> <span class="pl-c1">2048</span>,      <span class="pl-c">// Maximum statements that can be executed in a single run. If exceeded will throw 'ExceededStatementsLimit' exception.</span>
+    maxStringLen<span class="pl-k">:</span> <span class="pl-c1">5000</span>,             <span class="pl-c">// Maximum allowed string lengths. If exceeded will throw 'ExceedMemoryLimit' exception.</span>
+    maxContainersLen<span class="pl-k">:</span> <span class="pl-c1">1000</span>,         <span class="pl-c">// Maximum values allowed in lists, sets and dictionaries. If exceeded will throw 'ExceedMemoryLimit' exception.</span>
+    maxVarsInScope<span class="pl-k">:</span> <span class="pl-c1">100</span>,            <span class="pl-c">// Limit number of variables allowed per scope. If exceeded will throw 'ExceedMemoryLimit' exception.</span>
+    executionTimeLimit<span class="pl-k">:</span> <span class="pl-c1">1000</span>,       <span class="pl-c">// Time limit for a single execution (in milliseconds). If exceeded will throw 'ExceededTimeLimit' exception.</span>
+    memoryAllocationLimit<span class="pl-k">:</span> <span class="pl-c1">10000</span>,   <span class="pl-c">// Memory limit, very roughly estimated, in bytes (per execution). If exceeded will throw 'ExceedMemoryLimit' exception.</span>
+    removeBuiltins<span class="pl-k">:</span> [],             <span class="pl-c">// An optional list of builtin function and const names you want to remove from the language.</span>
+    throwErrors<span class="pl-k">:</span> <span class="pl-c1">false</span>,             <span class="pl-c">// If true, will throw exceptions from Adder execution if occur. If false, you need to check errors with getLastError().</span>
+}</pre></div>
 
-<h3>modules</h3>
+<h3><a id="user-content-modules" class="anchor" href="#modules" aria-hidden="true"></a>modules</h3>
 
 <p>Modules are objects with functions and consts you can access from Adder scripts.
 For example, there's the built-in <em>Math</em> module that provide all the Math-related functionality and consts.</p>
@@ -284,23 +170,21 @@ However, that's not recommended in production, as it will include modules that c
 
 <p>All available modules will be described later in the chapter about writing Adder scripts.</p>
 
-<h3>outputFunc</h3>
+<h3><a id="user-content-outputfunc" class="anchor" href="#outputfunc" aria-hidden="true"></a>outputFunc</h3>
 
 <p>An optional function to handle script output when <code>print</code> is called. For example, if you want to send all <code>print</code> output directly to console:</p>
 
-<p><code>JavaScript
-function outputFunc() {
-    console.log(Array.from(arguments).join(" "));
-}
-</code></p>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">outputFunc</span>() {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-c1">Array</span>.<span class="pl-en">from</span>(<span class="pl-v">arguments</span>).<span class="pl-c1">join</span>(<span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span>));
+}</pre></div>
 
 <p>Note that this is the default behavior; If no outputFunc is provided, all output will go to console.log by default.</p>
 
-<h3>showDebugConsole</h3>
+<h3><a id="user-content-showdebugconsole" class="anchor" href="#showdebugconsole" aria-hidden="true"></a>showDebugConsole</h3>
 
 <p>If set to true, Adder will show some useful debug data in console.</p>
 
-<h2>Register Functions</h2>
+<h2><a id="user-content-register-functions" class="anchor" href="#register-functions" aria-hidden="true"></a>Register Functions</h2>
 
 <p>The most simple way to extend Adder's API and create an interface to the host application, is via builtin functions.</p>
 
@@ -308,29 +192,23 @@ function outputFunc() {
 
 <p>To register a new builtin function use <code>addBuiltinFunction()</code>:</p>
 
-<p>```JavaScript
-// init AdderScript environment
-AdderScript.init();</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// init AdderScript environment</span>
+<span class="pl-smi">AdderScript</span>.<span class="pl-en">init</span>();
 
-<p>// add builtin function
-AdderScript.addBuiltinFunction({name: "test",                   // function name
-                                func: function(x) {alert(x)},   // the function itself
-                                requiredParams: 1,              // number of required params
-                                optionalParams: 0});            // number of additional optional params
-```</p>
+<span class="pl-c">// add builtin function</span>
+<span class="pl-smi">AdderScript</span>.<span class="pl-en">addBuiltinFunction</span>({name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>test<span class="pl-pds">"</span></span>,                   <span class="pl-c">// function name</span>
+                                <span class="pl-en">func</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">x</span>) {<span class="pl-en">alert</span>(x)},   <span class="pl-c">// the function itself</span>
+                                requiredParams<span class="pl-k">:</span> <span class="pl-c1">1</span>,              <span class="pl-c">// number of required params</span>
+                                optionalParams<span class="pl-k">:</span> <span class="pl-c1">0</span>});            <span class="pl-c">// number of additional optional params</span></pre></div>
 
 <p>The code above will add a builtin function called 'test', that gets one parameter and alert it.</p>
 
 <p>Once registered, you can use the new function like any other built-in Adder function (the following is an Adder script code):</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># will alert "Hello World!"</span>
+test(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h1>will alert "Hello World!"</h1>
-
-<p>test("Hello World!")
-```</p>
-
-<h2>Register A Custom Module</h2>
+<h2><a id="user-content-register-a-custom-module" class="anchor" href="#register-a-custom-module" aria-hidden="true"></a>Register A Custom Module</h2>
 
 <p>Just like registering a builtin function, you can register a custom module to Adder's API.</p>
 
@@ -338,1319 +216,1064 @@ AdderScript.addBuiltinFunction({name: "test",                   // function name
 
 <p>To define a custom built-in module:</p>
 
-<p>```JavaScript
-// init AdderScript environment
-AdderScript.init();</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// init AdderScript environment</span>
+<span class="pl-smi">AdderScript</span>.<span class="pl-en">init</span>();
 
-<p>// add builtin module
-AdderScript.addBuiltinModule("Test",
+<span class="pl-c">// add builtin module</span>
+<span class="pl-smi">AdderScript</span>.<span class="pl-en">addBuiltinModule</span>(<span class="pl-s"><span class="pl-pds">"</span>Test<span class="pl-pds">"</span></span>,
                                   {
-                                    // define a function named 'foo'
-                                    "foo": {
-                                        func: function(x) {alert(x)},
-                                        requiredParams: 1,
-                                        optionalParams: 0
-                                     },</p>
+                                    <span class="pl-c">// define a function named 'foo'</span>
+                                    <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+                                        <span class="pl-en">func</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">x</span>) {<span class="pl-en">alert</span>(x)},
+                                        requiredParams<span class="pl-k">:</span> <span class="pl-c1">1</span>,
+                                        optionalParams<span class="pl-k">:</span> <span class="pl-c1">0</span>
+                                     },
 
-<pre><code>                                 // define a const named 'bar' that equals to "World"
-                                 "bar": "World",
-                              }
-                          );
-</code></pre>
-
-<p>```</p>
+                                     <span class="pl-c">// define a const named 'bar' that equals to "World"</span>
+                                     <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>World<span class="pl-pds">"</span></span>,
+                                  }
+                              );</pre></div>
 
 <p>The code above will define a module named <code>Test</code> with a function <code>foo()</code> and a constant string <code>bar</code>.</p>
 
 <p>Once defined, you can use the new module just like any other built-in module (the following is an Adder script code):</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># will alert "Hello World!" (Test.bar equals to "World")</span>
+Test.foo(<span class="pl-s"><span class="pl-pds">"</span>Hello <span class="pl-pds">"</span></span> <span class="pl-k">+</span> Test.bar <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h1>will alert "Hello World!" (Test.bar equals to "World")</h1>
-
-<p>Test.foo("Hello " + Test.bar + "!")
-```</p>
-
-<h2>Define a built-in object type</h2>
+<h2><a id="user-content-define-a-built-in-object-type" class="anchor" href="#define-a-built-in-object-type" aria-hidden="true"></a>Define a built-in object type</h2>
 
 <p>A module acts like a singleton. But what if you need an object you can instantiate, like Adder's <code>list</code>, <code>dict</code> or <code>set</code>?</p>
 
 <p>To define a new built-in object type use <code>defineBuiltinObject()</code>:</p>
 
-<p>```JavaScript
-// init AdderScript environment
-AdderScript.init();</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// init AdderScript environment</span>
+<span class="pl-smi">AdderScript</span>.<span class="pl-en">init</span>();
 
-<p>// define a new object type "Person" and return a function to instantiate it
-createPerson = AdderScript.defineBuiltinObject("Person", {
-                                    "say_hello": {
-                                        func: function() {alert("Hello World!")},
-                                        requiredParams: 0,
-                                        optionalParams: 0
+<span class="pl-c">// define a new object type "Person" and return a function to instantiate it</span>
+createPerson <span class="pl-k">=</span> <span class="pl-smi">AdderScript</span>.<span class="pl-en">defineBuiltinObject</span>(<span class="pl-s"><span class="pl-pds">"</span>Person<span class="pl-pds">"</span></span>, {
+                                    <span class="pl-s"><span class="pl-pds">"</span>say_hello<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+                                        <span class="pl-en">func</span><span class="pl-k">:</span> <span class="pl-k">function</span>() {<span class="pl-en">alert</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>)},
+                                        requiredParams<span class="pl-k">:</span> <span class="pl-c1">0</span>,
+                                        optionalParams<span class="pl-k">:</span> <span class="pl-c1">0</span>
                                      },
-                                     "race": "human",
-                                  });</p>
+                                     <span class="pl-s"><span class="pl-pds">"</span>race<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>human<span class="pl-pds">"</span></span>,
+                                  });
 
-<p>// now you can use 'createPerson' to create a new 'Person' instances.
-// however, you still need to provide an API for Adder to create it.
-// lets register a new built-in function, "create<em>person", that will use 'createPerson' to create a new 'Person' instance:
-AdderScript.addBuiltinFunction({name: "create</em>person",                          // function name
-                                func: function(x) {return createFunc(this)},    // the function itself to create Person.
-                                requiredParams: 0,              // number of required params
-                                optionalParams: 0});            // number of additional optional params
-```</p>
+<span class="pl-c">// now you can use 'createPerson' to create a new 'Person' instances.</span>
+<span class="pl-c">// however, you still need to provide an API for Adder to create it.</span>
+<span class="pl-c">// lets register a new built-in function, "create_person", that will use 'createPerson' to create a new 'Person' instance:</span>
+<span class="pl-smi">AdderScript</span>.<span class="pl-en">addBuiltinFunction</span>({name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>create_person<span class="pl-pds">"</span></span>,                          <span class="pl-c">// function name</span>
+                                <span class="pl-en">func</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">x</span>) {<span class="pl-k">return</span> <span class="pl-en">createFunc</span>(<span class="pl-v">this</span>)},    <span class="pl-c">// the function itself to create Person.</span>
+                                requiredParams<span class="pl-k">:</span> <span class="pl-c1">0</span>,              <span class="pl-c">// number of required params</span>
+                                optionalParams<span class="pl-k">:</span> <span class="pl-c1">0</span>});            <span class="pl-c">// number of additional optional params</span></pre></div>
 
 <p>Note that 'createPerson' function expect to get 'this' as param, where 'this' is any built-in function or module.</p>
 
 <p>Now you can create and use the new 'Person' objects from Adder scripts (the following is an Adder script code):</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># will create a new person and call its function 'say_hello()'</span>
+a <span class="pl-k">=</span> create_person()
+a.say_hello()</pre></div>
 
-<h1>will create a new person and call its function 'say_hello()'</h1>
+<hr>
 
-<p>a = create<em>person()
-a.say</em>hello()
-```</p>
-
-<hr />
-
-<h1>Writing Adder Scripts</h1>
+<h1><a id="user-content-writing-adder-scripts" class="anchor" href="#writing-adder-scripts" aria-hidden="true"></a>Writing Adder Scripts</h1>
 
 <p>Previously we learned how to execute adder scripts and interact with them from the host application side.
 In this part of the tutorial we'll learn how to actually write Adder scripts.</p>
 
-<h2>Basic Syntax</h2>
+<h2><a id="user-content-basic-syntax" class="anchor" href="#basic-syntax" aria-hidden="true"></a>Basic Syntax</h2>
 
 <p>Adder syntax is the same as <a href="https://www.python.org">Python</a>, so if you know Python you know Adder and can skip this part.</p>
 
 <p>If you are not familiar with Python, here's a quick summary (after this you will also be able to use Python!).</p>
 
-<h3>Indentation</h3>
+<h3><a id="user-content-indentation" class="anchor" href="#indentation" aria-hidden="true"></a>Indentation</h3>
 
 <p>Adder is indent-sensitive; indentation is used to open and close blocks (instead of curly brackets in other languages).</p>
 
 <p>Lets take a look at an example with <code>if</code> and <code>else</code> blocks:</p>
 
-<p><code>Python
-if a == 5:
-    print("this is the if block")
-else:
-    print("this is the else block")
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">if</span> a <span class="pl-k">==</span> <span class="pl-c1">5</span>:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>this is the if block<span class="pl-pds">"</span></span>)
+<span class="pl-k">else</span>:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>this is the else block<span class="pl-pds">"</span></span>)</pre></div>
 
 <p>Indents must be multiply of 4 spaces. Wrong indentation will throw syntax errors.</p>
 
-<h3>Comments</h3>
+<h3><a id="user-content-comments" class="anchor" href="#comments" aria-hidden="true"></a>Comments</h3>
 
 <p>Comments in Adder begin with the hash character ("#") and are terminated by the end of line:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># this is a comment line</span>
 
-<h1>this is a comment line</h1>
+a <span class="pl-k">=</span> <span class="pl-c1">5</span> <span class="pl-c"># this part is also a comment; after 'a = 5' is executed this part will be ignored.</span></pre></div>
 
-<p>a = 5 # this part is also a comment; after 'a = 5' is executed this part will be ignored.
-```</p>
-
-<h3>Variables</h3>
+<h3><a id="user-content-variables" class="anchor" href="#variables" aria-hidden="true"></a>Variables</h3>
 
 <p>To create a new variable you just need to assign a value to it:</p>
 
-<p><code>Python
-a = 5
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">5</span></pre></div>
 
 <p>Variables in Adder are loosely typed, meaning you can change the type on the fly:</p>
 
-<p><code>Python
-a = 5       # 'a' is a number.
-a = "foo"   # now 'a' is a string.
-a = True    # and now 'a' is a boolean.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">5</span>       <span class="pl-c"># 'a' is a number.</span>
+a <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>   <span class="pl-c"># now 'a' is a string.</span>
+a <span class="pl-k">=</span> <span class="pl-c1">True</span>    <span class="pl-c"># and now 'a' is a boolean.</span></pre></div>
 
-<h4>Variables &amp; Scopes</h4>
+<h4><a id="user-content-variables--scopes" class="anchor" href="#variables--scopes" aria-hidden="true"></a>Variables &amp; Scopes</h4>
 
 <p>If 'a' is defined in a parent's block, setting its value will override it. For example:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># define variable 'a' in parent block</span>
+a <span class="pl-k">=</span> <span class="pl-c1">5</span>
 
-<h1>define variable 'a' in parent block</h1>
+<span class="pl-c"># override the variable 'a' from inside the 'if' block</span>
+<span class="pl-k">if</span> <span class="pl-c1">True</span>:
+    a <span class="pl-k">=</span> <span class="pl-c1">6</span>
 
-<p>a = 5</p>
-
-<h1>override the variable 'a' from inside the 'if' block</h1>
-
-<p>if True:
-    a = 6</p>
-
-<h1>print 'a', which should now be '6'</h1>
-
-<p>print(a)
-```</p>
+<span class="pl-c"># print 'a', which should now be '6'</span>
+<span class="pl-c1">print</span>(a)</pre></div>
 
 <p>In addition, if you assign a variable inside a function that also exist in global scope, you will override it:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># define global variable 'a'</span>
+a <span class="pl-k">=</span> <span class="pl-c1">5</span>
 
-<h1>define global variable 'a'</h1>
+<span class="pl-c"># define a function that override global variable 'a' with another value</span>
+<span class="pl-k">def</span> <span class="pl-en">test</span>():
+    a <span class="pl-k">=</span> <span class="pl-c1">6</span>
 
-<p>a = 5</p>
+<span class="pl-c"># call the function that will change the value of 'a'</span>
+test()
 
-<h1>define a function that override global variable 'a' with another value</h1>
-
-<p>def test():
-    a = 6</p>
-
-<h1>call the function that will change the value of 'a'</h1>
-
-<p>test()</p>
-
-<h1>print 'a' that should now be '6'</h1>
-
-<p>print(a)
-```</p>
+<span class="pl-c"># print 'a' that should now be '6'</span>
+<span class="pl-c1">print</span>(a)</pre></div>
 
 <p>If you are familiar with Python you will notice this behavior is slightly different;
 In Python, you need to use the <code>global</code> statement to override global variables from inside a function. In Adder, all variable assignment is <code>global</code> by default.</p>
 
-<h3>String variables</h3>
+<h3><a id="user-content-string-variables" class="anchor" href="#string-variables" aria-hidden="true"></a>String variables</h3>
 
 <p>String variables have an extended API that normal variables don't share.
 This API contains useful query and string manipulation functions:</p>
 
-<h4>len ()</h4>
+<h4><a id="user-content-len-" class="anchor" href="#len-" aria-hidden="true"></a>len ()</h4>
 
 <p>Return string length.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"hello world".len()  # &lt;-- return 11.
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.len()  <span class="pl-c"># &lt;-- return 11.</span></pre></div>
 
-<h4>split ([delimiter])</h4>
+<h4><a id="user-content-split-delimiter" class="anchor" href="#split-delimiter" aria-hidden="true"></a>split ([delimiter])</h4>
 
 <p>Break the string into a list of string, separated by a given delimiter (or space if not provided).</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"hello world".split()       # &lt;-- return list("hello", "world").
-"hello-world".split("-")    # &lt;-- return list("hello", "world").
-"hello-world".split("+")    # &lt;-- return list("hello-world"), since delimiter not found.
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.split()       <span class="pl-c"># &lt;-- return list("hello", "world").</span>
+<span class="pl-s"><span class="pl-pds">"</span>hello-world<span class="pl-pds">"</span></span>.split(<span class="pl-s"><span class="pl-pds">"</span>-<span class="pl-pds">"</span></span>)    <span class="pl-c"># &lt;-- return list("hello", "world").</span>
+<span class="pl-s"><span class="pl-pds">"</span>hello-world<span class="pl-pds">"</span></span>.split(<span class="pl-s"><span class="pl-pds">"</span>+<span class="pl-pds">"</span></span>)    <span class="pl-c"># &lt;-- return list("hello-world"), since delimiter not found.</span></pre></div>
 
-<h4>replace (search, replace)</h4>
+<h4><a id="user-content-replace-search-replace" class="anchor" href="#replace-search-replace" aria-hidden="true"></a>replace (search, replace)</h4>
 
 <p>Replace all occurrences of a search term with a given string.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"hello world".replace("world", "friends")  # &lt;-- return "hello friends".
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.replace(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>friends<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return "hello friends".</span></pre></div>
 
-<h4>remove (search, replace)</h4>
+<h4><a id="user-content-remove-search-replace" class="anchor" href="#remove-search-replace" aria-hidden="true"></a>remove (search, replace)</h4>
 
 <p>Remove all occurrences of a search term.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"hello world".remove("world")  # &lt;-- return "hello ".
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.remove(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return "hello ".</span></pre></div>
 
-<h4>index (search)</h4>
+<h4><a id="user-content-index-search" class="anchor" href="#index-search" aria-hidden="true"></a>index (search)</h4>
 
 <p>Return the index of a search term in string, or -1 if not found.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"hello world".index("world")  # &lt;-- return 6.
-"hello world".index("dog")    # &lt;-- return -1.
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.index(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return 6.</span>
+<span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.index(<span class="pl-s"><span class="pl-pds">"</span>dog<span class="pl-pds">"</span></span>)    <span class="pl-c"># &lt;-- return -1.</span></pre></div>
 
-<h4>has (search)</h4>
+<h4><a id="user-content-has-search" class="anchor" href="#has-search" aria-hidden="true"></a>has (search)</h4>
 
 <p>Return string containing a search term (equivalent to <code>x in string</code>).</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"hello world".has("world")  # &lt;-- return True.
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.has(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return True.</span></pre></div>
 
-<h4>count (search)</h4>
+<h4><a id="user-content-count-search" class="anchor" href="#count-search" aria-hidden="true"></a>count (search)</h4>
 
 <p>Count how many times a search term appears in the string.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"hello world, its a beautiful world!".count("world")  # &lt;-- return 2.
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world, its a beautiful world!<span class="pl-pds">"</span></span>.count(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return 2.</span></pre></div>
 
-<h4>trim ()</h4>
+<h4><a id="user-content-trim-" class="anchor" href="#trim-" aria-hidden="true"></a>trim ()</h4>
 
 <p>Remove all white spaces from the begining and the end of the string.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"     hello world!    ".trim()  # &lt;-- return "hello world!".
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>     hello world!    <span class="pl-pds">"</span></span>.trim()  <span class="pl-c"># &lt;-- return "hello world!".</span></pre></div>
 
-<h4>hash ()</h4>
+<h4><a id="user-content-hash-" class="anchor" href="#hash-" aria-hidden="true"></a>hash ()</h4>
 
 <p>Return a numeric hash value of the string.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"hello world".hash()  # &lt;-- return 1794106052.
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.hash()  <span class="pl-c"># &lt;-- return 1794106052.</span></pre></div>
 
-<h4>starts_with (word)</h4>
+<h4><a id="user-content-starts_with-word" class="anchor" href="#starts_with-word" aria-hidden="true"></a>starts_with (word)</h4>
 
 <p>Return true if string starts with a given search term.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"hello world".starts_with("hello")  # &lt;-- return True.
-"hello world".starts_with("world")  # &lt;-- return False.
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.starts_with(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return True.</span>
+<span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.starts_with(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return False.</span></pre></div>
 
-<h4>ends_with (word)</h4>
+<h4><a id="user-content-ends_with-word" class="anchor" href="#ends_with-word" aria-hidden="true"></a>ends_with (word)</h4>
 
 <p>Return true if string ends with a given search term.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"hello world".ends_with("world")  # &lt;-- return True.
-"hello world".ends_with("hello")  # &lt;-- return False.
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.ends_with(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return True.</span>
+<span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.ends_with(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return False.</span></pre></div>
 
-<h4>is_alpha ()</h4>
+<h4><a id="user-content-is_alpha-" class="anchor" href="#is_alpha-" aria-hidden="true"></a>is_alpha ()</h4>
 
 <p>Return true if string contains only alphabetic characters in English.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"helloworld".is_alpha()   # &lt;-- return True.
-"hello world".is_alpha()  # &lt;-- return False (because of the space).
-"helloworld2".is_alpha()  # &lt;-- return False (because of the '2').
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>helloworld<span class="pl-pds">"</span></span>.is_alpha()   <span class="pl-c"># &lt;-- return True.</span>
+<span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.is_alpha()  <span class="pl-c"># &lt;-- return False (because of the space).</span>
+<span class="pl-s"><span class="pl-pds">"</span>helloworld2<span class="pl-pds">"</span></span>.is_alpha()  <span class="pl-c"># &lt;-- return False (because of the '2').</span></pre></div>
 
-<h4>is_digit ()</h4>
+<h4><a id="user-content-is_digit-" class="anchor" href="#is_digit-" aria-hidden="true"></a>is_digit ()</h4>
 
 <p>Return true if string contains only numeric digits.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"123".is_digit()        # &lt;-- return True.
-"123 45".is_digit()     # &lt;-- return False (because of the space).
-"12a34".is_digit()      # &lt;-- return False (because of the 'a').
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>123<span class="pl-pds">"</span></span>.is_digit()        <span class="pl-c"># &lt;-- return True.</span>
+<span class="pl-s"><span class="pl-pds">"</span>123 45<span class="pl-pds">"</span></span>.is_digit()     <span class="pl-c"># &lt;-- return False (because of the space).</span>
+<span class="pl-s"><span class="pl-pds">"</span>12a34<span class="pl-pds">"</span></span>.is_digit()      <span class="pl-c"># &lt;-- return False (because of the 'a').</span></pre></div>
 
-<h4>lower ()</h4>
+<h4><a id="user-content-lower-" class="anchor" href="#lower-" aria-hidden="true"></a>lower ()</h4>
 
 <p>Convert string to lower case.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"HeLlo WoRlD!".lower()  # &lt;-- return "hello world!".
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>HeLlo WoRlD!<span class="pl-pds">"</span></span>.lower()  <span class="pl-c"># &lt;-- return "hello world!".</span></pre></div>
 
-<h4>upper ()</h4>
+<h4><a id="user-content-upper-" class="anchor" href="#upper-" aria-hidden="true"></a>upper ()</h4>
 
 <p>Convert string to upper case.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"HeLlo WoRlD!".upper()  # &lt;-- return "HELLO WORLD!".
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>HeLlo WoRlD!<span class="pl-pds">"</span></span>.upper()  <span class="pl-c"># &lt;-- return "HELLO WORLD!".</span></pre></div>
 
-<h4>title ()</h4>
+<h4><a id="user-content-title-" class="anchor" href="#title-" aria-hidden="true"></a>title ()</h4>
 
 <p>Convert string to title case.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"HeLlo WoRlD!".upper()  # &lt;-- return "Hello World!".
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>HeLlo WoRlD!<span class="pl-pds">"</span></span>.upper()  <span class="pl-c"># &lt;-- return "Hello World!".</span></pre></div>
 
-<h4>slice (start, [len])</h4>
+<h4><a id="user-content-slice-start-len" class="anchor" href="#slice-start-len" aria-hidden="true"></a>slice (start, [len])</h4>
 
 <p>Return a slice of the string.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-"Hello world!".slice(3)  # &lt;-- return "lo world!" (when no length provided, slice until end).
-"Hello world!".slice(3, 5)  # &lt;-- return "lo wo" (because length is limited to 5).
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>Hello world!<span class="pl-pds">"</span></span>.slice(<span class="pl-c1">3</span>)  <span class="pl-c"># &lt;-- return "lo world!" (when no length provided, slice until end).</span>
+<span class="pl-s"><span class="pl-pds">"</span>Hello world!<span class="pl-pds">"</span></span>.slice(<span class="pl-c1">3</span>, <span class="pl-c1">5</span>)  <span class="pl-c"># &lt;-- return "lo wo" (because length is limited to 5).</span></pre></div>
 
-<h3>Builtin Consts</h3>
+<h3><a id="user-content-builtin-consts" class="anchor" href="#builtin-consts" aria-hidden="true"></a>Builtin Consts</h3>
 
 <p>A small number of Adder constants live in the global scope. They are:</p>
 
-<h4>False</h4>
+<h4><a id="user-content-false" class="anchor" href="#false" aria-hidden="true"></a>False</h4>
 
 <p>The false value of the bool type. Assignments to False are illegal and will raise a SyntaxError.</p>
 
-<h4>True</h4>
+<h4><a id="user-content-true" class="anchor" href="#true" aria-hidden="true"></a>True</h4>
 
 <p>The true value of the bool type. Assignments to True are illegal and will raise a SyntaxError.</p>
 
-<h4>None</h4>
+<h4><a id="user-content-none" class="anchor" href="#none" aria-hidden="true"></a>None</h4>
 
 <p>None is frequently used to represent the absence of a value, as when default arguments are not passed to a function.
 Assignments to None are illegal and will raise a SyntaxError.</p>
 
-<h4>NaN</h4>
+<h4><a id="user-content-nan" class="anchor" href="#nan" aria-hidden="true"></a>NaN</h4>
 
 <p>NaN (Not a Number) is a special constant that represent an illegal expressions involving numbers and non-number values.
 For example, <code>5 * "a"</code> will return NaN (note however that <code>5 * "2"</code> will be evaluated as '5 * 2' and return 10).</p>
 
-<h4><strong>VERSION</strong></h4>
+<h4><a id="user-content-version" class="anchor" href="#version" aria-hidden="true"></a><strong>VERSION</strong></h4>
 
 <p>String, the current Adder Script version.</p>
 
-<h3>Operators</h3>
+<h3><a id="user-content-operators" class="anchor" href="#operators" aria-hidden="true"></a>Operators</h3>
 
 <p>This chapter describe all the language arithmetic and comparison operators.</p>
 
-<h4>Basic Arithmetic Operators</h4>
+<h4><a id="user-content-basic-arithmetic-operators" class="anchor" href="#basic-arithmetic-operators" aria-hidden="true"></a>Basic Arithmetic Operators</h4>
 
 <p>In adder all the basic arithmetic operators are supported - add, subtract, multiply, divide and modulate:</p>
 
-<p><code>Python
-a = 5 + 2
-b = 4 - 2
-c = 6 / 3
-d = 2 * 15
-e = 5 % 2
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">5</span> <span class="pl-k">+</span> <span class="pl-c1">2</span>
+b <span class="pl-k">=</span> <span class="pl-c1">4</span> <span class="pl-k">-</span> <span class="pl-c1">2</span>
+c <span class="pl-k">=</span> <span class="pl-c1">6</span> <span class="pl-k">/</span> <span class="pl-c1">3</span>
+d <span class="pl-k">=</span> <span class="pl-c1">2</span> <span class="pl-k">*</span> <span class="pl-c1">15</span>
+e <span class="pl-k">=</span> <span class="pl-c1">5</span> <span class="pl-k">%</span> <span class="pl-c1">2</span></pre></div>
 
 <p>In addition, there's a built-in operator for power, represented by <code>**</code>:</p>
 
-<p><code>Python
-a = 2 ** 3   # equals to '2 * 2 * 2'
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">2</span> <span class="pl-k">**</span> <span class="pl-c1">3</span>   <span class="pl-c"># equals to '2 * 2 * 2'</span></pre></div>
 
-<h4>In-place operators</h4>
+<h4><a id="user-content-in-place-operators" class="anchor" href="#in-place-operators" aria-hidden="true"></a>In-place operators</h4>
 
 <p>In-place operators are syntactic sugar to change the value of a variable:</p>
 
-<p><code>Python
-a += 1  # the same as "a = a + 1"
-b -= 1  # the same as "b = b - 1"
-c /= 2  # the same as "c = c / 2"
-d *= 2  # the same as "d = d * 2"
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">+=</span> <span class="pl-c1">1</span>  <span class="pl-c"># the same as "a = a + 1"</span>
+b <span class="pl-k">-=</span> <span class="pl-c1">1</span>  <span class="pl-c"># the same as "b = b - 1"</span>
+c <span class="pl-k">/=</span> <span class="pl-c1">2</span>  <span class="pl-c"># the same as "c = c / 2"</span>
+d <span class="pl-k">*=</span> <span class="pl-c1">2</span>  <span class="pl-c"># the same as "d = d * 2"</span></pre></div>
 
 <p>Most arithmetic operators have their own in-place version.</p>
 
-<h4>Comparison operators</h4>
+<h4><a id="user-content-comparison-operators" class="anchor" href="#comparison-operators" aria-hidden="true"></a>Comparison operators</h4>
 
 <p>Adder support all the basic comparison operators: <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>!=</code>, <code>==</code>.
 They work the same as in most programming language:</p>
 
-<p><code>Python
-2 &lt; 5  # true
-5 &gt; 20 # false
-2 == 2 # true
-3 &gt;= 2 # true
-5 &lt;= 4 # false
-5 != 2 # true
-True != False # true
-list(1) == list(1) # true
-list(1) == list(2) # false
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">2</span> <span class="pl-k">&lt;</span> <span class="pl-c1">5</span>  <span class="pl-c"># true</span>
+<span class="pl-c1">5</span> <span class="pl-k">&gt;</span> <span class="pl-c1">20</span> <span class="pl-c"># false</span>
+<span class="pl-c1">2</span> <span class="pl-k">==</span> <span class="pl-c1">2</span> <span class="pl-c"># true</span>
+<span class="pl-c1">3</span> <span class="pl-k">&gt;=</span> <span class="pl-c1">2</span> <span class="pl-c"># true</span>
+<span class="pl-c1">5</span> <span class="pl-k">&lt;=</span> <span class="pl-c1">4</span> <span class="pl-c"># false</span>
+<span class="pl-c1">5</span> <span class="pl-k">!=</span> <span class="pl-c1">2</span> <span class="pl-c"># true</span>
+<span class="pl-c1">True</span> <span class="pl-k">!=</span> <span class="pl-c1">False</span> <span class="pl-c"># true</span>
+<span class="pl-c1">list</span>(<span class="pl-c1">1</span>) <span class="pl-k">==</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>) <span class="pl-c"># true</span>
+<span class="pl-c1">list</span>(<span class="pl-c1">1</span>) <span class="pl-k">==</span> <span class="pl-c1">list</span>(<span class="pl-c1">2</span>) <span class="pl-c"># false</span></pre></div>
 
-<h4>Bitwise operators</h4>
+<h4><a id="user-content-bitwise-operators" class="anchor" href="#bitwise-operators" aria-hidden="true"></a>Bitwise operators</h4>
 
 <p>To perform bitwise <code>and</code> operation, use the <code>&amp;</code> operator:</p>
 
-<p><code>Python
-print(36 &amp; 14) # will print '4'
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">36</span> <span class="pl-k">&amp;</span> <span class="pl-c1">14</span>) <span class="pl-c"># will print '4'</span></pre></div>
 
 <p>To perform bitwise <code>or</code> operation, use the <code>|</code> operator:</p>
 
-<p><code>Python
-print(36 | 14) # will print '46'
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">36</span> <span class="pl-k">|</span> <span class="pl-c1">14</span>) <span class="pl-c"># will print '46'</span></pre></div>
 
-<h4>not</h4>
+<h4><a id="user-content-not" class="anchor" href="#not" aria-hidden="true"></a>not</h4>
 
 <p>The <code>not</code> operator invert a boolean value, eg turn <code>true</code> into <code>false</code> and vice-versa:</p>
 
-<p><code>Python
-if not True:
-    print("hello!")
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">if</span> <span class="pl-k">not</span> <span class="pl-c1">True</span>:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>hello!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4>or</h4>
+<h4><a id="user-content-or" class="anchor" href="#or" aria-hidden="true"></a>or</h4>
 
 <p>To create a conditional 'or', use the <code>or</code> operator:</p>
 
-<p><code>Python
-a = 5
-if a == 1 or a == 5:
-    print("a is either 1 or 5")
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">5</span>
+<span class="pl-k">if</span> a <span class="pl-k">==</span> <span class="pl-c1">1</span> <span class="pl-k">or</span> a <span class="pl-k">==</span> <span class="pl-c1">5</span>:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>a is either 1 or 5<span class="pl-pds">"</span></span>)</pre></div>
 
 <p>Note that <code>or</code> doesn't necessarily return a boolean (true / false), it returns the first value that when cast to boolean will return <code>true</code>.
 This means you can also use <code>or</code> to assign the first value option.</p>
 
 <p>For example:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># this will print "yay!", the first value considered as 'true' when casted as boolean</span>
+a <span class="pl-k">=</span> <span class="pl-c1">False</span> <span class="pl-k">or</span> <span class="pl-c1">None</span> <span class="pl-k">or</span> <span class="pl-s"><span class="pl-pds">"</span>yay!<span class="pl-pds">"</span></span> <span class="pl-k">or</span> <span class="pl-c1">True</span>
+<span class="pl-c1">print</span>(a)</pre></div>
 
-<h1>this will print "yay!", the first value considered as 'true' when casted as boolean</h1>
-
-<p>a = False or None or "yay!" or True
-print(a)
-```</p>
-
-<h4>and</h4>
+<h4><a id="user-content-and" class="anchor" href="#and" aria-hidden="true"></a>and</h4>
 
 <p>To create a conditional 'and', use the <code>and</code> operator:</p>
 
-<p><code>Python
-a = 1
-b = 2
-if a == 1 and b == 2:
-    print("a is 1 and b is 2")
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">1</span>
+b <span class="pl-k">=</span> <span class="pl-c1">2</span>
+<span class="pl-k">if</span> a <span class="pl-k">==</span> <span class="pl-c1">1</span> <span class="pl-k">and</span> b <span class="pl-k">==</span> <span class="pl-c1">2</span>:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>a is 1 and b is 2<span class="pl-pds">"</span></span>)</pre></div>
 
 <p>With <code>and</code> operator the condition is met only if all parts are true.</p>
 
-<h4>in</h4>
+<h4><a id="user-content-in" class="anchor" href="#in" aria-hidden="true"></a>in</h4>
 
 <p>In General, <code>in</code> is used to check if a value is contained in an object.</p>
 
 <p>For example, with lists <code>in</code> will return true if the list contain the given value:</p>
 
-<p><code>Python
-lst = list(1,2,3)
-if 1 in lst:
-    print("'1' is in the list!")
-</code></p>
+<div class="highlight highlight-source-python"><pre>lst <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
+<span class="pl-k">if</span> <span class="pl-c1">1</span> <span class="pl-k">in</span> lst:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'1' is in the list!<span class="pl-pds">"</span></span>)</pre></div>
 
 <p>With dictionaries, <code>in</code> will return true if value is a key inside the dictionary.</p>
 
-<p><code>Python
-dct = dict()
-dct.set("a", "hello")
-if "a" in dct:
-    print("'a' is a key inside the dictionary!")
-</code></p>
+<div class="highlight highlight-source-python"><pre>dct <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+dct.set(<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
+<span class="pl-k">if</span> <span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span> <span class="pl-k">in</span> dct:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' is a key inside the dictionary!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4>not in</h4>
+<h4><a id="user-content-not-in" class="anchor" href="#not-in" aria-hidden="true"></a>not in</h4>
 
 <p><code>not in</code> is a syntactic sugar to test if a value is <em>not</em> in another value:</p>
 
-<p><code>Python
-lst = list(1,2,3)
-if 5 not in lst:
-    print("5 is not in the list!")
-</code></p>
+<div class="highlight highlight-source-python"><pre>lst <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
+<span class="pl-k">if</span> <span class="pl-c1">5</span> <span class="pl-k">not</span> <span class="pl-k">in</span> lst:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>5 is not in the list!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4>is</h4>
+<h4><a id="user-content-is" class="anchor" href="#is" aria-hidden="true"></a>is</h4>
 
 <p><code>is</code> operator is used to check if two values are the same object, or strictly equal. For example:</p>
 
-<p><code>Python
-5 is 5              # true
-True is True        # true
-list() is list()    # false - not the same object
-4 is 5              # false
-0 is False          # false
-a = list(); a is a  # true
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">5</span> <span class="pl-k">is</span> <span class="pl-c1">5</span>              <span class="pl-c"># true</span>
+<span class="pl-c1">True</span> <span class="pl-k">is</span> <span class="pl-c1">True</span>        <span class="pl-c"># true</span>
+<span class="pl-c1">list</span>() <span class="pl-k">is</span> <span class="pl-c1">list</span>()    <span class="pl-c"># false - not the same object</span>
+<span class="pl-c1">4</span> <span class="pl-k">is</span> <span class="pl-c1">5</span>              <span class="pl-c"># false</span>
+<span class="pl-c1">0</span> <span class="pl-k">is</span> <span class="pl-c1">False</span>          <span class="pl-c"># false</span>
+a <span class="pl-k">=</span> <span class="pl-c1">list</span>(); a <span class="pl-k">is</span> a  <span class="pl-c"># true</span></pre></div>
 
-<h4>is not</h4>
+<h4><a id="user-content-is-not" class="anchor" href="#is-not" aria-hidden="true"></a>is not</h4>
 
 <p>As a syntactic sugar, to test if value is not the same object as other value. For example:</p>
 
-<p><code>Python
-a = list()
-b = list()
-if a is not b:
-    print("'a' is not 'b'!")
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>()
+b <span class="pl-k">=</span> <span class="pl-c1">list</span>()
+<span class="pl-k">if</span> a <span class="pl-k">is</span> <span class="pl-k">not</span> b:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' is not 'b'!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h3>Conditions (if, else, elif)</h3>
+<h3><a id="user-content-conditions-if-else-elif" class="anchor" href="#conditions-if-else-elif" aria-hidden="true"></a>Conditions (if, else, elif)</h3>
 
 <p>Conditions test an expression and determine weather or not to execute the following block.</p>
 
-<h4>if</h4>
+<h4><a id="user-content-if" class="anchor" href="#if" aria-hidden="true"></a>if</h4>
 
 <p>To write a conditional block, you use the <code>if</code> statement:</p>
 
-<p><code>Python
-if a == 5:
-    print("'a' equals 5")
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">if</span> a <span class="pl-k">==</span> <span class="pl-c1">5</span>:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' equals 5<span class="pl-pds">"</span></span>)</pre></div>
 
 <p>In the example above the block following the statement will only be executed if the condition (<code>a == 5</code>) is met.</p>
 
 <p><code>inline if</code> statements are also valid:</p>
 
-<p><code>Python
-if a == 5: print("'a' equals 5")
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">if</span> a <span class="pl-k">==</span> <span class="pl-c1">5</span>: <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' equals 5<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4>else</h4>
+<h4><a id="user-content-else" class="anchor" href="#else" aria-hidden="true"></a>else</h4>
 
 <p><code>else</code> statements will execute their following block only if the last <code>if</code> condition was false.</p>
 
 <p>For example:</p>
 
-<p><code>Python
-if a == 5:
-    print("'a' equals 5")
-else:
-    print("'a' does not equal 5")
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">if</span> a <span class="pl-k">==</span> <span class="pl-c1">5</span>:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' equals 5<span class="pl-pds">"</span></span>)
+<span class="pl-k">else</span>:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' does not equal 5<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4>elif</h4>
+<h4><a id="user-content-elif" class="anchor" href="#elif" aria-hidden="true"></a>elif</h4>
 
 <p>It is possible to add a conditional <code>if</code> to any <code>else</code> statement, eg make a block that will execute only if the previous <code>if</code> was false <em>and</em> a new condition is met.</p>
 
 <p>To create an else condition (can be think of as <code>else if</code>), use the <code>elif</code> statement:</p>
 
-<p><code>Python
-if a == 5:
-    print("'a' equals '5'")
-elif a == 6:
-    print("'a' equals '6'")
-else:
-    print("a is neither '5' nor '6'")
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">if</span> a <span class="pl-k">==</span> <span class="pl-c1">5</span>:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' equals '5'<span class="pl-pds">"</span></span>)
+<span class="pl-k">elif</span> a <span class="pl-k">==</span> <span class="pl-c1">6</span>:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' equals '6'<span class="pl-pds">"</span></span>)
+<span class="pl-k">else</span>:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>a is neither '5' nor '6'<span class="pl-pds">"</span></span>)</pre></div>
 
-<h3>Loops</h3>
+<h3><a id="user-content-loops" class="anchor" href="#loops" aria-hidden="true"></a>Loops</h3>
 
 <p>There are two ways to make loops / iterate in Adder. We'll explain them in this chapter.</p>
 
-<h4>for</h4>
+<h4><a id="user-content-for" class="anchor" href="#for" aria-hidden="true"></a>for</h4>
 
 <p><code>for</code> statement iterate over the values of a container. For example, to iterate over the values of a list:</p>
 
-<p><code>Python
-a = list(1,2,3)
-for i in a:
-    print(i)
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
+<span class="pl-k">for</span> i <span class="pl-k">in</span> a:
+    <span class="pl-c1">print</span>(i)</pre></div>
 
-<h4>while</h4>
+<h4><a id="user-content-while" class="anchor" href="#while" aria-hidden="true"></a>while</h4>
 
 <p><code>while</code> statement will repeat the block as long as the condition is true:</p>
 
-<p><code>Python
-a = 5
-while a &gt; 0:
-    print(a)
-    a -= 1
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">5</span>
+<span class="pl-k">while</span> a <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>:
+    <span class="pl-c1">print</span>(a)
+    a <span class="pl-k">-=</span> <span class="pl-c1">1</span></pre></div>
 
-<h3>Functions</h3>
+<h3><a id="user-content-functions" class="anchor" href="#functions" aria-hidden="true"></a>Functions</h3>
 
 <p>To define a new function, use the <code>def</code> statement:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># define the function</span>
+<span class="pl-k">def</span> <span class="pl-en">hello_world</span>():
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>)
 
-<h1>define the function</h1>
-
-<p>def hello_world():
-    print("Hello World!")</p>
-
-<h1>use it</h1>
-
-<p>hello_world()
-```</p>
+<span class="pl-c"># use it</span>
+hello_world()</pre></div>
 
 <p>Or with params:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># define the function</span>
+<span class="pl-k">def</span> <span class="pl-en">hello_someone</span>(<span class="pl-smi">name</span>):
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello <span class="pl-pds">"</span></span> <span class="pl-k">+</span> name)
 
-<h1>define the function</h1>
+<span class="pl-c"># use it</span>
+hello_someone(<span class="pl-s"><span class="pl-pds">"</span>Bob<span class="pl-pds">"</span></span>)</pre></div>
 
-<p>def hello_someone(name):
-    print("Hello " + name)</p>
-
-<h1>use it</h1>
-
-<p>hello_someone("Bob")
-```</p>
-
-<h2>Containers (list, set, dict)</h2>
+<h2><a id="user-content-containers-list-set-dict" class="anchor" href="#containers-list-set-dict" aria-hidden="true"></a>Containers (list, set, dict)</h2>
 
 <p>There are 3 built-in containers you should know in Adder:</p>
 
-<h3>List</h3>
+<h3><a id="user-content-list" class="anchor" href="#list" aria-hidden="true"></a>List</h3>
 
 <p>List hold a list of values, while preserving the order of insertion.</p>
 
 <p>To create a new list:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># create an empty list</span>
+a <span class="pl-k">=</span> <span class="pl-c1">list</span>()
 
-<h1>create an empty list</h1>
-
-<p>a = list()</p>
-
-<h1>create a list with starting values: 1,2,3</h1>
-
-<p>a = list(1,2,3)
-```</p>
+<span class="pl-c"># create a list with starting values: 1,2,3</span>
+a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)</pre></div>
 
 <p>The list API is slightly different than Python's list.
 A list instance have the following functions:</p>
 
-<h4>clone ()</h4>
+<h4><a id="user-content-clone-" class="anchor" href="#clone-" aria-hidden="true"></a>clone ()</h4>
 
 <p>Create a shallow copy of the list.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list(1,2,3)
-b = a.clone()  # &lt;-- 'b' will now be equal to 'a', but not the same object.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
+b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will now be equal to 'a', but not the same object.</span></pre></div>
 
-<h4>empty ()</h4>
+<h4><a id="user-content-empty-" class="anchor" href="#empty-" aria-hidden="true"></a>empty ()</h4>
 
 <p>Return true if the list is empty, false otherwise.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list()
-if a.empty():
-    print("List is empty!")
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>()
+<span class="pl-k">if</span> a.empty():
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>List is empty!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4>to_set ()</h4>
+<h4><a id="user-content-to_set-" class="anchor" href="#to_set-" aria-hidden="true"></a>to_set ()</h4>
 
 <p>Convert the list to a Set object (described later).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list(1, 2, 3)
-b = list.to_set()  # &lt;-- 'b' is now a set with values 1, 2 and 3.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>, <span class="pl-c1">3</span>)
+b <span class="pl-k">=</span> <span class="pl-c1">list</span>.to_set()  <span class="pl-c"># &lt;-- 'b' is now a set with values 1, 2 and 3.</span></pre></div>
 
-<h4>len ()</h4>
+<h4><a id="user-content-len--1" class="anchor" href="#len--1" aria-hidden="true"></a>len ()</h4>
 
 <p>Return list length.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list(1,2)
-print(a.len())  # &lt;-- will print '2'.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>)
+<span class="pl-c1">print</span>(a.len())  <span class="pl-c"># &lt;-- will print '2'.</span></pre></div>
 
-<h4>append (val)</h4>
+<h4><a id="user-content-append-val" class="anchor" href="#append-val" aria-hidden="true"></a>append (val)</h4>
 
 <p>Add a value to the end of the list.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list("foo", "bar")
-a.append("foobar")  # &lt;-- list will now contain: "foo", "bar", "foobar".
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
+a.append(<span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- list will now contain: "foo", "bar", "foobar".</span></pre></div>
 
-<h4>has (val)</h4>
+<h4><a id="user-content-has-val" class="anchor" href="#has-val" aria-hidden="true"></a>has (val)</h4>
 
 <p>Return if the list contains a given value.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list("foo", "bar")
-if a.has("foo"):
-    print("List have value 'foo'")
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
+<span class="pl-k">if</span> a.has(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>):
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>List have value 'foo'<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4>clear ()</h4>
+<h4><a id="user-content-clear-" class="anchor" href="#clear-" aria-hidden="true"></a>clear ()</h4>
 
 <p>Clear the list (remove all values from it).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list("foo", "bar")
-a.clear()  # &lt;-- 'a' will now be an empty list.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
+a.clear()  <span class="pl-c"># &lt;-- 'a' will now be an empty list.</span></pre></div>
 
-<h4>count (val)</h4>
+<h4><a id="user-content-count-val" class="anchor" href="#count-val" aria-hidden="true"></a>count (val)</h4>
 
 <p>Return how many times a given value appears in the list.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list("foo", "bar", "foo", "hello")
-print(a.count("foo"))  # &lt;-- will print 2 ("foo" appears twice in list).
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
+<span class="pl-c1">print</span>(a.count(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print 2 ("foo" appears twice in list).</span></pre></div>
 
-<h4>extend (other)</h4>
+<h4><a id="user-content-extend-other" class="anchor" href="#extend-other" aria-hidden="true"></a>extend (other)</h4>
 
 <p>Extend this list with another list (like concat).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list("foo", "bar")
-b = list("hello", "world")
-a.extend(b)  # &lt;-- 'a' will be a list with: "foo", "bar", "hello", "world". 'b' will remain unchanged.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
+b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)
+a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a list with: "foo", "bar", "hello", "world". 'b' will remain unchanged.</span></pre></div>
 
-<h4>index (val)</h4>
+<h4><a id="user-content-index-val" class="anchor" href="#index-val" aria-hidden="true"></a>index (val)</h4>
 
 <p>Return the first index of a given value in the list (or -1 if value not found).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list("foo", "bar", "hello")
-print(a.index("bar"))  # &lt;-- will print '1', the index of "foo".
-print(a.index("other"))  # &lt;-- will print '-1', since "other" is not in list.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
+<span class="pl-c1">print</span>(a.index(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print '1', the index of "foo".</span>
+<span class="pl-c1">print</span>(a.index(<span class="pl-s"><span class="pl-pds">"</span>other<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print '-1', since "other" is not in list.</span></pre></div>
 
-<h4>insert (val, position)</h4>
+<h4><a id="user-content-insert-val-position" class="anchor" href="#insert-val-position" aria-hidden="true"></a>insert (val, position)</h4>
 
 <p>Add a value to the list at a given position (index).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list("foo", "bar")
-a.insert("hello", 1)  # &lt;-- 'a' will now contain: "foo", "hello", "bar".
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
+a.insert(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- 'a' will now contain: "foo", "hello", "bar".</span></pre></div>
 
-<h4>pop ([position])</h4>
+<h4><a id="user-content-pop-position" class="anchor" href="#pop-position" aria-hidden="true"></a>pop ([position])</h4>
 
 <p>Remove and return the last value from list, or from a given position (if provided position argument).</p>
 
 <p>Example:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># using pop without position param</span>
+a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
+a.pop()  <span class="pl-c"># &lt;-- will remove and return "hello", which is the last value in the list.</span>
 
-<h1>using pop without position param</h1>
+<span class="pl-c"># using pop with position param</span>
+a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
+a.pop(<span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- will remove and return "bar", which is the value with index 1 in the list.</span></pre></div>
 
-<p>a = list("foo", "bar", "hello")
-a.pop()  # &lt;-- will remove and return "hello", which is the last value in the list.</p>
-
-<h1>using pop with position param</h1>
-
-<p>a = list("foo", "bar", "hello")
-a.pop(1)  # &lt;-- will remove and return "bar", which is the value with index 1 in the list.
-```</p>
-
-<h4>shift ()</h4>
+<h4><a id="user-content-shift-" class="anchor" href="#shift-" aria-hidden="true"></a>shift ()</h4>
 
 <p>Remove and return the first value from the list.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list("foo", "bar", "foobar")
-a.shift()  # &lt;-- will remove and return "foo", the first value in the list.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-pds">"</span></span>)
+a.shift()  <span class="pl-c"># &lt;-- will remove and return "foo", the first value in the list.</span></pre></div>
 
-<h4>remove (val)</h4>
+<h4><a id="user-content-remove-val" class="anchor" href="#remove-val" aria-hidden="true"></a>remove (val)</h4>
 
 <p>Remove a given value from list (if found).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list("foo", "bar", "hello")
-a.remove("bar")  # &lt;-- will remove "bar" from the list.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
+a.remove(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- will remove "bar" from the list.</span></pre></div>
 
-<h4>reverse ()</h4>
+<h4><a id="user-content-reverse-" class="anchor" href="#reverse-" aria-hidden="true"></a>reverse ()</h4>
 
 <p>Reverse the list.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list("foo", "bar", "hello")
-a.reverse()  # &lt;-- 'a' will now contain: "hello", "bar", "foo".
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
+a.reverse()  <span class="pl-c"># &lt;-- 'a' will now contain: "hello", "bar", "foo".</span></pre></div>
 
-<h4>slice (start, [end])</h4>
+<h4><a id="user-content-slice-start-end" class="anchor" href="#slice-start-end" aria-hidden="true"></a>slice (start, [end])</h4>
 
 <p>Return a segment of the list from a starting position and an optional ending position (ending position value will not be included).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-fruits = list("Banana", "Orange", "Lemon", "Apple", "Mango")
-print(fruits.slice(1, 3))  # &lt;-- will print "Orange,Lemon".
-</code></p>
+<div class="highlight highlight-source-python"><pre>fruits <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>Banana<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Orange<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Lemon<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Apple<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Mango<span class="pl-pds">"</span></span>)
+<span class="pl-c1">print</span>(fruits.slice(<span class="pl-c1">1</span>, <span class="pl-c1">3</span>))  <span class="pl-c"># &lt;-- will print "Orange,Lemon".</span></pre></div>
 
-<h4>join ([delimiter])</h4>
+<h4><a id="user-content-join-delimiter" class="anchor" href="#join-delimiter" aria-hidden="true"></a>join ([delimiter])</h4>
 
 <p>Convert the list to a string with an optional delimiter (if delimiter is not provided, a comma will be used).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list("foo", "bar", "hello")
-print(a.join("--"))  # &lt;-- will print "foo--bar--hello".
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
+<span class="pl-c1">print</span>(a.join(<span class="pl-s"><span class="pl-pds">"</span>--<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print "foo--bar--hello".</span></pre></div>
 
-<h4>sort ()</h4>
+<h4><a id="user-content-sort-" class="anchor" href="#sort-" aria-hidden="true"></a>sort ()</h4>
 
 <p>Sort the list values by a default string sorting.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list("b", "c", "a")
-a.sort()  # &lt;-- 'a' will now contain: "a", "b", "c".
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>b<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>c<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>)
+a.sort()  <span class="pl-c"># &lt;-- 'a' will now contain: "a", "b", "c".</span></pre></div>
 
-<h4>at (position)</h4>
+<h4><a id="user-content-at-position" class="anchor" href="#at-position" aria-hidden="true"></a>at (position)</h4>
 
 <p>Return value from a given position in list.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list("foo", "bar", "hello")
-print(a.at(1))  # &lt;-- will print "bar"
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
+<span class="pl-c1">print</span>(a.at(<span class="pl-c1">1</span>))  <span class="pl-c"># &lt;-- will print "bar"</span></pre></div>
 
-<h4>Iterating lists</h4>
+<h4><a id="user-content-iterating-lists" class="anchor" href="#iterating-lists" aria-hidden="true"></a>Iterating lists</h4>
 
 <p>To iterate over the values in a List, use <code>for-in</code> loop:</p>
 
-<p><code>Python
-a = list("foo", "bar", "foobar")
-for val in a:
-    print(val)
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-pds">"</span></span>)
+<span class="pl-k">for</span> val <span class="pl-k">in</span> a:
+    <span class="pl-c1">print</span>(val)</pre></div>
 
-<h3>Set</h3>
+<h3><a id="user-content-set" class="anchor" href="#set" aria-hidden="true"></a>Set</h3>
 
 <p>A Set is like a list, but in a set each value may only appear once. In addition, a Set may only contain simple types and not objects.
 Sets are much faster when you need to check if values exist or not.</p>
 
 <p>To create a new set:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># create an empty set</span>
+a <span class="pl-k">=</span> <span class="pl-c1">set</span>()
 
-<h1>create an empty set</h1>
-
-<p>a = set()</p>
-
-<h1>create a set with starting values: "Apple", "Banana", "Orange"</h1>
-
-<p>a = set("Apple", "Banana", "Orange")
-```</p>
+<span class="pl-c"># create a set with starting values: "Apple", "Banana", "Orange"</span>
+a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>Apple<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Banana<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Orange<span class="pl-pds">"</span></span>)</pre></div>
 
 <p>The set API is slightly different than Python's set.</p>
 
 <p>A set instance have the following functions:</p>
 
-<h4>clone ()</h4>
+<h4><a id="user-content-clone--1" class="anchor" href="#clone--1" aria-hidden="true"></a>clone ()</h4>
 
 <p>Create a shallow copy of the set.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = set(1,2,3)
-b = a.clone()  # &lt;-- 'b' will now be equal to 'a', but not the same object.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
+b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will now be equal to 'a', but not the same object.</span></pre></div>
 
-<h4>empty ()</h4>
+<h4><a id="user-content-empty--1" class="anchor" href="#empty--1" aria-hidden="true"></a>empty ()</h4>
 
 <p>Return true if set is empty, false otherwise.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = set()
-if a.empty():
-    print("Set 'a' is empty!")
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>()
+<span class="pl-k">if</span> a.empty():
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Set 'a' is empty!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4>to_list ()</h4>
+<h4><a id="user-content-to_list-" class="anchor" href="#to_list-" aria-hidden="true"></a>to_list ()</h4>
 
 <p>Convert the set to a List object.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = set(1, 2, 3)
-b = a.to_list()  # &lt;-- 'b' is now a new list with values 1, 2, 3.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>, <span class="pl-c1">3</span>)
+b <span class="pl-k">=</span> a.to_list()  <span class="pl-c"># &lt;-- 'b' is now a new list with values 1, 2, 3.</span></pre></div>
 
-<h4>len ()</h4>
+<h4><a id="user-content-len--2" class="anchor" href="#len--2" aria-hidden="true"></a>len ()</h4>
 
 <p>Return set length.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = set(1,2)
-print(a.len())  # &lt;-- will print '2'.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>)
+<span class="pl-c1">print</span>(a.len())  <span class="pl-c"># &lt;-- will print '2'.</span></pre></div>
 
-<h4>add (val)</h4>
+<h4><a id="user-content-add-val" class="anchor" href="#add-val" aria-hidden="true"></a>add (val)</h4>
 
 <p>Add a value to the end of the set. If value already exist in set, will not do anything (as sets may only contain each value once).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = set("foo", "bar")
-a.add("foobar")  # &lt;-- set will now contain: "foo", "bar", "foobar".
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
+a.add(<span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- set will now contain: "foo", "bar", "foobar".</span></pre></div>
 
-<h4>has (val)</h4>
+<h4><a id="user-content-has-val-1" class="anchor" href="#has-val-1" aria-hidden="true"></a>has (val)</h4>
 
 <p>Return if the set contains a given value.</p>
 
 <p>Example:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># create a set</span>
+a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 
-<h1>create a set</h1>
-
-<p>a = set("foo", "bar")</p>
-
-<h1>check if contains a value</h1>
-
-<p>if a.has("foo"):
-    print("'foo' is in set")
-```</p>
+<span class="pl-c"># check if contains a value</span>
+<span class="pl-k">if</span> a.has(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>):
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'foo' is in set<span class="pl-pds">"</span></span>)</pre></div>
 
 <p>Note that <code>has</code> is equivilant of using the <code>in</code> operator:</p>
 
-<p><code>Python
-if "foo" in set("foo", "bar"):
-    print("'foo' is in set")
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">if</span> <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span> <span class="pl-k">in</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>):
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'foo' is in set<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4>clear ()</h4>
+<h4><a id="user-content-clear--1" class="anchor" href="#clear--1" aria-hidden="true"></a>clear ()</h4>
 
 <p>Clear the set (remove all values from it).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = set("foo", "bar")
-a.clear()  # &lt;-- set will now be an empty set.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
+a.clear()  <span class="pl-c"># &lt;-- set will now be an empty set.</span></pre></div>
 
-<h4>extend (other)</h4>
+<h4><a id="user-content-extend-other-1" class="anchor" href="#extend-other-1" aria-hidden="true"></a>extend (other)</h4>
 
 <p>Extend this set with another set (like concat).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = set("foo", "bar")
-b = set("hello", "world")
-a.extend(b)  # &lt;-- 'a' will be a set with: "foo", "bar", "hello", "world". 'b' will remain unchanged.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
+b <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)
+a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a set with: "foo", "bar", "hello", "world". 'b' will remain unchanged.</span></pre></div>
 
-<h4>index (val)</h4>
+<h4><a id="user-content-index-val-1" class="anchor" href="#index-val-1" aria-hidden="true"></a>index (val)</h4>
 
 <p>Return the index of a given value in set (or -1 if value not found).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = set("foo", "bar", "hello")
-print(a.index("bar"))  # &lt;-- will print '1', the index of "foo".
-print(a.index("other"))  # &lt;-- will print '-1', since "other" is not in list.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
+<span class="pl-c1">print</span>(a.index(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print '1', the index of "foo".</span>
+<span class="pl-c1">print</span>(a.index(<span class="pl-s"><span class="pl-pds">"</span>other<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print '-1', since "other" is not in list.</span></pre></div>
 
-<h4>remove (val)</h4>
+<h4><a id="user-content-remove-val-1" class="anchor" href="#remove-val-1" aria-hidden="true"></a>remove (val)</h4>
 
 <p>Remove a given value from the set (if found).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = set("foo", "bar", "hello")
-a.remove("bar")  # &lt;-- will remove "bar" from the set.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
+a.remove(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- will remove "bar" from the set.</span></pre></div>
 
-<h4>join ([delimiter])</h4>
+<h4><a id="user-content-join-delimiter-1" class="anchor" href="#join-delimiter-1" aria-hidden="true"></a>join ([delimiter])</h4>
 
 <p>Convert the set to a string connected with a given delimiter (if delimiter is not provided, a comma will be used).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = set("foo", "bar", "hello")
-print(a.join("--"))  # &lt;-- will print "foo--bar--hello".
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
+<span class="pl-c1">print</span>(a.join(<span class="pl-s"><span class="pl-pds">"</span>--<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print "foo--bar--hello".</span></pre></div>
 
-<h4>Iterating sets</h4>
+<h4><a id="user-content-iterating-sets" class="anchor" href="#iterating-sets" aria-hidden="true"></a>Iterating sets</h4>
 
 <p>To iterate over the values in a Set, use the <code>for-in</code> loop:</p>
 
-<p><code>Python
-a = set("foo", "bar", "foobar")
-for val in a:
-    print(val)
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-pds">"</span></span>)
+<span class="pl-k">for</span> val <span class="pl-k">in</span> a:
+    <span class="pl-c1">print</span>(val)</pre></div>
 
-<h3>Dictionary</h3>
+<h3><a id="user-content-dictionary" class="anchor" href="#dictionary" aria-hidden="true"></a>Dictionary</h3>
 
 <p>A dictionary, often known as “associative arrays” or "hash table", is a table of string keys leading to values.</p>
 
 <p>To create a new dictionary:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># create an empty dictionary</span>
+a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
 
-<h1>create an empty dictionary</h1>
+<span class="pl-c"># set a value</span>
+a.set(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>value<span class="pl-pds">"</span></span>)
 
-<p>a = dict()</p>
-
-<h1>set a value</h1>
-
-<p>a.set("key", "value")</p>
-
-<h1>get a value</h1>
-
-<p>a.get("key")
-```</p>
+<span class="pl-c"># get a value</span>
+a.get(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"</span></span>)</pre></div>
 
 <p>The dictionary API is slightly different than Python's dictionary.</p>
 
 <p>A dictionary instance have the following functions:</p>
 
-<h4>clone ()</h4>
+<h4><a id="user-content-clone--2" class="anchor" href="#clone--2" aria-hidden="true"></a>clone ()</h4>
 
 <p>Creates a shallow copy of the dictionary.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = dict()
-b = a.clone()  # &lt;-- 'b' will now be equal to 'a', but not the same object.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will now be equal to 'a', but not the same object.</span></pre></div>
 
-<h4>set (key, value)</h4>
+<h4><a id="user-content-set-key-value" class="anchor" href="#set-key-value" aria-hidden="true"></a>set (key, value)</h4>
 
 <p>Add a key-value to the dictionary.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = dict()
-a.set("key", "value")  #  &lt;-- dict will now contain a single key, "key", that will lead to the value "value".
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+a.set(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>value<span class="pl-pds">"</span></span>)  <span class="pl-c">#  &lt;-- dict will now contain a single key, "key", that will lead to the value "value".</span></pre></div>
 
-<h4>get (key, [default])</h4>
+<h4><a id="user-content-get-key-default" class="anchor" href="#get-key-default" aria-hidden="true"></a>get (key, [default])</h4>
 
 <p>Get a value from the dictionary by key.
 If key is not found in dictionary, <code>default</code> will be returned. If no <code>default</code> argument is provided, <code>None</code> will be returned instead.</p>
 
 <p>Example:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># create the dictionary and add value</span>
+a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+a.set(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>value<span class="pl-pds">"</span></span>)
 
-<h1>create the dictionary and add value</h1>
+<span class="pl-c"># get values that exists</span>
+<span class="pl-c1">print</span>(a.get(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print "value"</span>
 
-<p>a = dict()
-a.set("key", "value")</p>
+<span class="pl-c"># get non-existing value without default</span>
+<span class="pl-c1">print</span>(a.get(<span class="pl-s"><span class="pl-pds">"</span>some-key<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print None (empty string in default sandbox implementation)</span>
 
-<h1>get values that exists</h1>
+<span class="pl-c"># get non-existing value with default</span>
+<span class="pl-c1">print</span>(a.get(<span class="pl-s"><span class="pl-pds">"</span>some-key<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>not-found<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print "not-found"</span></pre></div>
 
-<p>print(a.get("key"))  # &lt;-- will print "value"</p>
-
-<h1>get non-existing value without default</h1>
-
-<p>print(a.get("some-key"))  # &lt;-- will print None (empty string in default sandbox implementation)</p>
-
-<h1>get non-existing value with default</h1>
-
-<p>print(a.get("some-key", "not-found"))  # &lt;-- will print "not-found"
-```</p>
-
-<h4>keys ()</h4>
+<h4><a id="user-content-keys-" class="anchor" href="#keys-" aria-hidden="true"></a>keys ()</h4>
 
 <p>Return a list with all keys in the dictionary.</p>
 
 <p>Example:</p>
 
-<p>```Python
-a = dict()
-a.set("foo", 1)
-a.set("bar", 2)</p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>)
+a.set(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-c1">2</span>)
 
-<p>print(a.keys())  # &lt;-- will print "foo,bar"
-```</p>
+<span class="pl-c1">print</span>(a.keys())  <span class="pl-c"># &lt;-- will print "foo,bar"</span></pre></div>
 
-<h4>values ()</h4>
+<h4><a id="user-content-values-" class="anchor" href="#values-" aria-hidden="true"></a>values ()</h4>
 
 <p>Return a list with all values in the dictionary.</p>
 
 <p>Example:</p>
 
-<p>```Python
-a = dict()
-a.set("foo", 1)
-a.set("bar", 2)</p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>)
+a.set(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-c1">2</span>)
 
-<p>print(a.values())  # &lt;-- will print "1,2"
-```</p>
+<span class="pl-c1">print</span>(a.values())  <span class="pl-c"># &lt;-- will print "1,2"</span></pre></div>
 
-<h4>len ()</h4>
+<h4><a id="user-content-len--3" class="anchor" href="#len--3" aria-hidden="true"></a>len ()</h4>
 
 <p>Return how many keys are in the dictionary.</p>
 
 <p>Example:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># create the dictionary</span>
+a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>)
+a.set(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-c1">2</span>)
 
-<h1>create the dictionary</h1>
+<span class="pl-c"># print its length</span>
+<span class="pl-c1">print</span>(a.len())  <span class="pl-c"># &lt;-- will print 2.</span></pre></div>
 
-<p>a = dict()
-a.set("foo", 1)
-a.set("bar", 2)</p>
-
-<h1>print its length</h1>
-
-<p>print(a.len())  # &lt;-- will print 2.
-```</p>
-
-<h4>remove (key)</h4>
+<h4><a id="user-content-remove-key" class="anchor" href="#remove-key" aria-hidden="true"></a>remove (key)</h4>
 
 <p>Remove a key from the dictionary.</p>
 
 <p>Example:</p>
 
-<p>```Python
-a = dict()
-a.set("foo", 1)</p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>)
 
-<p>a.remove("foo")  # &lt;-- will remove "foo" from the dictionary.
-a.remove("bla")  # &lt;-- won't do anything, since "bla" doesn't exist.
-```</p>
+a.remove(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- will remove "foo" from the dictionary.</span>
+a.remove(<span class="pl-s"><span class="pl-pds">"</span>bla<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- won't do anything, since "bla" doesn't exist.</span></pre></div>
 
-<h4>clear ()</h4>
+<h4><a id="user-content-clear--2" class="anchor" href="#clear--2" aria-hidden="true"></a>clear ()</h4>
 
 <p>Clear the dictionary completely, leaving it empty.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = dict()
-a.set("foo", 1)
-a.clear()  # &lt;-- 'a' will now be an empty dictionary.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>)
+a.clear()  <span class="pl-c"># &lt;-- 'a' will now be an empty dictionary.</span></pre></div>
 
-<h4>empty ()</h4>
+<h4><a id="user-content-empty--2" class="anchor" href="#empty--2" aria-hidden="true"></a>empty ()</h4>
 
 <p>Return if the dictionary is empty, eg if it has no keys in it.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = dict()
-if a.empty():
-    print("Dictionary is empty!")
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+<span class="pl-k">if</span> a.empty():
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Dictionary is empty!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4>has (key)</h4>
+<h4><a id="user-content-has-key" class="anchor" href="#has-key" aria-hidden="true"></a>has (key)</h4>
 
 <p>Return if the dictionary have a given key.</p>
 
 <p>Example:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># create dictionary</span>
+a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 
-<h1>create dictionary</h1>
-
-<p>a = dict()
-a.set("foo", "bar")</p>
-
-<h1>check if key exists in it</h1>
-
-<p>if a.has("foo"):
-    print("There's a key 'foo' in dictionary!")
-```</p>
+<span class="pl-c"># check if key exists in it</span>
+<span class="pl-k">if</span> a.has(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>):
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>There's a key 'foo' in dictionary!<span class="pl-pds">"</span></span>)</pre></div>
 
 <p>Note that using <code>has()</code> is equivalent to using the <code>in</code> operator:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># create dictionary</span>
+a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 
-<h1>create dictionary</h1>
+<span class="pl-c"># check if key exists in it</span>
+<span class="pl-k">if</span> <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span> <span class="pl-k">in</span> a:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>There's a key 'foo' in dictionary!<span class="pl-pds">"</span></span>)</pre></div>
 
-<p>a = dict()
-a.set("foo", "bar")</p>
-
-<h1>check if key exists in it</h1>
-
-<p>if "foo" in a:
-    print("There's a key 'foo' in dictionary!")
-```</p>
-
-<h4>extend (other)</h4>
+<h4><a id="user-content-extend-other-2" class="anchor" href="#extend-other-2" aria-hidden="true"></a>extend (other)</h4>
 
 <p>Extend this dictionary with another dictionary (like concat).</p>
 
 <p>Example:</p>
 
-<p>```Python
-a = dict()
-a.set("foo", "bar")</p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 
-<p>b = dict()
-b.set("hello", "world")</p>
+b <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+b.set(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)
 
-<p>a.extend(b)  # &lt;-- 'a' will be a dictionary with: "foo" = "bar", "hello" = "world". 'b' will remain unchanged.
-```</p>
+a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a dictionary with: "foo" = "bar", "hello" = "world". 'b' will remain unchanged.</span></pre></div>
 
-<h4>Iterating dictionaries</h4>
+<h4><a id="user-content-iterating-dictionaries" class="anchor" href="#iterating-dictionaries" aria-hidden="true"></a>Iterating dictionaries</h4>
 
 <p>To iterate over the keys of a dictionary, use a <code>for</code> loop:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># create dictionary with values</span>
+a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
+a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
+a.set(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)
 
-<h1>create dictionary with values</h1>
+<span class="pl-c"># iterate dictionary and print it</span>
+<span class="pl-k">for</span> key <span class="pl-k">in</span> a:
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Key: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> key <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>, <span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>Value: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> a.get(key))</pre></div>
 
-<p>a = dict()
-a.set("foo", "bar")
-a.set("hello", "world")</p>
-
-<h1>iterate dictionary and print it</h1>
-
-<p>for key in a:
-    print("Key: " + key + ", " + "Value: " + a.get(key))
-```</p>
-
-<h2>Built-ins</h2>
+<h2><a id="user-content-built-ins" class="anchor" href="#built-ins" aria-hidden="true"></a>Built-ins</h2>
 
 <p>Adder have a set of built-in functions in global scope that provide some basic language functionality.
 The built-in functions you should know are:</p>
 
-<h3>print (...)</h3>
+<h3><a id="user-content-print-" class="anchor" href="#print-" aria-hidden="true"></a>print (...)</h3>
 
 <p>Print output (either a single or multiple string messages to print).</p>
 
@@ -1658,144 +1281,120 @@ The built-in functions you should know are:</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print("Hello World!")
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h3>all (...)</h3>
+<h3><a id="user-content-all-" class="anchor" href="#all-" aria-hidden="true"></a>all (...)</h3>
 
 <p>Return true only if all given values are true or can be evaluated as boolean true.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print(all(1, True, Math))  # print True
-print(all(1, True, Math, None))  # print False, because of the 'None' in the end
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">all</span>(<span class="pl-c1">1</span>, <span class="pl-c1">True</span>, Math))  <span class="pl-c"># print True</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">all</span>(<span class="pl-c1">1</span>, <span class="pl-c1">True</span>, Math, <span class="pl-c1">None</span>))  <span class="pl-c"># print False, because of the 'None' in the end</span></pre></div>
 
-<h3>any (...)</h3>
+<h3><a id="user-content-any-" class="anchor" href="#any-" aria-hidden="true"></a>any (...)</h3>
 
 <p>Return true if any of the given values is true or can be evaluated as boolean true.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print(any(0, True, None))  # print true, thanks to the second 'True' value
-print(any(0, 1, None))  # print true, thanks to the second '1' value, which casts to true
-print(any(0, False, None))  # print false, because none of the values are true
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">any</span>(<span class="pl-c1">0</span>, <span class="pl-c1">True</span>, <span class="pl-c1">None</span>))  <span class="pl-c"># print true, thanks to the second 'True' value</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">any</span>(<span class="pl-c1">0</span>, <span class="pl-c1">1</span>, <span class="pl-c1">None</span>))  <span class="pl-c"># print true, thanks to the second '1' value, which casts to true</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">any</span>(<span class="pl-c1">0</span>, <span class="pl-c1">False</span>, <span class="pl-c1">None</span>))  <span class="pl-c"># print false, because none of the values are true</span></pre></div>
 
-<h3>bin (num)</h3>
+<h3><a id="user-content-bin-num" class="anchor" href="#bin-num" aria-hidden="true"></a>bin (num)</h3>
 
 <p>Return a binary representation of a number (as string).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print(bin(15))  # will print "1111"
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">bin</span>(<span class="pl-c1">15</span>))  <span class="pl-c"># will print "1111"</span></pre></div>
 
-<h3>bool (val)</h3>
+<h3><a id="user-content-bool-val" class="anchor" href="#bool-val" aria-hidden="true"></a>bool (val)</h3>
 
 <p>Cast any value to a boolean (either <code>True</code> or <code>False</code>).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print(bool(False)) # False
-print(bool(True))  # True
-print(bool(NaN))   # False
-print(bool(0))     # False
-print(bool(False)) # False
-print(bool(1))     # True
-print(bool("Foo")) # True
-print(bool(Math))  # True
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">bool</span>(<span class="pl-c1">False</span>)) <span class="pl-c"># False</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">bool</span>(<span class="pl-c1">True</span>))  <span class="pl-c"># True</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">bool</span>(NaN))   <span class="pl-c"># False</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">bool</span>(<span class="pl-c1">0</span>))     <span class="pl-c"># False</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">bool</span>(<span class="pl-c1">False</span>)) <span class="pl-c"># False</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">bool</span>(<span class="pl-c1">1</span>))     <span class="pl-c"># True</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">bool</span>(<span class="pl-s"><span class="pl-pds">"</span>Foo<span class="pl-pds">"</span></span>)) <span class="pl-c"># True</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">bool</span>(Math))  <span class="pl-c"># True</span></pre></div>
 
-<h3>callable (val)</h3>
+<h3><a id="user-content-callable-val" class="anchor" href="#callable-val" aria-hidden="true"></a>callable (val)</h3>
 
 <p>Return true if given variable is a callable function.</p>
 
 <p>Example:</p>
 
-<p>```Python
-print(callable(bin))        # will print "True"
-print(callable(Math.abs))   # will print "True"</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">callable</span>(<span class="pl-c1">bin</span>))        <span class="pl-c"># will print "True"</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">callable</span>(Math.abs))   <span class="pl-c"># will print "True"</span>
 
-<p>def test(): pass
-print(callable(test))  # will print "True"</p>
+<span class="pl-k">def</span> <span class="pl-en">test</span>(): <span class="pl-k">pass</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">callable</span>(test))  <span class="pl-c"># will print "True"</span>
 
-<p>print(callable(5))      # will print "False"
-print(callable(True))   # will print "False"
-print(callable(None))   # will print "False"
-```</p>
+<span class="pl-c1">print</span>(<span class="pl-c1">callable</span>(<span class="pl-c1">5</span>))      <span class="pl-c"># will print "False"</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">callable</span>(<span class="pl-c1">True</span>))   <span class="pl-c"># will print "False"</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">callable</span>(<span class="pl-c1">None</span>))   <span class="pl-c"># will print "False"</span></pre></div>
 
-<h3>chr (num)</h3>
+<h3><a id="user-content-chr-num" class="anchor" href="#chr-num" aria-hidden="true"></a>chr (num)</h3>
 
 <p>Convert a number to its ASCII character.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print(chr(97))  # &lt;-- will print 'a'
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">chr</span>(<span class="pl-c1">97</span>))  <span class="pl-c"># &lt;-- will print 'a'</span></pre></div>
 
-<h3>cmp (x, y)</h3>
+<h3><a id="user-content-cmp-x-y" class="anchor" href="#cmp-x-y" aria-hidden="true"></a>cmp (x, y)</h3>
 
 <p>Compare two numeric values.
-Returns the sign of the difference of two numbers: -1 if x &lt; y, 0 if x == y, or 1 if x > y.</p>
+Returns the sign of the difference of two numbers: -1 if x &lt; y, 0 if x == y, or 1 if x &gt; y.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-cmp(1, 2)  # &lt;-- returns -1
-cmp(1, 1)  # &lt;-- returns 0
-cmp(2, 1)  # &lt;-- returns 1
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-v">cmp</span>(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>)  <span class="pl-c"># &lt;-- returns -1</span>
+<span class="pl-v">cmp</span>(<span class="pl-c1">1</span>, <span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- returns 0</span>
+<span class="pl-v">cmp</span>(<span class="pl-c1">2</span>, <span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- returns 1</span></pre></div>
 
-<h3>float (val)</h3>
+<h3><a id="user-content-float-val" class="anchor" href="#float-val" aria-hidden="true"></a>float (val)</h3>
 
 <p>Convert an int or a string to a float.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print(float("4.3") + 0.2)  # &lt;-- will print 4.5
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">float</span>(<span class="pl-s"><span class="pl-pds">"</span>4.3<span class="pl-pds">"</span></span>) <span class="pl-k">+</span> <span class="pl-c1">0.2</span>)  <span class="pl-c"># &lt;-- will print 4.5</span></pre></div>
 
-<h3>int (val)</h3>
+<h3><a id="user-content-int-val" class="anchor" href="#int-val" aria-hidden="true"></a>int (val)</h3>
 
 <p>Convert a float or a string to an int.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print(int("4") + 1)  # &lt;-- will print 5
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">int</span>(<span class="pl-s"><span class="pl-pds">"</span>4<span class="pl-pds">"</span></span>) <span class="pl-k">+</span> <span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- will print 5</span></pre></div>
 
-<h3>len (val)</h3>
+<h3><a id="user-content-len-val" class="anchor" href="#len-val" aria-hidden="true"></a>len (val)</h3>
 
 <p>Return the length of an object (depends on object type).
 This is equivalent to <code>val.len()</code>.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list(1,2,3)
-print(len(a))  # &lt;-- will print 3
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
+<span class="pl-c1">print</span>(<span class="pl-c1">len</span>(a))  <span class="pl-c"># &lt;-- will print 3</span></pre></div>
 
-<h3>ord (chr)</h3>
+<h3><a id="user-content-ord-chr" class="anchor" href="#ord-chr" aria-hidden="true"></a>ord (chr)</h3>
 
 <p>Return the ASCII value of a character.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print(ord('a'))  # &lt;-- will print 97
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">ord</span>(<span class="pl-s"><span class="pl-pds">'</span>a<span class="pl-pds">'</span></span>))  <span class="pl-c"># &lt;-- will print 97</span></pre></div>
 
-<h3>range ([start], end, [step])</h3>
+<h3><a id="user-content-range-start-end-step" class="anchor" href="#range-start-end-step" aria-hidden="true"></a>range ([start], end, [step])</h3>
 
 <p>Return a list containing the values between a given starting point, ending point, and with an optional step size.</p>
 
@@ -1803,136 +1402,113 @@ print(ord('a'))  # &lt;-- will print 97
 
 <p>Example:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># will print numbers 0 to 9 (including). total of 10 iterations.</span>
+<span class="pl-k">for</span> i <span class="pl-k">in</span> <span class="pl-c1">range</span>(<span class="pl-c1">10</span>):
+    <span class="pl-c1">print</span>(i)
 
-<h1>will print numbers 0 to 9 (including). total of 10 iterations.</h1>
+<span class="pl-c"># will print numbers 5 to 7 (including). total of 3 iterations.</span>
+<span class="pl-k">for</span> i <span class="pl-k">in</span> <span class="pl-c1">range</span>(<span class="pl-c1">5</span>, <span class="pl-c1">8</span>):
+    <span class="pl-c1">print</span>(i)
 
-<p>for i in range(10):
-    print(i)</p>
+<span class="pl-c"># will print numbers 0 to 9 (including), with steps of 2. total of 5 iterations.</span>
+<span class="pl-k">for</span> i <span class="pl-k">in</span> <span class="pl-c1">range</span>(<span class="pl-c1">0</span>, <span class="pl-c1">10</span>, <span class="pl-c1">2</span>):
+    <span class="pl-c1">print</span>(i)
 
-<h1>will print numbers 5 to 7 (including). total of 3 iterations.</h1>
+<span class="pl-c"># will create a list with values 0-9 (including).</span>
+a <span class="pl-k">=</span> <span class="pl-c1">range</span>(<span class="pl-c1">10</span>)</pre></div>
 
-<p>for i in range(5, 8):
-    print(i)</p>
-
-<h1>will print numbers 0 to 9 (including), with steps of 2. total of 5 iterations.</h1>
-
-<p>for i in range(0, 10, 2):
-    print(i)</p>
-
-<h1>will create a list with values 0-9 (including).</h1>
-
-<p>a = range(10)
-```</p>
-
-<h3>str (obj)</h3>
+<h3><a id="user-content-str-obj" class="anchor" href="#str-obj" aria-hidden="true"></a>str (obj)</h3>
 
 <p>Convert an object or value to a string.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-str(95)            # &lt;-- return "95".
-str(list(1,2,3))   # &lt;-- return "1,2,3".
-str(None)          # &lt;-- return "" (empty string).
-str(True)          # &lt;-- return "true".
-str("foo")         # &lt;-- return "foo".
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">str</span>(<span class="pl-c1">95</span>)            <span class="pl-c"># &lt;-- return "95".</span>
+<span class="pl-c1">str</span>(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>))   <span class="pl-c"># &lt;-- return "1,2,3".</span>
+<span class="pl-c1">str</span>(<span class="pl-c1">None</span>)          <span class="pl-c"># &lt;-- return "" (empty string).</span>
+<span class="pl-c1">str</span>(<span class="pl-c1">True</span>)          <span class="pl-c"># &lt;-- return "true".</span>
+<span class="pl-c1">str</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>)         <span class="pl-c"># &lt;-- return "foo".</span></pre></div>
 
-<h3>repr (obj)</h3>
+<h3><a id="user-content-repr-obj" class="anchor" href="#repr-obj" aria-hidden="true"></a>repr (obj)</h3>
 
 <p>Return the language representation of an object, as a string.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-repr(95)            # &lt;-- return "95".
-repr(list(1,2,3))   # &lt;-- return "list(1,2,3)".
-repr(None)          # &lt;-- return "None".
-repr(True)          # &lt;-- return "True".
-repr("foo")         # &lt;-- return '"foo"' (with quotes)
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">repr</span>(<span class="pl-c1">95</span>)            <span class="pl-c"># &lt;-- return "95".</span>
+<span class="pl-c1">repr</span>(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>))   <span class="pl-c"># &lt;-- return "list(1,2,3)".</span>
+<span class="pl-c1">repr</span>(<span class="pl-c1">None</span>)          <span class="pl-c"># &lt;-- return "None".</span>
+<span class="pl-c1">repr</span>(<span class="pl-c1">True</span>)          <span class="pl-c"># &lt;-- return "True".</span>
+<span class="pl-c1">repr</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>)         <span class="pl-c"># &lt;-- return '"foo"' (with quotes)</span></pre></div>
 
-<h3>type (obj)</h3>
+<h3><a id="user-content-type-obj" class="anchor" href="#type-obj" aria-hidden="true"></a>type (obj)</h3>
 
 <p>Return the type of the object.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-type("string")  # "string"
-type(4)         # "number"
-type(False)     # "boolean"
-type(None)      # "none"
-type(ord)       # "function"
-type(Math)      # "module"
-type(list())    # "list"
-type(set())     # "set"
-type(dict())    # "dict"
-type(5 * "str") # "NaN"
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">type</span>(<span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>)  <span class="pl-c"># "string"</span>
+<span class="pl-c1">type</span>(<span class="pl-c1">4</span>)         <span class="pl-c"># "number"</span>
+<span class="pl-c1">type</span>(<span class="pl-c1">False</span>)     <span class="pl-c"># "boolean"</span>
+<span class="pl-c1">type</span>(<span class="pl-c1">None</span>)      <span class="pl-c"># "none"</span>
+<span class="pl-c1">type</span>(<span class="pl-c1">ord</span>)       <span class="pl-c"># "function"</span>
+<span class="pl-c1">type</span>(Math)      <span class="pl-c"># "module"</span>
+<span class="pl-c1">type</span>(<span class="pl-c1">list</span>())    <span class="pl-c"># "list"</span>
+<span class="pl-c1">type</span>(<span class="pl-c1">set</span>())     <span class="pl-c"># "set"</span>
+<span class="pl-c1">type</span>(<span class="pl-c1">dict</span>())    <span class="pl-c"># "dict"</span>
+<span class="pl-c1">type</span>(<span class="pl-c1">5</span> <span class="pl-k">*</span> <span class="pl-s"><span class="pl-pds">"</span>str<span class="pl-pds">"</span></span>) <span class="pl-c"># "NaN"</span></pre></div>
 
-<h3>list (...)</h3>
+<h3><a id="user-content-list-" class="anchor" href="#list-" aria-hidden="true"></a>list (...)</h3>
 
 <p>Create a new list with optional starting values.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list()
-b = list(1,2,3)
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>()
+b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)</pre></div>
 
-<h3>set (...)</h3>
+<h3><a id="user-content-set-" class="anchor" href="#set-" aria-hidden="true"></a>set (...)</h3>
 
 <p>Create a new set with optional starting values.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = set()
-b = set(1,2,3)
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>()
+b <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)</pre></div>
 
-<h3>dict ()</h3>
+<h3><a id="user-content-dict-" class="anchor" href="#dict-" aria-hidden="true"></a>dict ()</h3>
 
 <p>Create a new empty dictionary.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = dict()
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()</pre></div>
 
-<h3>reversed (lst)</h3>
+<h3><a id="user-content-reversed-lst" class="anchor" href="#reversed-lst" aria-hidden="true"></a>reversed (lst)</h3>
 
 <p>Reverse a list copy, without changing the original list.
 This is equivalent to <code>a.clone().reverse()</code>.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list(1,2,3)
-b = reversed(a)
-print(a)  # &lt;-- will print "1,2,3"
-print(b)  # &lt;-- will print "3,2,1"
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
+b <span class="pl-k">=</span> <span class="pl-c1">reversed</span>(a)
+<span class="pl-c1">print</span>(a)  <span class="pl-c"># &lt;-- will print "1,2,3"</span>
+<span class="pl-c1">print</span>(b)  <span class="pl-c"># &lt;-- will print "3,2,1"</span></pre></div>
 
-<h3>equal (a, b)</h3>
+<h3><a id="user-content-equal-a-b" class="anchor" href="#equal-a-b" aria-hidden="true"></a>equal (a, b)</h3>
 
 <p>Return <code>True</code> if both values are equal, <code>False</code> otherwise.
 This is equivalent to <code>a == b</code>, but usable as a function, so you can do things like <code>compare_func = equal</code> and later use 'compare_func' or override it.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = list(1,2,3)
-b = list(1,2,3)
-if equal(a, b):
-    print("Lists are equal!")
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
+b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
+<span class="pl-k">if</span> equal(a, b):
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Lists are equal!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h3>dir ([obj])</h3>
+<h3><a id="user-content-dir-obj" class="anchor" href="#dir-obj" aria-hidden="true"></a>dir ([obj])</h3>
 
 <p>Return all the keys in current scope or in object's API.</p>
 
@@ -1940,40 +1516,31 @@ if equal(a, b):
 
 <p>Example:</p>
 
-<p>```Python</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"># will print everything in global scope</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">dir</span>())
 
-<h1>will print everything in global scope</h1>
+<span class="pl-c"># will print the API functions and vars of the 'Math' module</span>
+<span class="pl-c1">print</span>(<span class="pl-c1">dir</span>(Math))</pre></div>
 
-<p>print(dir())</p>
-
-<h1>will print the API functions and vars of the 'Math' module</h1>
-
-<p>print(dir(Math))
-```</p>
-
-<h3>delete (obj)</h3>
+<h3><a id="user-content-delete-obj" class="anchor" href="#delete-obj" aria-hidden="true"></a>delete (obj)</h3>
 
 <p>Remove a variable.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-a = 5
-delete(a)  # &lt;-- 'a' will no longer exist after this.
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">5</span>
+delete(a)  <span class="pl-c"># &lt;-- 'a' will no longer exist after this.</span></pre></div>
 
-<h3>exist (obj)</h3>
+<h3><a id="user-content-exist-obj" class="anchor" href="#exist-obj" aria-hidden="true"></a>exist (obj)</h3>
 
 <p>Return <code>True</code> if variable name exists in current scope or globals.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-if exist("a"):
-    print("'a' exists: " + a)
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">if</span> exist(<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>):
+    <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' exists: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> a)</pre></div>
 
-<h2>Modules</h2>
+<h2><a id="user-content-modules-1" class="anchor" href="#modules-1" aria-hidden="true"></a>Modules</h2>
 
 <p>Modules are objects with built-in functions and constants that Adder scripts can access and use.</p>
 
@@ -1981,310 +1548,261 @@ if exist("a"):
 
 <p>You use modules with the dot notation:</p>
 
-<p><code>Python
-a = Math.abs(-5)
-</code></p>
+<div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> Math.abs(<span class="pl-k">-</span><span class="pl-c1">5</span>)</pre></div>
 
 <p>All modules act like a global singleton class.</p>
 
 <p>In this chapter we'll go over the basic built-in modules and describe their APIs.</p>
 
-<h3>Math</h3>
+<h3><a id="user-content-math" class="anchor" href="#math" aria-hidden="true"></a>Math</h3>
 
 <p>Provide basic math-related functionality and constants.</p>
 
 <p>The Math module provide the following API:</p>
 
-<h4>abs (val)</h4>
+<h4><a id="user-content-abs-val" class="anchor" href="#abs-val" aria-hidden="true"></a>abs (val)</h4>
 
 <p>Convert a number to its absolute value.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-Math.abs(-5)  # &lt;-- will return 5.
-</code></p>
+<div class="highlight highlight-source-python"><pre>Math.abs(<span class="pl-k">-</span><span class="pl-c1">5</span>)  <span class="pl-c"># &lt;-- will return 5.</span></pre></div>
 
-<h4>min (...)</h4>
+<h4><a id="user-content-min-" class="anchor" href="#min-" aria-hidden="true"></a>min (...)</h4>
 
 <p>Get a list of numeric arguments (or a single list argument) and return the smallest value.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-Math.min(1, 5)  # &lt;-- will return 1.
-Math.min(list(1, 5))  # &lt;-- will return 1.
-Math.min(list(1, 2), 5)  # &lt;-- will return NaN - can't mix numeric and list arguments.
-</code></p>
+<div class="highlight highlight-source-python"><pre>Math.min(<span class="pl-c1">1</span>, <span class="pl-c1">5</span>)  <span class="pl-c"># &lt;-- will return 1.</span>
+Math.min(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span class="pl-c1">5</span>))  <span class="pl-c"># &lt;-- will return 1.</span>
+Math.min(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>), <span class="pl-c1">5</span>)  <span class="pl-c"># &lt;-- will return NaN - can't mix numeric and list arguments.</span></pre></div>
 
-<h4>max (...)</h4>
+<h4><a id="user-content-max-" class="anchor" href="#max-" aria-hidden="true"></a>max (...)</h4>
 
 <p>Get a list of numeric arguments (or a single list argument) and return the largest value.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-Math.max(1, 5)  # &lt;-- will return 5.
-Math.max(list(1, 5))  # &lt;-- will return 5.
-Math.max(list(1, 2), 5)  # &lt;-- will return NaN - can't mix numeric and list arguments.
-</code></p>
+<div class="highlight highlight-source-python"><pre>Math.max(<span class="pl-c1">1</span>, <span class="pl-c1">5</span>)  <span class="pl-c"># &lt;-- will return 5.</span>
+Math.max(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span class="pl-c1">5</span>))  <span class="pl-c"># &lt;-- will return 5.</span>
+Math.max(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>), <span class="pl-c1">5</span>)  <span class="pl-c"># &lt;-- will return NaN - can't mix numeric and list arguments.</span></pre></div>
 
-<h4>pow (x, y)</h4>
+<h4><a id="user-content-pow-x-y" class="anchor" href="#pow-x-y" aria-hidden="true"></a>pow (x, y)</h4>
 
 <p>Do power between two numbers (equivalent to the <code>**</code> operator).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-Math.pow(3, 2)  # &lt;-- will return 9, equivalent to '3 ** 2'
-</code></p>
+<div class="highlight highlight-source-python"><pre>Math.pow(<span class="pl-c1">3</span>, <span class="pl-c1">2</span>)  <span class="pl-c"># &lt;-- will return 9, equivalent to '3 ** 2'</span></pre></div>
 
-<h4>round (val)</h4>
+<h4><a id="user-content-round-val" class="anchor" href="#round-val" aria-hidden="true"></a>round (val)</h4>
 
 <p>Round a numeric value to its closest round number.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-Math.round(5.2)  # &lt;-- will return 5.
-Math.round(5.6)  # &lt;-- will return 6.
-</code></p>
+<div class="highlight highlight-source-python"><pre>Math.round(<span class="pl-c1">5.2</span>)  <span class="pl-c"># &lt;-- will return 5.</span>
+Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will return 6.</span></pre></div>
 
-<h4>floor (val)</h4>
+<h4><a id="user-content-floor-val" class="anchor" href="#floor-val" aria-hidden="true"></a>floor (val)</h4>
 
 <p>Round <em>down</em> a numeric value.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-Math.round(5.2)  # &lt;-- will return 5.
-Math.round(5.6)  # &lt;-- will also return 5.
-</code></p>
+<div class="highlight highlight-source-python"><pre>Math.round(<span class="pl-c1">5.2</span>)  <span class="pl-c"># &lt;-- will return 5.</span>
+Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will also return 5.</span></pre></div>
 
-<h4>ceil (val)</h4>
+<h4><a id="user-content-ceil-val" class="anchor" href="#ceil-val" aria-hidden="true"></a>ceil (val)</h4>
 
 <p>Round <em>up</em> a numeric value.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-Math.round(5.2)  # &lt;-- will return 6.
-Math.round(5.6)  # &lt;-- will also return 6.
-</code></p>
+<div class="highlight highlight-source-python"><pre>Math.round(<span class="pl-c1">5.2</span>)  <span class="pl-c"># &lt;-- will return 6.</span>
+Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will also return 6.</span></pre></div>
 
-<h4>cos (val)</h4>
+<h4><a id="user-content-cos-val" class="anchor" href="#cos-val" aria-hidden="true"></a>cos (val)</h4>
 
 <p>Calculate cos on a numeric value.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print("Cos of 1: ", Math.cos(1))
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Cos of 1: <span class="pl-pds">"</span></span>, Math.cos(<span class="pl-c1">1</span>))</pre></div>
 
-<h4>sin (val)</h4>
+<h4><a id="user-content-sin-val" class="anchor" href="#sin-val" aria-hidden="true"></a>sin (val)</h4>
 
 <p>Calculate sin on a numeric value.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print("Sin of 1: ", Math.sin(1))
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Sin of 1: <span class="pl-pds">"</span></span>, Math.sin(<span class="pl-c1">1</span>))</pre></div>
 
-<h4>atan (val)</h4>
+<h4><a id="user-content-atan-val" class="anchor" href="#atan-val" aria-hidden="true"></a>atan (val)</h4>
 
 <p>Calculate atan on a numeric value.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print("Atan of 1: ", Math.atan(1))
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Atan of 1: <span class="pl-pds">"</span></span>, Math.atan(<span class="pl-c1">1</span>))</pre></div>
 
-<h4>exp (val)</h4>
+<h4><a id="user-content-exp-val" class="anchor" href="#exp-val" aria-hidden="true"></a>exp (val)</h4>
 
 <p>Calculate exp on a numeric value.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print("Exp of 1: ", Math.exp(1))
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Exp of 1: <span class="pl-pds">"</span></span>, Math.exp(<span class="pl-c1">1</span>))</pre></div>
 
-<h4>tan (val)</h4>
+<h4><a id="user-content-tan-val" class="anchor" href="#tan-val" aria-hidden="true"></a>tan (val)</h4>
 
 <p>Calculate tan on a numeric value.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print("Tan of 1: ", Math.tan(1))
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Tan of 1: <span class="pl-pds">"</span></span>, Math.tan(<span class="pl-c1">1</span>))</pre></div>
 
-<h4>log (val)</h4>
+<h4><a id="user-content-log-val" class="anchor" href="#log-val" aria-hidden="true"></a>log (val)</h4>
 
 <p>Calculate log on a numeric value.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print("Log of 1: ", Math.log(1))
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Log of 1: <span class="pl-pds">"</span></span>, Math.log(<span class="pl-c1">1</span>))</pre></div>
 
-<h4>sqrt (val)</h4>
+<h4><a id="user-content-sqrt-val" class="anchor" href="#sqrt-val" aria-hidden="true"></a>sqrt (val)</h4>
 
 <p>Square root a numeric value.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print("Square root of 4: ", Math.sqrt(4))
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Square root of 4: <span class="pl-pds">"</span></span>, Math.sqrt(<span class="pl-c1">4</span>))</pre></div>
 
-<h4>sign (val)</h4>
+<h4><a id="user-content-sign-val" class="anchor" href="#sign-val" aria-hidden="true"></a>sign (val)</h4>
 
 <p>Return 1 for positive values, -1 for negatives, 0 for 0.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-Math.sign(4)  # &lt;-- will return 1
-Math.sign(-3)  # &lt;-- will return -1
-Math.sign(0)  # &lt;-- will return 0
-</code></p>
+<div class="highlight highlight-source-python"><pre>Math.sign(<span class="pl-c1">4</span>)  <span class="pl-c"># &lt;-- will return 1</span>
+Math.sign(<span class="pl-k">-</span><span class="pl-c1">3</span>)  <span class="pl-c"># &lt;-- will return -1</span>
+Math.sign(<span class="pl-c1">0</span>)  <span class="pl-c"># &lt;-- will return 0</span></pre></div>
 
-<h4>sum (...)</h4>
+<h4><a id="user-content-sum-" class="anchor" href="#sum-" aria-hidden="true"></a>sum (...)</h4>
 
 <p>Get a list of numeric arguments (or a single list argument) and return the sum of the values.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-Math.sum(1,2,3)  # &lt;-- will return 1+2+3 = 6
-Math.sum(list(1,2,3))  # &lt;-- will return 1+2+3 = 6
-</code></p>
+<div class="highlight highlight-source-python"><pre>Math.sum(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)  <span class="pl-c"># &lt;-- will return 1+2+3 = 6</span>
+Math.sum(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>))  <span class="pl-c"># &lt;-- will return 1+2+3 = 6</span></pre></div>
 
-<h4>mul (...)</h4>
+<h4><a id="user-content-mul-" class="anchor" href="#mul-" aria-hidden="true"></a>mul (...)</h4>
 
 <p>Get a list of numeric arguments (or a single list argument) and return the multiplication of the values.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-Math.mul(2,2,3)  # &lt;-- will return 2*2*3 = 12
-Math.mul(list(2,2,3))  # &lt;-- will return 2*2*3 = 12
-</code></p>
+<div class="highlight highlight-source-python"><pre>Math.mul(<span class="pl-c1">2</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)  <span class="pl-c"># &lt;-- will return 2*2*3 = 12</span>
+Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>))  <span class="pl-c"># &lt;-- will return 2*2*3 = 12</span></pre></div>
 
-<h4>E</h4>
+<h4><a id="user-content-e" class="anchor" href="#e" aria-hidden="true"></a>E</h4>
 
 <p>E constant.</p>
 
-<h4>PI</h4>
+<h4><a id="user-content-pi" class="anchor" href="#pi" aria-hidden="true"></a>PI</h4>
 
 <p>PI constant.</p>
 
-<h4>SQRT2</h4>
+<h4><a id="user-content-sqrt2" class="anchor" href="#sqrt2" aria-hidden="true"></a>SQRT2</h4>
 
 <p>SQRT2 constant.</p>
 
-<h3>Random</h3>
+<h3><a id="user-content-random" class="anchor" href="#random" aria-hidden="true"></a>Random</h3>
 
 <p>Provide random-generation functionality.</p>
 
 <p>The Random module provide the following API:</p>
 
-<h4>rand ()</h4>
+<h4><a id="user-content-rand-" class="anchor" href="#rand-" aria-hidden="true"></a>rand ()</h4>
 
 <p>Return a random float number between 0 and 1.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print(Random.rand())
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(Random.rand())</pre></div>
 
-<h4>rand_int ([min,] max)</h4>
+<h4><a id="user-content-rand_int-min-max" class="anchor" href="#rand_int-min-max" aria-hidden="true"></a>rand_int ([min,] max)</h4>
 
 <p>Return a random int number between min and max.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print(Random.rand_int(2, 10)) # print a random number between 2 to 10 (inclusive)
-print(Random.rand_int(5)) # print a random number between 0 to 5 (inclusive)
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(Random.rand_int(<span class="pl-c1">2</span>, <span class="pl-c1">10</span>)) <span class="pl-c"># print a random number between 2 to 10 (inclusive)</span>
+<span class="pl-c1">print</span>(Random.rand_int(<span class="pl-c1">5</span>)) <span class="pl-c"># print a random number between 0 to 5 (inclusive)</span></pre></div>
 
-<h4>rand_float ([min,] max)</h4>
+<h4><a id="user-content-rand_float-min-max" class="anchor" href="#rand_float-min-max" aria-hidden="true"></a>rand_float ([min,] max)</h4>
 
 <p>Return a random float number between min and max.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print(Random.rand_float(2, 10)) # print a random number between 2.0 to 10.0 (inclusive)
-print(Random.rand_float(5)) # print a random number between 0.0 to 5.0 (inclusive)
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(Random.rand_float(<span class="pl-c1">2</span>, <span class="pl-c1">10</span>)) <span class="pl-c"># print a random number between 2.0 to 10.0 (inclusive)</span>
+<span class="pl-c1">print</span>(Random.rand_float(<span class="pl-c1">5</span>)) <span class="pl-c"># print a random number between 0.0 to 5.0 (inclusive)</span></pre></div>
 
-<h4>select (iterable)</h4>
+<h4><a id="user-content-select-iterable" class="anchor" href="#select-iterable" aria-hidden="true"></a>select (iterable)</h4>
 
 <p>Return a random value from a list or a set (doesn't work with dictionaries).</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print(Random.select(list(1,2,3,4,5))) # get a random value from list options
-print(Random.select(set(1,2,3,4,5))) # get a random value from set options
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(Random.select(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>,<span class="pl-c1">5</span>))) <span class="pl-c"># get a random value from list options</span>
+<span class="pl-c1">print</span>(Random.select(<span class="pl-c1">set</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>,<span class="pl-c1">5</span>))) <span class="pl-c"># get a random value from set options</span></pre></div>
 
-<h4>boolean ()</h4>
+<h4><a id="user-content-boolean-" class="anchor" href="#boolean-" aria-hidden="true"></a>boolean ()</h4>
 
 <p>Return either <code>True</code> or <code>False</code>.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print("And the answer is: " + Random.boolean())
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>And the answer is: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> Random.boolean())</pre></div>
 
-<h4>binary ()</h4>
+<h4><a id="user-content-binary-" class="anchor" href="#binary-" aria-hidden="true"></a>binary ()</h4>
 
 <p>Return either <code>0</code> or <code>1</code>.</p>
 
 <p>Example:</p>
 
-<p><code>Python
-print("0 or 1: " + Random.binary())
-</code></p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>0 or 1: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> Random.binary())</pre></div>
 
-<h3>Alert</h3>
+<h3><a id="user-content-alert" class="anchor" href="#alert" aria-hidden="true"></a>Alert</h3>
 
 <p>Provide functionality to show alerts to user (in browser). Use it for debug purposes, not recommended for production.</p>
 
 <p>The Alert module provide the following API:</p>
 
-<h4>alert (msg)</h4>
+<h4><a id="user-content-alert-msg" class="anchor" href="#alert-msg" aria-hidden="true"></a>alert (msg)</h4>
 
 <p>Show a standard browser alert box with msg string.</p>
 
-<h3>Input</h3>
+<h3><a id="user-content-input" class="anchor" href="#input" aria-hidden="true"></a>Input</h3>
 
 <p>Provide functionality to get input from user (in browser). Use it for debug purposes, not recommended for production.</p>
 
 <p>The Input module provide the following API:</p>
 
-<h4>rawInput (msg, [default])</h4>
+<h4><a id="user-content-rawinput-msg-default" class="anchor" href="#rawinput-msg-default" aria-hidden="true"></a>rawInput (msg, [default])</h4>
 
 <p>Show a standard browser prompt box with msg string, and a default value (if provided).</p>
 
-<h1>What Next</h1>
+<h1><a id="user-content-what-next" class="anchor" href="#what-next" aria-hidden="true"></a>What Next</h1>
 
 <p>If you want to start using Adder Scripts it is recommended you get familiar with the language.
-Check out the Adder Sandbox (TBD LINK) and the examples there, or take a look at the following cool game made with Adder (TBD LINK).</p>
+Check out the <a href="http://adderscript.com/examples/sandbox.html">Adder Sandbox</a> and the examples there, or take a look at the following <a href="http://adderscript.com/examples/BotWars/BotWars.html">Cool Game</a> made with Adder.</p>
 
-<p>If you find any bugs, problems or security breaches in Adder, please report in the git repository, or drop me an email at ronenness@gmail.com.</p>
-
-
+<p>If you find any bugs, problems or security breaches in Adder, please report in the git repository, or drop me an email at <a href="mailto:ronenness@gmail.com">ronenness@gmail.com</a>.</p>
+</article>
 
             <footer class="site-footer">
                 <span class="site-footer-owner"><a href="https://github.com/RonenNess/adder">Adder</a> is maintained by <a href="https://github.com/RonenNess">RonenNess</a>.</span> <span class=
