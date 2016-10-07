@@ -1893,9 +1893,9 @@ QUnit.test("limits_and_flags", function( assert ) {
     assert.throws(function() {execProgram(assert, 'a = 1; b = 2; c = 3; d = 4; e = 5;');}, _window.AdderScript.Errors.ExceedMemoryLimit);
 
     // test time limit
-    var flags = makeFlags({executionTimeLimit: 1});
+    var flags = makeFlags({executionTimeLimit: 1, maxStatementsPerRun:100000000});
     AdderScript.init({flags: flags});
-    assert.throws(function() {execProgram(assert, 'for i in range(100): for j in range(100): x = 2 ** 6;');}, _window.AdderScript.Errors.ExceededTimeLimit);
+    assert.throws(function() {execProgram(assert, 'for i in range(1000): for j in range(1000): x = 2 ** 6;');}, _window.AdderScript.Errors.ExceededTimeLimit);
 
     // test memory limit
     var flags = makeFlags({memoryAllocationLimit: 5});
