@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>&gt;&gt; Adder </title>
+
+    <!-- include AdderScript -->
+    <script src="../dist/adder.js"></script>
+
+    <!-- jquery and bootstrap css -->
+    <script type="text/javascript" src="../tests/libs/jquery.min.js"></script>
+    <link href="../tests/libs/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script type="text/javascript" src="../tests/libs/bootstrap.min.js"></script>
+
+    <!-- favicon -->
+    <link rel="icon" href="./../img/AdderIcon-xs.png">
+
+    <!-- some extra styling -->
+    <style>
+        div {
+            width: 100%;
+            padding: 20px 20px 20px 20px;
+        }
+
+        input {
+            width: calc(100% - 40px);
+            outline: none;
+            border-width:0px;
+            border:none;
+        }
+
+        textarea:focus, input:focus{
+            outline: none;
+            border-width:0px;
+            border:none;
+        }
+        *:focus {
+            outline: none;
+            border-width:0px;
+            border:none;
+        }
+
+        .ret-val {
+            color: blue;
+            padding-left: 5px;
+        }
+
+        p {
+            margin: 0;
+            word-wrap: break-word;
+        }
+
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <h2><img src="./../img/logo-sm.png" height="60px" > <span style="top: -8px;position: relative;">Shell</span></h2>
+    <p>Welcome to Adder interactive shell!</p>
+    <p>Here you can interact and play with Adder using inline commands and statements.</p>
+    <p>To get a list of available objects in current scope, use dir(). You can also use dir() on modules, eg dir(Math) to see what's inside.</p>
+    <br />
+    <p>If you want a proper sandbox with examples and better editor, please use the <a href="sandbox.html" target="_blank">Adder Sandbox</a>.</p>
+    <div>
+        <p id="input-container" >>>> <input id="input-box" type="text" autofocus></p>
+    </div>
+
+    <script>
+
+        // init adder script
+        window.AdderScript.init({
+            flags: {},
+            modules: ["ALL"],
+            outputFunc: printOutput,
+            showDebugConsole: true,
+        });
+
+        // spawn a program
+        var program = window.AdderScript.newProgram();
+
+        // if true, won't show next return value
+        var skipNextRetValue = false;
+
+        // override the output function
+        function printOutput() {
+            addOutput(AdderScript.Utils.toArray(arguments).join(", ") || "<empty line>", "green");
+            skipNextRetValue = true;
+        };
+
+        // convert value to string
+        function toStr(val)
+        {
+            var ret;
+            if (val === null) {ret = "";}
+            else if (val.toRepr) {ret = val.toRepr();}
+            else {
+                try {
+                    return JSON.stringify(val);
+                }
+                catch(e) {
+                    ret = val;
+                }
+            }
+            while (ret.indexOf("\n") !== -1) {
+                ret = ret.replace("\n", "\\n");
+            }
+            return ret;
+        }
+
+        // evaluate line
+        function evaluate(code) {
+
+            // add the evaluated code line
+            while(code.indexOf("    ") === 0) {code = code.replace("    ", "... ")};
+            var newLine = $("<p>>>> " + code + "</p>");
+            newLine.insertBefore($("#input-container"));
+
+            // was it an error
+            var error = false;
+
+            // try to evaluate and catch unhandled errors
+            var ret;
+            try {
+                ret = program.evalRawCode(code);
+                program.propagateExecutionErrors();
+            } catch(e) {
+                error = true;
+                ret = String(e);
+            }
+
+            // if we suppose to skip this value
+            if (skipNextRetValue) {
+                skipNextRetValue = false;
+                return;
+            }
+
+            // convert output to string
+            var output = toStr(ret);
+
+            // add output
+            addOutput(output, error ? "red" : "blue");
+        }
+
+        // add output
+        function addOutput(txt, color) {
+
+            // default color
+            color = color || "blue";
+
+            // create the new line
+            var newLine = $("<p class='ret-val' style='color:" + color + "'></p>");
+            newLine.text(txt);
+            newLine.insertBefore($("#input-container"));
+
+            // scroll all the way down
+            window.scrollTo(0,document.body.scrollHeight);
+        }
+
+		$(document).click(function() {
+			$("#input-box").focus();
+		});
+
+        // on enter click
+        $("#input-box").keydown(function(event){
+            if(event.keyCode == 13){
+                evaluate($("#input-box").val());
+                $("#input-box").val("");
+            }
+        });
+
+    </script>
+
+</body>
+</html>

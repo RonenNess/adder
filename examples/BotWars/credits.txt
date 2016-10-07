@@ -1,0 +1,7 @@
+mech sprite from http://opengameart.org/content/mech-48x48
+background from http://opengameart.org/content/ruined-city-background
+gui from http://opengameart.org/content/golden-ui-bigger-than-ever-edition
+explosion from http://opengameart.org/content/explosions-2
+icons from http://opengameart.org/content/various-inventory-24-pixel-icon-set
+skull from http://opengameart.org/content/gold-skull
+cursor from http://opengameart.org/content/iron-plague-pointercursor
