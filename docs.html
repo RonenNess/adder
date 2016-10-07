@@ -1,0 +1,2298 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            AdderScript Docs
+        </title>
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+        <link href="stylesheets/normalize.css" media="screen" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+        <link href="stylesheets/stylesheet.css" media="screen" rel="stylesheet" type="text/css">
+        <link href="stylesheets/github-light.css" media="screen" rel="stylesheet" type="text/css">
+        <link href="img/AdderIcon-xs.png" rel="icon">
+
+        <style type="text/css">
+          code { white-space: pre; }
+        </style>
+    </head>
+    <body>
+        <section class="page-header" style="height:100px; padding-top:20px;">
+            <a href="http://adderscript.com/"><img src="img/logo-sm-wh.png" style="height:50px; width:auto;"></a>
+            <a class="btn" href="https://github.com/RonenNess/adder">View on GitHub</a> <a class="btn" href="https://github.com/RonenNess/adder/zipball/master">Download .zip</a> <a class="btn"
+            href="https://github.com/RonenNess/adder/tarball/master">Download .tar.gz</a>
+        </section>
+        <section class="main-content">
+
+            <p><img src="img/logo-sm.png" alt="AdderScript" title="AdderScript" /></p>
+
+<h1>AdderScript</h1>
+
+<p>Executing untrusted code with ease.</p>
+
+<h2>What is it</h2>
+
+<p>Adder is a lightweight python-like language, implemented on top of JavaScript and designed to be safe to execute untrusted code.</p>
+
+<h3>Why?</h3>
+
+<p>The main purpose of Adder is to let you execute untrusted code on other users's browsers and even on your Node.js server, without worrying about security complications.</p>
+
+<p>Adder will not let the untrusted code access anything you don't want it to access, will not allow it to get stuck or hog resources, and will make sure it can't do any harm or go outside its boundaries.</p>
+
+<p>The main reason Adder is secured is that <em>no JavaScript code is ever executed using plain eval()</em>.
+Instead, everything is parsed and interpreted by the Adder interpreter, which is built and designed to be limited and safe.</p>
+
+<h2>Advantages</h2>
+
+<p>Here are the key features of Adder:</p>
+
+<ul>
+<li>Beautiful Pythonic syntax - if you know Python, you know Adder.</li>
+<li>Secured by design (Adder is designed to run untrusted code).</li>
+<li>Works on both Node.js and Browsers.</li>
+<li>No need for any sub-processes.</li>
+<li>Simple &amp; accessible interface.</li>
+<li>Easy to extend, and easy to remove builtins and limit.</li>
+<li>Agnostic to JavaScript changes and versions.</li>
+<li>Easy to limit memory usage, commands per run, execution time, etc..</li>
+<li>Caching and Optimizations makes it pretty fast for multiple executions.</li>
+</ul>
+
+<h2>Platforms</h2>
+
+<p>Adder works and heavily tested on the following browsers / platforms:</p>
+
+<ul>
+<li>Chrome 53</li>
+<li>IE Edge</li>
+<li>FireFox 45</li>
+<li>Opera 40</li>
+<li>Node.js 4.1.1</li>
+</ul>
+
+<p><img src="img/supported.png" alt="platforms" title="Platforms" /></p>
+
+<h2>Tests &amp; Examples</h2>
+
+<h3>Tests</h3>
+
+<p>To run Adder tests, you can open the html file <em>tests/test.html</em> in the browser of your choice.</p>
+
+<p>To test in Node.js, run the following command (requires <em>Node.js</em> and <em>qunit-cli</em> installed):</p>
+
+<p><code>
+qunit-cli tests/test.js
+</code></p>
+
+<h3>Performance Tests</h3>
+
+<p>To run performance tests, open the html file <em>tests/performance.html</em> in the browser of your choice.
+To test performance in Node.js, execute file <em>tests/performance-node.js</em> in Node.</p>
+
+<p>Note that results may vary from run to run, so its recommended to execute several times and do an average.</p>
+
+<h3>Interactive Shell</h3>
+
+<p>To get an interactive shell and play with the language, you can open <em>examples/shell.html</em> in the browser of your choice.</p>
+
+<h3>Sandbox</h3>
+
+<p>To get a rich Adder sandbox with code examples and minimal editor, you can open <em>examples/sandbox.html</em> in the browser of your choice.</p>
+
+<h2>Performance</h2>
+
+<p>In overall, Adder appears to be 3-5 times slower than executing plain JavaScript, <strong>on multiple executions</strong>. On FireFox it appears to be much faster, due to caching of expressions.</p>
+
+<p>The following is a summary of performance tests I conducted on windows 8:</p>
+
+<p><img src="img/performance.png" alt="Performance table" title="Performance table" /></p>
+
+<p>These tests execute the same logic with Adder and JavaScript couple thousands of times, and measure the time it took to execute each code. For more info check out <em>tests/performance.html</em>.</p>
+
+<hr />
+
+<h1>Executing Adder - Host application side</h1>
+
+<p>This part of the docs explain how to setup and execute Adder from the host application side, eg the client JavaScript or your Node.js server.</p>
+
+<p>Later in these docs we'll learn the language itself and how to write Adder scripts.</p>
+
+<h2>Quick Example</h2>
+
+<p>Before diving into the APIs, lets start with a simple example:</p>
+
+<p>```JavaScript
+// init Adder environment (connect output to alerts)
+AdderScript.init({
+    outputFunc: function(text) {alert("output from script: " + text);},
+});</p>
+
+<p>// create a simple script and compile it
+compiledCode = AdderScript.compile('print("Hello World!")');</p>
+
+<p>// spawn a program and execute it
+// the result will be an alert with the text "Hello World!".
+var program = AdderScript.newProgram(compiledCode);
+program.execute();
+```</p>
+
+<p>Pretty simple right? Now lets dive in a little deeper.</p>
+
+<h2>Init Environment</h2>
+
+<p>To run Adder scripts you first need to init environment:</p>
+
+<p><code>JavaScript
+// if you don't provide any params output will go to console.log and default flags will apply
+AdderScript.init();
+</code></p>
+
+<h2>Compile Code</h2>
+
+<p>Once the environment is ready, you can compile Adder codes using the compile function:</p>
+
+<p><code>JavaScript
+var compiled = AdderScript.compile(someCodeString);
+</code></p>
+
+<h2>Save / Load pre-compiled code</h2>
+
+<p>If you want to save the compiled code for later usage, you can simply JSON.stringify() it into a file:</p>
+
+<p>```JavaScript
+// require fs
+var fs = require('fs');</p>
+
+<p>// save compiled code:
+fs.writeFile(filename, JSON.stringify(compiledCode), function(err) {
+    // handle errors...
+});</p>
+
+<p>// load compiled code you previously saved
+fs.readFile(filename, 'utf8', function(err, data) {
+    if (err) // handle errors...
+    compiledCode = JSON.parse(data);
+});
+```</p>
+
+<h2>Create &amp; Execute Programs</h2>
+
+<p>An Adder <code>Program</code> can be think of as a process executing a single Adder script one or more times.
+However, the Adder <code>program</code> is not a real process but an object living on the same memory space as the host application.</p>
+
+<p>To spawn a new program from a compiled code, use <code>newProgram()</code>:</p>
+
+<p><code>JavaScript
+var program = AdderScript.newProgram(compiledCode);
+</code></p>
+
+<p>The program will now live in memory and you can execute it as many times as needed and access its internal memory and variables.</p>
+
+<p>Executing the same program multiple times is much faster than spawning a new program every time, due to caching and internal optimizations.
+In addition, global scope variables will stay alive between different executions of the same program.</p>
+
+<p>To execute the program code once, use execute:</p>
+
+<p><code>JavaScript
+program.execute();
+</code></p>
+
+<p>If you want to clear your program's context (eg remove all user defined variables from global scope), use <code>resetContext()</code>:</p>
+
+<p><code>JavaScript
+program.resetContext();
+</code></p>
+
+<h2>Get values and execution errors</h2>
+
+<p>You can easily access the last evaluated result and get it as a native JavaScript object, using <code>getLastValue()</code>:</p>
+
+<p><code>JavaScript
+var lastVal = program.getLastValue();
+</code></p>
+
+<p>In addition, you can read any variable in the program's global scope using <code>getGlobalVar()</code>:</p>
+
+<p><code>JavaScript
+// get variable from global scope as native javascript object
+var value = program.getGlobalVar("var_name");
+</code></p>
+
+<p>Or, you can set any variable in the program's global scope using <code>setGlobalVar()</code>:</p>
+
+<p><code>JavaScript
+// set variable in program global scope
+program.setGlobalVar("var_name", value, isReadonly);
+</code></p>
+
+<p>In addition, you can check if any error occurred during the last execution, using <code>getLastError()</code>:</p>
+
+<p><code>JavaScript
+var lastError = program.getLastError();
+if (lastError) {
+    console.log(lastError.message);
+}
+</code></p>
+
+<p>You can see all Adder error types in object <code>AdderScript.Errors</code>, or in file <em>errors.js</em>.</p>
+
+<h2>Advanced init settings</h2>
+
+<p>When init Adder environment you can provide a dictionary with the following settings:</p>
+
+<p><code>JavaScript
+AdderScript.init({
+    flags: {},                  // different compiler / interpreter flags you can set (explained later).
+    modules: ["ALL"],           // which modules to load. ['ALL'] will load all built-in modules.
+    outputFunc: printOutput,    // function to handle scripts output, when print() is called.
+    showDebugConsole: true,     // if true, Adder will dump some extra debug data to console.
+});
+</code></p>
+
+<h3>flags</h3>
+
+<p>The following are all the flags you can set when you init Adder environment (as the 'flags' option):</p>
+
+<p><code>JavaScript
+var flags = {
+    stackLimit: 256,                // Stack depth limit. If exceeded will throw 'StackOverflow' exception.
+    maxStatementsPerRun: 2048,      // Maximum statements that can be executed in a single run. If exceeded will throw 'ExceededStatementsLimit' exception.
+    maxStringLen: 5000,             // Maximum allowed string lengths. If exceeded will throw 'ExceedMemoryLimit' exception.
+    maxContainersLen: 1000,         // Maximum values allowed in lists, sets and dictionaries. If exceeded will throw 'ExceedMemoryLimit' exception.
+    maxVarsInScope: 100,            // Limit number of variables allowed per scope. If exceeded will throw 'ExceedMemoryLimit' exception.
+    executionTimeLimit: 1000,       // Time limit for a single execution (in milliseconds). If exceeded will throw 'ExceededTimeLimit' exception.
+    memoryAllocationLimit: 10000,   // Memory limit, very roughly estimated, in bytes (per execution). If exceeded will throw 'ExceedMemoryLimit' exception.
+    removeBuiltins: [],             // An optional list of builtin function and const names you want to remove from the language.
+    throwErrors: false,             // If true, will throw exceptions from Adder execution if occur. If false, you need to check errors with getLastError().
+}
+</code></p>
+
+<h3>modules</h3>
+
+<p>Modules are objects with functions and consts you can access from Adder scripts.
+For example, there's the built-in <em>Math</em> module that provide all the Math-related functionality and consts.</p>
+
+<p>You can choose which modules are included in your environment to have fine control over which APIs Adder scripts can access.</p>
+
+<p>Note that you cannot import modules from inside Adder script, Adder code can only access what the host application allows it (this is by design).</p>
+
+<p>To include all modules you can set <code>modules</code> to <code>["ALL"]</code>.
+However, that's not recommended in production, as it will include modules that can pop alerts and write to console (something you normally wouldn't want). </p>
+
+<p>To load only the "safe for production" modules, use <code>["SAFE"]</code>.</p>
+
+<p>All available modules will be described later in the chapter about writing Adder scripts.</p>
+
+<h3>outputFunc</h3>
+
+<p>An optional function to handle script output when <code>print</code> is called. For example, if you want to send all <code>print</code> output directly to console:</p>
+
+<p><code>JavaScript
+function outputFunc() {
+    console.log(Array.from(arguments).join(" "));
+}
+</code></p>
+
+<p>Note that this is the default behavior; If no outputFunc is provided, all output will go to console.log by default.</p>
+
+<h3>showDebugConsole</h3>
+
+<p>If set to true, Adder will show some useful debug data in console.</p>
+
+<h2>Register Functions</h2>
+
+<p>The most simple way to extend Adder's API and create an interface to the host application, is via builtin functions.</p>
+
+<p>Builtin functions are basically functions Adder scripts can call from anywhere (defined in global scope) and will execute hard-coded JavaScript code.</p>
+
+<p>To register a new builtin function use <code>addBuiltinFunction()</code>:</p>
+
+<p>```JavaScript
+// init AdderScript environment
+AdderScript.init();</p>
+
+<p>// add builtin function
+AdderScript.addBuiltinFunction({name: "test",                   // function name
+                                func: function(x) {alert(x)},   // the function itself
+                                requiredParams: 1,              // number of required params
+                                optionalParams: 0});            // number of additional optional params
+```</p>
+
+<p>The code above will add a builtin function called 'test', that gets one parameter and alert it.</p>
+
+<p>Once registered, you can use the new function like any other built-in Adder function (the following is an Adder script code):</p>
+
+<p>```Python</p>
+
+<h1>will alert "Hello World!"</h1>
+
+<p>test("Hello World!")
+```</p>
+
+<h2>Register A Custom Module</h2>
+
+<p>Just like registering a builtin function, you can register a custom module to Adder's API.</p>
+
+<p>As mentioned before, a module is an object containing functions and constants wrapped together under one object.</p>
+
+<p>To define a custom built-in module:</p>
+
+<p>```JavaScript
+// init AdderScript environment
+AdderScript.init();</p>
+
+<p>// add builtin module
+AdderScript.addBuiltinModule("Test",
+                                  {
+                                    // define a function named 'foo'
+                                    "foo": {
+                                        func: function(x) {alert(x)},
+                                        requiredParams: 1,
+                                        optionalParams: 0
+                                     },</p>
+
+<pre><code>                                 // define a const named 'bar' that equals to "World"
+                                 "bar": "World",
+                              }
+                          );
+</code></pre>
+
+<p>```</p>
+
+<p>The code above will define a module named <code>Test</code> with a function <code>foo()</code> and a constant string <code>bar</code>.</p>
+
+<p>Once defined, you can use the new module just like any other built-in module (the following is an Adder script code):</p>
+
+<p>```Python</p>
+
+<h1>will alert "Hello World!" (Test.bar equals to "World")</h1>
+
+<p>Test.foo("Hello " + Test.bar + "!")
+```</p>
+
+<h2>Define a built-in object type</h2>
+
+<p>A module acts like a singleton. But what if you need an object you can instantiate, like Adder's <code>list</code>, <code>dict</code> or <code>set</code>?</p>
+
+<p>To define a new built-in object type use <code>defineBuiltinObject()</code>:</p>
+
+<p>```JavaScript
+// init AdderScript environment
+AdderScript.init();</p>
+
+<p>// define a new object type "Person" and return a function to instantiate it
+createPerson = AdderScript.defineBuiltinObject("Person", {
+                                    "say_hello": {
+                                        func: function() {alert("Hello World!")},
+                                        requiredParams: 0,
+                                        optionalParams: 0
+                                     },
+                                     "race": "human",
+                                  });</p>
+
+<p>// now you can use 'createPerson' to create a new 'Person' instances.
+// however, you still need to provide an API for Adder to create it.
+// lets register a new built-in function, "create<em>person", that will use 'createPerson' to create a new 'Person' instance:
+AdderScript.addBuiltinFunction({name: "create</em>person",                          // function name
+                                func: function(x) {return createFunc(this)},    // the function itself to create Person.
+                                requiredParams: 0,              // number of required params
+                                optionalParams: 0});            // number of additional optional params
+```</p>
+
+<p>Note that 'createPerson' function expect to get 'this' as param, where 'this' is any built-in function or module.</p>
+
+<p>Now you can create and use the new 'Person' objects from Adder scripts (the following is an Adder script code):</p>
+
+<p>```Python</p>
+
+<h1>will create a new person and call its function 'say_hello()'</h1>
+
+<p>a = create<em>person()
+a.say</em>hello()
+```</p>
+
+<hr />
+
+<h1>Writing Adder Scripts</h1>
+
+<p>Previously we learned how to execute adder scripts and interact with them from the host application side.
+In this part of the tutorial we'll learn how to actually write Adder scripts.</p>
+
+<h2>Basic Syntax</h2>
+
+<p>Adder syntax is the same as <a href="https://www.python.org">Python</a>, so if you know Python you know Adder and can skip this part.</p>
+
+<p>If you are not familiar with Python, here's a quick summary (after this you will also be able to use Python!).</p>
+
+<h3>Indentation</h3>
+
+<p>Adder is indent-sensitive; indentation is used to open and close blocks (instead of curly brackets in other languages).</p>
+
+<p>Lets take a look at an example with <code>if</code> and <code>else</code> blocks:</p>
+
+<p><code>Python
+if a == 5:
+    print("this is the if block")
+else:
+    print("this is the else block")
+</code></p>
+
+<p>Indents must be multiply of 4 spaces. Wrong indentation will throw syntax errors.</p>
+
+<h3>Comments</h3>
+
+<p>Comments in Adder begin with the hash character ("#") and are terminated by the end of line:</p>
+
+<p>```Python</p>
+
+<h1>this is a comment line</h1>
+
+<p>a = 5 # this part is also a comment; after 'a = 5' is executed this part will be ignored.
+```</p>
+
+<h3>Variables</h3>
+
+<p>To create a new variable you just need to assign a value to it:</p>
+
+<p><code>Python
+a = 5
+</code></p>
+
+<p>Variables in Adder are loosely typed, meaning you can change the type on the fly:</p>
+
+<p><code>Python
+a = 5       # 'a' is a number.
+a = "foo"   # now 'a' is a string.
+a = True    # and now 'a' is a boolean.
+</code></p>
+
+<h4>Variables &amp; Scopes</h4>
+
+<p>If 'a' is defined in a parent's block, setting its value will override it. For example:</p>
+
+<p>```Python</p>
+
+<h1>define variable 'a' in parent block</h1>
+
+<p>a = 5</p>
+
+<h1>override the variable 'a' from inside the 'if' block</h1>
+
+<p>if True:
+    a = 6</p>
+
+<h1>print 'a', which should now be '6'</h1>
+
+<p>print(a)
+```</p>
+
+<p>In addition, if you assign a variable inside a function that also exist in global scope, you will override it:</p>
+
+<p>```Python</p>
+
+<h1>define global variable 'a'</h1>
+
+<p>a = 5</p>
+
+<h1>define a function that override global variable 'a' with another value</h1>
+
+<p>def test():
+    a = 6</p>
+
+<h1>call the function that will change the value of 'a'</h1>
+
+<p>test()</p>
+
+<h1>print 'a' that should now be '6'</h1>
+
+<p>print(a)
+```</p>
+
+<p>If you are familiar with Python you will notice this behavior is slightly different;
+In Python, you need to use the <code>global</code> statement to override global variables from inside a function. In Adder, all variable assignment is <code>global</code> by default.</p>
+
+<h3>String variables</h3>
+
+<p>String variables have an extended API that normal variables don't share.
+This API contains useful query and string manipulation functions:</p>
+
+<h4>len ()</h4>
+
+<p>Return string length.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"hello world".len()  # &lt;-- return 11.
+</code></p>
+
+<h4>split ([delimiter])</h4>
+
+<p>Break the string into a list of string, separated by a given delimiter (or space if not provided).</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"hello world".split()       # &lt;-- return list("hello", "world").
+"hello-world".split("-")    # &lt;-- return list("hello", "world").
+"hello-world".split("+")    # &lt;-- return list("hello-world"), since delimiter not found.
+</code></p>
+
+<h4>replace (search, replace)</h4>
+
+<p>Replace all occurrences of a search term with a given string.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"hello world".replace("world", "friends")  # &lt;-- return "hello friends".
+</code></p>
+
+<h4>remove (search, replace)</h4>
+
+<p>Remove all occurrences of a search term.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"hello world".remove("world")  # &lt;-- return "hello ".
+</code></p>
+
+<h4>index (search)</h4>
+
+<p>Return the index of a search term in string, or -1 if not found.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"hello world".index("world")  # &lt;-- return 6.
+"hello world".index("dog")    # &lt;-- return -1.
+</code></p>
+
+<h4>has (search)</h4>
+
+<p>Return string containing a search term (equivalent to <code>x in string</code>).</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"hello world".has("world")  # &lt;-- return True.
+</code></p>
+
+<h4>count (search)</h4>
+
+<p>Count how many times a search term appears in the string.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"hello world, its a beautiful world!".count("world")  # &lt;-- return 2.
+</code></p>
+
+<h4>trim ()</h4>
+
+<p>Remove all white spaces from the begining and the end of the string.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"     hello world!    ".trim()  # &lt;-- return "hello world!".
+</code></p>
+
+<h4>hash ()</h4>
+
+<p>Return a numeric hash value of the string.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"hello world".hash()  # &lt;-- return 1794106052.
+</code></p>
+
+<h4>starts_with (word)</h4>
+
+<p>Return true if string starts with a given search term.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"hello world".starts_with("hello")  # &lt;-- return True.
+"hello world".starts_with("world")  # &lt;-- return False.
+</code></p>
+
+<h4>ends_with (word)</h4>
+
+<p>Return true if string ends with a given search term.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"hello world".ends_with("world")  # &lt;-- return True.
+"hello world".ends_with("hello")  # &lt;-- return False.
+</code></p>
+
+<h4>is_alpha ()</h4>
+
+<p>Return true if string contains only alphabetic characters in English.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"helloworld".is_alpha()   # &lt;-- return True.
+"hello world".is_alpha()  # &lt;-- return False (because of the space).
+"helloworld2".is_alpha()  # &lt;-- return False (because of the '2').
+</code></p>
+
+<h4>is_digit ()</h4>
+
+<p>Return true if string contains only numeric digits.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"123".is_digit()        # &lt;-- return True.
+"123 45".is_digit()     # &lt;-- return False (because of the space).
+"12a34".is_digit()      # &lt;-- return False (because of the 'a').
+</code></p>
+
+<h4>lower ()</h4>
+
+<p>Convert string to lower case.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"HeLlo WoRlD!".lower()  # &lt;-- return "hello world!".
+</code></p>
+
+<h4>upper ()</h4>
+
+<p>Convert string to upper case.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"HeLlo WoRlD!".upper()  # &lt;-- return "HELLO WORLD!".
+</code></p>
+
+<h4>title ()</h4>
+
+<p>Convert string to title case.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"HeLlo WoRlD!".upper()  # &lt;-- return "Hello World!".
+</code></p>
+
+<h4>slice (start, [len])</h4>
+
+<p>Return a slice of the string.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+"Hello world!".slice(3)  # &lt;-- return "lo world!" (when no length provided, slice until end).
+"Hello world!".slice(3, 5)  # &lt;-- return "lo wo" (because length is limited to 5).
+</code></p>
+
+<h3>Builtin Consts</h3>
+
+<p>A small number of Adder constants live in the global scope. They are:</p>
+
+<h4>False</h4>
+
+<p>The false value of the bool type. Assignments to False are illegal and will raise a SyntaxError.</p>
+
+<h4>True</h4>
+
+<p>The true value of the bool type. Assignments to True are illegal and will raise a SyntaxError.</p>
+
+<h4>None</h4>
+
+<p>None is frequently used to represent the absence of a value, as when default arguments are not passed to a function.
+Assignments to None are illegal and will raise a SyntaxError.</p>
+
+<h4>NaN</h4>
+
+<p>NaN (Not a Number) is a special constant that represent an illegal expressions involving numbers and non-number values.
+For example, <code>5 * "a"</code> will return NaN (note however that <code>5 * "2"</code> will be evaluated as '5 * 2' and return 10).</p>
+
+<h4><strong>VERSION</strong></h4>
+
+<p>String, the current Adder Script version.</p>
+
+<h3>Operators</h3>
+
+<p>This chapter describe all the language arithmetic and comparison operators.</p>
+
+<h4>Basic Arithmetic Operators</h4>
+
+<p>In adder all the basic arithmetic operators are supported - add, subtract, multiply, divide and modulate:</p>
+
+<p><code>Python
+a = 5 + 2
+b = 4 - 2
+c = 6 / 3
+d = 2 * 15
+e = 5 % 2
+</code></p>
+
+<p>In addition, there's a built-in operator for power, represented by <code>**</code>:</p>
+
+<p><code>Python
+a = 2 ** 3   # equals to '2 * 2 * 2'
+</code></p>
+
+<h4>In-place operators</h4>
+
+<p>In-place operators are syntactic sugar to change the value of a variable:</p>
+
+<p><code>Python
+a += 1  # the same as "a = a + 1"
+b -= 1  # the same as "b = b - 1"
+c /= 2  # the same as "c = c / 2"
+d *= 2  # the same as "d = d * 2"
+</code></p>
+
+<p>Most arithmetic operators have their own in-place version.</p>
+
+<h4>Comparison operators</h4>
+
+<p>Adder support all the basic comparison operators: <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>!=</code>, <code>==</code>.
+They work the same as in most programming language:</p>
+
+<p><code>Python
+2 &lt; 5  # true
+5 &gt; 20 # false
+2 == 2 # true
+3 &gt;= 2 # true
+5 &lt;= 4 # false
+5 != 2 # true
+True != False # true
+list(1) == list(1) # true
+list(1) == list(2) # false
+</code></p>
+
+<h4>Bitwise operators</h4>
+
+<p>To perform bitwise <code>and</code> operation, use the <code>&amp;</code> operator:</p>
+
+<p><code>Python
+print(36 &amp; 14) # will print '4'
+</code></p>
+
+<p>To perform bitwise <code>or</code> operation, use the <code>|</code> operator:</p>
+
+<p><code>Python
+print(36 | 14) # will print '46'
+</code></p>
+
+<h4>not</h4>
+
+<p>The <code>not</code> operator invert a boolean value, eg turn <code>true</code> into <code>false</code> and vice-versa:</p>
+
+<p><code>Python
+if not True:
+    print("hello!")
+</code></p>
+
+<h4>or</h4>
+
+<p>To create a conditional 'or', use the <code>or</code> operator:</p>
+
+<p><code>Python
+a = 5
+if a == 1 or a == 5:
+    print("a is either 1 or 5")
+</code></p>
+
+<p>Note that <code>or</code> doesn't necessarily return a boolean (true / false), it returns the first value that when cast to boolean will return <code>true</code>.
+This means you can also use <code>or</code> to assign the first value option.</p>
+
+<p>For example:</p>
+
+<p>```Python</p>
+
+<h1>this will print "yay!", the first value considered as 'true' when casted as boolean</h1>
+
+<p>a = False or None or "yay!" or True
+print(a)
+```</p>
+
+<h4>and</h4>
+
+<p>To create a conditional 'and', use the <code>and</code> operator:</p>
+
+<p><code>Python
+a = 1
+b = 2
+if a == 1 and b == 2:
+    print("a is 1 and b is 2")
+</code></p>
+
+<p>With <code>and</code> operator the condition is met only if all parts are true.</p>
+
+<h4>in</h4>
+
+<p>In General, <code>in</code> is used to check if a value is contained in an object.</p>
+
+<p>For example, with lists <code>in</code> will return true if the list contain the given value:</p>
+
+<p><code>Python
+lst = list(1,2,3)
+if 1 in lst:
+    print("'1' is in the list!")
+</code></p>
+
+<p>With dictionaries, <code>in</code> will return true if value is a key inside the dictionary.</p>
+
+<p><code>Python
+dct = dict()
+dct.set("a", "hello")
+if "a" in dct:
+    print("'a' is a key inside the dictionary!")
+</code></p>
+
+<h4>not in</h4>
+
+<p><code>not in</code> is a syntactic sugar to test if a value is <em>not</em> in another value:</p>
+
+<p><code>Python
+lst = list(1,2,3)
+if 5 not in lst:
+    print("5 is not in the list!")
+</code></p>
+
+<h4>is</h4>
+
+<p><code>is</code> operator is used to check if two values are the same object, or strictly equal. For example:</p>
+
+<p><code>Python
+5 is 5              # true
+True is True        # true
+list() is list()    # false - not the same object
+4 is 5              # false
+0 is False          # false
+a = list(); a is a  # true
+</code></p>
+
+<h4>is not</h4>
+
+<p>As a syntactic sugar, to test if value is not the same object as other value. For example:</p>
+
+<p><code>Python
+a = list()
+b = list()
+if a is not b:
+    print("'a' is not 'b'!")
+</code></p>
+
+<h3>Conditions (if, else, elif)</h3>
+
+<p>Conditions test an expression and determine weather or not to execute the following block.</p>
+
+<h4>if</h4>
+
+<p>To write a conditional block, you use the <code>if</code> statement:</p>
+
+<p><code>Python
+if a == 5:
+    print("'a' equals 5")
+</code></p>
+
+<p>In the example above the block following the statement will only be executed if the condition (<code>a == 5</code>) is met.</p>
+
+<p><code>inline if</code> statements are also valid:</p>
+
+<p><code>Python
+if a == 5: print("'a' equals 5")
+</code></p>
+
+<h4>else</h4>
+
+<p><code>else</code> statements will execute their following block only if the last <code>if</code> condition was false.</p>
+
+<p>For example:</p>
+
+<p><code>Python
+if a == 5:
+    print("'a' equals 5")
+else:
+    print("'a' does not equal 5")
+</code></p>
+
+<h4>elif</h4>
+
+<p>It is possible to add a conditional <code>if</code> to any <code>else</code> statement, eg make a block that will execute only if the previous <code>if</code> was false <em>and</em> a new condition is met.</p>
+
+<p>To create an else condition (can be think of as <code>else if</code>), use the <code>elif</code> statement:</p>
+
+<p><code>Python
+if a == 5:
+    print("'a' equals '5'")
+elif a == 6:
+    print("'a' equals '6'")
+else:
+    print("a is neither '5' nor '6'")
+</code></p>
+
+<h3>Loops</h3>
+
+<p>There are two ways to make loops / iterate in Adder. We'll explain them in this chapter.</p>
+
+<h4>for</h4>
+
+<p><code>for</code> statement iterate over the values of a container. For example, to iterate over the values of a list:</p>
+
+<p><code>Python
+a = list(1,2,3)
+for i in a:
+    print(i)
+</code></p>
+
+<h4>while</h4>
+
+<p><code>while</code> statement will repeat the block as long as the condition is true:</p>
+
+<p><code>Python
+a = 5
+while a &gt; 0:
+    print(a)
+    a -= 1
+</code></p>
+
+<h3>Functions</h3>
+
+<p>To define a new function, use the <code>def</code> statement:</p>
+
+<p>```Python</p>
+
+<h1>define the function</h1>
+
+<p>def hello_world():
+    print("Hello World!")</p>
+
+<h1>use it</h1>
+
+<p>hello_world()
+```</p>
+
+<p>Or with params:</p>
+
+<p>```Python</p>
+
+<h1>define the function</h1>
+
+<p>def hello_someone(name):
+    print("Hello " + name)</p>
+
+<h1>use it</h1>
+
+<p>hello_someone("Bob")
+```</p>
+
+<h2>Containers (list, set, dict)</h2>
+
+<p>There are 3 built-in containers you should know in Adder:</p>
+
+<h3>List</h3>
+
+<p>List hold a list of values, while preserving the order of insertion.</p>
+
+<p>To create a new list:</p>
+
+<p>```Python</p>
+
+<h1>create an empty list</h1>
+
+<p>a = list()</p>
+
+<h1>create a list with starting values: 1,2,3</h1>
+
+<p>a = list(1,2,3)
+```</p>
+
+<p>The list API is slightly different than Python's list.
+A list instance have the following functions:</p>
+
+<h4>clone ()</h4>
+
+<p>Create a shallow copy of the list.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list(1,2,3)
+b = a.clone()  # &lt;-- 'b' will now be equal to 'a', but not the same object.
+</code></p>
+
+<h4>empty ()</h4>
+
+<p>Return true if the list is empty, false otherwise.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list()
+if a.empty():
+    print("List is empty!")
+</code></p>
+
+<h4>to_set ()</h4>
+
+<p>Convert the list to a Set object (described later).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list(1, 2, 3)
+b = list.to_set()  # &lt;-- 'b' is now a set with values 1, 2 and 3.
+</code></p>
+
+<h4>len ()</h4>
+
+<p>Return list length.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list(1,2)
+print(a.len())  # &lt;-- will print '2'.
+</code></p>
+
+<h4>append (val)</h4>
+
+<p>Add a value to the end of the list.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list("foo", "bar")
+a.append("foobar")  # &lt;-- list will now contain: "foo", "bar", "foobar".
+</code></p>
+
+<h4>has (val)</h4>
+
+<p>Return if the list contains a given value.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list("foo", "bar")
+if a.has("foo"):
+    print("List have value 'foo'")
+</code></p>
+
+<h4>clear ()</h4>
+
+<p>Clear the list (remove all values from it).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list("foo", "bar")
+a.clear()  # &lt;-- 'a' will now be an empty list.
+</code></p>
+
+<h4>count (val)</h4>
+
+<p>Return how many times a given value appears in the list.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list("foo", "bar", "foo", "hello")
+print(a.count("foo"))  # &lt;-- will print 2 ("foo" appears twice in list).
+</code></p>
+
+<h4>extend (other)</h4>
+
+<p>Extend this list with another list (like concat).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list("foo", "bar")
+b = list("hello", "world")
+a.extend(b)  # &lt;-- 'a' will be a list with: "foo", "bar", "hello", "world". 'b' will remain unchanged.
+</code></p>
+
+<h4>index (val)</h4>
+
+<p>Return the first index of a given value in the list (or -1 if value not found).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list("foo", "bar", "hello")
+print(a.index("bar"))  # &lt;-- will print '1', the index of "foo".
+print(a.index("other"))  # &lt;-- will print '-1', since "other" is not in list.
+</code></p>
+
+<h4>insert (val, position)</h4>
+
+<p>Add a value to the list at a given position (index).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list("foo", "bar")
+a.insert("hello", 1)  # &lt;-- 'a' will now contain: "foo", "hello", "bar".
+</code></p>
+
+<h4>pop ([position])</h4>
+
+<p>Remove and return the last value from list, or from a given position (if provided position argument).</p>
+
+<p>Example:</p>
+
+<p>```Python</p>
+
+<h1>using pop without position param</h1>
+
+<p>a = list("foo", "bar", "hello")
+a.pop()  # &lt;-- will remove and return "hello", which is the last value in the list.</p>
+
+<h1>using pop with position param</h1>
+
+<p>a = list("foo", "bar", "hello")
+a.pop(1)  # &lt;-- will remove and return "bar", which is the value with index 1 in the list.
+```</p>
+
+<h4>shift ()</h4>
+
+<p>Remove and return the first value from the list.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list("foo", "bar", "foobar")
+a.shift()  # &lt;-- will remove and return "foo", the first value in the list.
+</code></p>
+
+<h4>remove (val)</h4>
+
+<p>Remove a given value from list (if found).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list("foo", "bar", "hello")
+a.remove("bar")  # &lt;-- will remove "bar" from the list.
+</code></p>
+
+<h4>reverse ()</h4>
+
+<p>Reverse the list.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list("foo", "bar", "hello")
+a.reverse()  # &lt;-- 'a' will now contain: "hello", "bar", "foo".
+</code></p>
+
+<h4>slice (start, [end])</h4>
+
+<p>Return a segment of the list from a starting position and an optional ending position (ending position value will not be included).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+fruits = list("Banana", "Orange", "Lemon", "Apple", "Mango")
+print(fruits.slice(1, 3))  # &lt;-- will print "Orange,Lemon".
+</code></p>
+
+<h4>join ([delimiter])</h4>
+
+<p>Convert the list to a string with an optional delimiter (if delimiter is not provided, a comma will be used).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list("foo", "bar", "hello")
+print(a.join("--"))  # &lt;-- will print "foo--bar--hello".
+</code></p>
+
+<h4>sort ()</h4>
+
+<p>Sort the list values by a default string sorting.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list("b", "c", "a")
+a.sort()  # &lt;-- 'a' will now contain: "a", "b", "c".
+</code></p>
+
+<h4>at (position)</h4>
+
+<p>Return value from a given position in list.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list("foo", "bar", "hello")
+print(a.at(1))  # &lt;-- will print "bar"
+</code></p>
+
+<h4>Iterating lists</h4>
+
+<p>To iterate over the values in a List, use <code>for-in</code> loop:</p>
+
+<p><code>Python
+a = list("foo", "bar", "foobar")
+for val in a:
+    print(val)
+</code></p>
+
+<h3>Set</h3>
+
+<p>A Set is like a list, but in a set each value may only appear once. In addition, a Set may only contain simple types and not objects.
+Sets are much faster when you need to check if values exist or not.</p>
+
+<p>To create a new set:</p>
+
+<p>```Python</p>
+
+<h1>create an empty set</h1>
+
+<p>a = set()</p>
+
+<h1>create a set with starting values: "Apple", "Banana", "Orange"</h1>
+
+<p>a = set("Apple", "Banana", "Orange")
+```</p>
+
+<p>The set API is slightly different than Python's set.</p>
+
+<p>A set instance have the following functions:</p>
+
+<h4>clone ()</h4>
+
+<p>Create a shallow copy of the set.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = set(1,2,3)
+b = a.clone()  # &lt;-- 'b' will now be equal to 'a', but not the same object.
+</code></p>
+
+<h4>empty ()</h4>
+
+<p>Return true if set is empty, false otherwise.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = set()
+if a.empty():
+    print("Set 'a' is empty!")
+</code></p>
+
+<h4>to_list ()</h4>
+
+<p>Convert the set to a List object.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = set(1, 2, 3)
+b = a.to_list()  # &lt;-- 'b' is now a new list with values 1, 2, 3.
+</code></p>
+
+<h4>len ()</h4>
+
+<p>Return set length.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = set(1,2)
+print(a.len())  # &lt;-- will print '2'.
+</code></p>
+
+<h4>add (val)</h4>
+
+<p>Add a value to the end of the set. If value already exist in set, will not do anything (as sets may only contain each value once).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = set("foo", "bar")
+a.add("foobar")  # &lt;-- set will now contain: "foo", "bar", "foobar".
+</code></p>
+
+<h4>has (val)</h4>
+
+<p>Return if the set contains a given value.</p>
+
+<p>Example:</p>
+
+<p>```Python</p>
+
+<h1>create a set</h1>
+
+<p>a = set("foo", "bar")</p>
+
+<h1>check if contains a value</h1>
+
+<p>if a.has("foo"):
+    print("'foo' is in set")
+```</p>
+
+<p>Note that <code>has</code> is equivilant of using the <code>in</code> operator:</p>
+
+<p><code>Python
+if "foo" in set("foo", "bar"):
+    print("'foo' is in set")
+</code></p>
+
+<h4>clear ()</h4>
+
+<p>Clear the set (remove all values from it).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = set("foo", "bar")
+a.clear()  # &lt;-- set will now be an empty set.
+</code></p>
+
+<h4>extend (other)</h4>
+
+<p>Extend this set with another set (like concat).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = set("foo", "bar")
+b = set("hello", "world")
+a.extend(b)  # &lt;-- 'a' will be a set with: "foo", "bar", "hello", "world". 'b' will remain unchanged.
+</code></p>
+
+<h4>index (val)</h4>
+
+<p>Return the index of a given value in set (or -1 if value not found).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = set("foo", "bar", "hello")
+print(a.index("bar"))  # &lt;-- will print '1', the index of "foo".
+print(a.index("other"))  # &lt;-- will print '-1', since "other" is not in list.
+</code></p>
+
+<h4>remove (val)</h4>
+
+<p>Remove a given value from the set (if found).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = set("foo", "bar", "hello")
+a.remove("bar")  # &lt;-- will remove "bar" from the set.
+</code></p>
+
+<h4>join ([delimiter])</h4>
+
+<p>Convert the set to a string connected with a given delimiter (if delimiter is not provided, a comma will be used).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = set("foo", "bar", "hello")
+print(a.join("--"))  # &lt;-- will print "foo--bar--hello".
+</code></p>
+
+<h4>Iterating sets</h4>
+
+<p>To iterate over the values in a Set, use the <code>for-in</code> loop:</p>
+
+<p><code>Python
+a = set("foo", "bar", "foobar")
+for val in a:
+    print(val)
+</code></p>
+
+<h3>Dictionary</h3>
+
+<p>A dictionary, often known as “associative arrays” or "hash table", is a table of string keys leading to values.</p>
+
+<p>To create a new dictionary:</p>
+
+<p>```Python</p>
+
+<h1>create an empty dictionary</h1>
+
+<p>a = dict()</p>
+
+<h1>set a value</h1>
+
+<p>a.set("key", "value")</p>
+
+<h1>get a value</h1>
+
+<p>a.get("key")
+```</p>
+
+<p>The dictionary API is slightly different than Python's dictionary.</p>
+
+<p>A dictionary instance have the following functions:</p>
+
+<h4>clone ()</h4>
+
+<p>Creates a shallow copy of the dictionary.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = dict()
+b = a.clone()  # &lt;-- 'b' will now be equal to 'a', but not the same object.
+</code></p>
+
+<h4>set (key, value)</h4>
+
+<p>Add a key-value to the dictionary.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = dict()
+a.set("key", "value")  #  &lt;-- dict will now contain a single key, "key", that will lead to the value "value".
+</code></p>
+
+<h4>get (key, [default])</h4>
+
+<p>Get a value from the dictionary by key.
+If key is not found in dictionary, <code>default</code> will be returned. If no <code>default</code> argument is provided, <code>None</code> will be returned instead.</p>
+
+<p>Example:</p>
+
+<p>```Python</p>
+
+<h1>create the dictionary and add value</h1>
+
+<p>a = dict()
+a.set("key", "value")</p>
+
+<h1>get values that exists</h1>
+
+<p>print(a.get("key"))  # &lt;-- will print "value"</p>
+
+<h1>get non-existing value without default</h1>
+
+<p>print(a.get("some-key"))  # &lt;-- will print None (empty string in default sandbox implementation)</p>
+
+<h1>get non-existing value with default</h1>
+
+<p>print(a.get("some-key", "not-found"))  # &lt;-- will print "not-found"
+```</p>
+
+<h4>keys ()</h4>
+
+<p>Return a list with all keys in the dictionary.</p>
+
+<p>Example:</p>
+
+<p>```Python
+a = dict()
+a.set("foo", 1)
+a.set("bar", 2)</p>
+
+<p>print(a.keys())  # &lt;-- will print "foo,bar"
+```</p>
+
+<h4>values ()</h4>
+
+<p>Return a list with all values in the dictionary.</p>
+
+<p>Example:</p>
+
+<p>```Python
+a = dict()
+a.set("foo", 1)
+a.set("bar", 2)</p>
+
+<p>print(a.values())  # &lt;-- will print "1,2"
+```</p>
+
+<h4>len ()</h4>
+
+<p>Return how many keys are in the dictionary.</p>
+
+<p>Example:</p>
+
+<p>```Python</p>
+
+<h1>create the dictionary</h1>
+
+<p>a = dict()
+a.set("foo", 1)
+a.set("bar", 2)</p>
+
+<h1>print its length</h1>
+
+<p>print(a.len())  # &lt;-- will print 2.
+```</p>
+
+<h4>remove (key)</h4>
+
+<p>Remove a key from the dictionary.</p>
+
+<p>Example:</p>
+
+<p>```Python
+a = dict()
+a.set("foo", 1)</p>
+
+<p>a.remove("foo")  # &lt;-- will remove "foo" from the dictionary.
+a.remove("bla")  # &lt;-- won't do anything, since "bla" doesn't exist.
+```</p>
+
+<h4>clear ()</h4>
+
+<p>Clear the dictionary completely, leaving it empty.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = dict()
+a.set("foo", 1)
+a.clear()  # &lt;-- 'a' will now be an empty dictionary.
+</code></p>
+
+<h4>empty ()</h4>
+
+<p>Return if the dictionary is empty, eg if it has no keys in it.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = dict()
+if a.empty():
+    print("Dictionary is empty!")
+</code></p>
+
+<h4>has (key)</h4>
+
+<p>Return if the dictionary have a given key.</p>
+
+<p>Example:</p>
+
+<p>```Python</p>
+
+<h1>create dictionary</h1>
+
+<p>a = dict()
+a.set("foo", "bar")</p>
+
+<h1>check if key exists in it</h1>
+
+<p>if a.has("foo"):
+    print("There's a key 'foo' in dictionary!")
+```</p>
+
+<p>Note that using <code>has()</code> is equivalent to using the <code>in</code> operator:</p>
+
+<p>```Python</p>
+
+<h1>create dictionary</h1>
+
+<p>a = dict()
+a.set("foo", "bar")</p>
+
+<h1>check if key exists in it</h1>
+
+<p>if "foo" in a:
+    print("There's a key 'foo' in dictionary!")
+```</p>
+
+<h4>extend (other)</h4>
+
+<p>Extend this dictionary with another dictionary (like concat).</p>
+
+<p>Example:</p>
+
+<p>```Python
+a = dict()
+a.set("foo", "bar")</p>
+
+<p>b = dict()
+b.set("hello", "world")</p>
+
+<p>a.extend(b)  # &lt;-- 'a' will be a dictionary with: "foo" = "bar", "hello" = "world". 'b' will remain unchanged.
+```</p>
+
+<h4>Iterating dictionaries</h4>
+
+<p>To iterate over the keys of a dictionary, use a <code>for</code> loop:</p>
+
+<p>```Python</p>
+
+<h1>create dictionary with values</h1>
+
+<p>a = dict()
+a.set("foo", "bar")
+a.set("hello", "world")</p>
+
+<h1>iterate dictionary and print it</h1>
+
+<p>for key in a:
+    print("Key: " + key + ", " + "Value: " + a.get(key))
+```</p>
+
+<h2>Built-ins</h2>
+
+<p>Adder have a set of built-in functions in global scope that provide some basic language functionality.
+The built-in functions you should know are:</p>
+
+<h3>print (...)</h3>
+
+<p>Print output (either a single or multiple string messages to print).</p>
+
+<p>The default <code>print</code> implementation uses console.log, however the host application may override it using the 'outputFunc' init option.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print("Hello World!")
+</code></p>
+
+<h3>all (...)</h3>
+
+<p>Return true only if all given values are true or can be evaluated as boolean true.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print(all(1, True, Math))  # print True
+print(all(1, True, Math, None))  # print False, because of the 'None' in the end
+</code></p>
+
+<h3>any (...)</h3>
+
+<p>Return true if any of the given values is true or can be evaluated as boolean true.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print(any(0, True, None))  # print true, thanks to the second 'True' value
+print(any(0, 1, None))  # print true, thanks to the second '1' value, which casts to true
+print(any(0, False, None))  # print false, because none of the values are true
+</code></p>
+
+<h3>bin (num)</h3>
+
+<p>Return a binary representation of a number (as string).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print(bin(15))  # will print "1111"
+</code></p>
+
+<h3>bool (val)</h3>
+
+<p>Cast any value to a boolean (either <code>True</code> or <code>False</code>).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print(bool(False)) # False
+print(bool(True))  # True
+print(bool(NaN))   # False
+print(bool(0))     # False
+print(bool(False)) # False
+print(bool(1))     # True
+print(bool("Foo")) # True
+print(bool(Math))  # True
+</code></p>
+
+<h3>callable (val)</h3>
+
+<p>Return true if given variable is a callable function.</p>
+
+<p>Example:</p>
+
+<p>```Python
+print(callable(bin))        # will print "True"
+print(callable(Math.abs))   # will print "True"</p>
+
+<p>def test(): pass
+print(callable(test))  # will print "True"</p>
+
+<p>print(callable(5))      # will print "False"
+print(callable(True))   # will print "False"
+print(callable(None))   # will print "False"
+```</p>
+
+<h3>chr (num)</h3>
+
+<p>Convert a number to its ASCII character.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print(chr(97))  # &lt;-- will print 'a'
+</code></p>
+
+<h3>cmp (x, y)</h3>
+
+<p>Compare two numeric values.
+Returns the sign of the difference of two numbers: -1 if x &lt; y, 0 if x == y, or 1 if x > y.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+cmp(1, 2)  # &lt;-- returns -1
+cmp(1, 1)  # &lt;-- returns 0
+cmp(2, 1)  # &lt;-- returns 1
+</code></p>
+
+<h3>float (val)</h3>
+
+<p>Convert an int or a string to a float.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print(float("4.3") + 0.2)  # &lt;-- will print 4.5
+</code></p>
+
+<h3>int (val)</h3>
+
+<p>Convert a float or a string to an int.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print(int("4") + 1)  # &lt;-- will print 5
+</code></p>
+
+<h3>len (val)</h3>
+
+<p>Return the length of an object (depends on object type).
+This is equivalent to <code>val.len()</code>.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list(1,2,3)
+print(len(a))  # &lt;-- will print 3
+</code></p>
+
+<h3>ord (chr)</h3>
+
+<p>Return the ASCII value of a character.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print(ord('a'))  # &lt;-- will print 97
+</code></p>
+
+<h3>range ([start], end, [step])</h3>
+
+<p>Return a list containing the values between a given starting point, ending point, and with an optional step size.</p>
+
+<p>This method is extremely useful with <code>for</code> loops.</p>
+
+<p>Example:</p>
+
+<p>```Python</p>
+
+<h1>will print numbers 0 to 9 (including). total of 10 iterations.</h1>
+
+<p>for i in range(10):
+    print(i)</p>
+
+<h1>will print numbers 5 to 7 (including). total of 3 iterations.</h1>
+
+<p>for i in range(5, 8):
+    print(i)</p>
+
+<h1>will print numbers 0 to 9 (including), with steps of 2. total of 5 iterations.</h1>
+
+<p>for i in range(0, 10, 2):
+    print(i)</p>
+
+<h1>will create a list with values 0-9 (including).</h1>
+
+<p>a = range(10)
+```</p>
+
+<h3>str (obj)</h3>
+
+<p>Convert an object or value to a string.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+str(95)            # &lt;-- return "95".
+str(list(1,2,3))   # &lt;-- return "1,2,3".
+str(None)          # &lt;-- return "" (empty string).
+str(True)          # &lt;-- return "true".
+str("foo")         # &lt;-- return "foo".
+</code></p>
+
+<h3>repr (obj)</h3>
+
+<p>Return the language representation of an object, as a string.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+repr(95)            # &lt;-- return "95".
+repr(list(1,2,3))   # &lt;-- return "list(1,2,3)".
+repr(None)          # &lt;-- return "None".
+repr(True)          # &lt;-- return "True".
+repr("foo")         # &lt;-- return '"foo"' (with quotes)
+</code></p>
+
+<h3>type (obj)</h3>
+
+<p>Return the type of the object.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+type("string")  # "string"
+type(4)         # "number"
+type(False)     # "boolean"
+type(None)      # "none"
+type(ord)       # "function"
+type(Math)      # "module"
+type(list())    # "list"
+type(set())     # "set"
+type(dict())    # "dict"
+type(5 * "str") # "NaN"
+</code></p>
+
+<h3>list (...)</h3>
+
+<p>Create a new list with optional starting values.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list()
+b = list(1,2,3)
+</code></p>
+
+<h3>set (...)</h3>
+
+<p>Create a new set with optional starting values.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = set()
+b = set(1,2,3)
+</code></p>
+
+<h3>dict ()</h3>
+
+<p>Create a new empty dictionary.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = dict()
+</code></p>
+
+<h3>reversed (lst)</h3>
+
+<p>Reverse a list copy, without changing the original list.
+This is equivalent to <code>a.clone().reverse()</code>.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list(1,2,3)
+b = reversed(a)
+print(a)  # &lt;-- will print "1,2,3"
+print(b)  # &lt;-- will print "3,2,1"
+</code></p>
+
+<h3>equal (a, b)</h3>
+
+<p>Return <code>True</code> if both values are equal, <code>False</code> otherwise.
+This is equivalent to <code>a == b</code>, but usable as a function, so you can do things like <code>compare_func = equal</code> and later use 'compare_func' or override it.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = list(1,2,3)
+b = list(1,2,3)
+if equal(a, b):
+    print("Lists are equal!")
+</code></p>
+
+<h3>dir ([obj])</h3>
+
+<p>Return all the keys in current scope or in object's API.</p>
+
+<p>This function should not be used for production purposes, its mostly useful to examine objects in shell.</p>
+
+<p>Example:</p>
+
+<p>```Python</p>
+
+<h1>will print everything in global scope</h1>
+
+<p>print(dir())</p>
+
+<h1>will print the API functions and vars of the 'Math' module</h1>
+
+<p>print(dir(Math))
+```</p>
+
+<h3>delete (obj)</h3>
+
+<p>Remove a variable.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+a = 5
+delete(a)  # &lt;-- 'a' will no longer exist after this.
+</code></p>
+
+<h3>exist (obj)</h3>
+
+<p>Return <code>True</code> if variable name exists in current scope or globals.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+if exist("a"):
+    print("'a' exists: " + a)
+</code></p>
+
+<h2>Modules</h2>
+
+<p>Modules are objects with built-in functions and constants that Adder scripts can access and use.</p>
+
+<p>When setting up the environment (on your host application), you can choose which modules to import and can even register your own modules (this described in details in previous chapters).</p>
+
+<p>You use modules with the dot notation:</p>
+
+<p><code>Python
+a = Math.abs(-5)
+</code></p>
+
+<p>All modules act like a global singleton class.</p>
+
+<p>In this chapter we'll go over the basic built-in modules and describe their APIs.</p>
+
+<h3>Math</h3>
+
+<p>Provide basic math-related functionality and constants.</p>
+
+<p>The Math module provide the following API:</p>
+
+<h4>abs (val)</h4>
+
+<p>Convert a number to its absolute value.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+Math.abs(-5)  # &lt;-- will return 5.
+</code></p>
+
+<h4>min (...)</h4>
+
+<p>Get a list of numeric arguments (or a single list argument) and return the smallest value.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+Math.min(1, 5)  # &lt;-- will return 1.
+Math.min(list(1, 5))  # &lt;-- will return 1.
+Math.min(list(1, 2), 5)  # &lt;-- will return NaN - can't mix numeric and list arguments.
+</code></p>
+
+<h4>max (...)</h4>
+
+<p>Get a list of numeric arguments (or a single list argument) and return the largest value.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+Math.max(1, 5)  # &lt;-- will return 5.
+Math.max(list(1, 5))  # &lt;-- will return 5.
+Math.max(list(1, 2), 5)  # &lt;-- will return NaN - can't mix numeric and list arguments.
+</code></p>
+
+<h4>pow (x, y)</h4>
+
+<p>Do power between two numbers (equivalent to the <code>**</code> operator).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+Math.pow(3, 2)  # &lt;-- will return 9, equivalent to '3 ** 2'
+</code></p>
+
+<h4>round (val)</h4>
+
+<p>Round a numeric value to its closest round number.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+Math.round(5.2)  # &lt;-- will return 5.
+Math.round(5.6)  # &lt;-- will return 6.
+</code></p>
+
+<h4>floor (val)</h4>
+
+<p>Round <em>down</em> a numeric value.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+Math.round(5.2)  # &lt;-- will return 5.
+Math.round(5.6)  # &lt;-- will also return 5.
+</code></p>
+
+<h4>ceil (val)</h4>
+
+<p>Round <em>up</em> a numeric value.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+Math.round(5.2)  # &lt;-- will return 6.
+Math.round(5.6)  # &lt;-- will also return 6.
+</code></p>
+
+<h4>cos (val)</h4>
+
+<p>Calculate cos on a numeric value.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print("Cos of 1: ", Math.cos(1))
+</code></p>
+
+<h4>sin (val)</h4>
+
+<p>Calculate sin on a numeric value.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print("Sin of 1: ", Math.sin(1))
+</code></p>
+
+<h4>atan (val)</h4>
+
+<p>Calculate atan on a numeric value.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print("Atan of 1: ", Math.atan(1))
+</code></p>
+
+<h4>exp (val)</h4>
+
+<p>Calculate exp on a numeric value.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print("Exp of 1: ", Math.exp(1))
+</code></p>
+
+<h4>tan (val)</h4>
+
+<p>Calculate tan on a numeric value.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print("Tan of 1: ", Math.tan(1))
+</code></p>
+
+<h4>log (val)</h4>
+
+<p>Calculate log on a numeric value.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print("Log of 1: ", Math.log(1))
+</code></p>
+
+<h4>sqrt (val)</h4>
+
+<p>Square root a numeric value.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print("Square root of 4: ", Math.sqrt(4))
+</code></p>
+
+<h4>sign (val)</h4>
+
+<p>Return 1 for positive values, -1 for negatives, 0 for 0.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+Math.sign(4)  # &lt;-- will return 1
+Math.sign(-3)  # &lt;-- will return -1
+Math.sign(0)  # &lt;-- will return 0
+</code></p>
+
+<h4>sum (...)</h4>
+
+<p>Get a list of numeric arguments (or a single list argument) and return the sum of the values.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+Math.sum(1,2,3)  # &lt;-- will return 1+2+3 = 6
+Math.sum(list(1,2,3))  # &lt;-- will return 1+2+3 = 6
+</code></p>
+
+<h4>mul (...)</h4>
+
+<p>Get a list of numeric arguments (or a single list argument) and return the multiplication of the values.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+Math.mul(2,2,3)  # &lt;-- will return 2*2*3 = 12
+Math.mul(list(2,2,3))  # &lt;-- will return 2*2*3 = 12
+</code></p>
+
+<h4>E</h4>
+
+<p>E constant.</p>
+
+<h4>PI</h4>
+
+<p>PI constant.</p>
+
+<h4>SQRT2</h4>
+
+<p>SQRT2 constant.</p>
+
+<h3>Random</h3>
+
+<p>Provide random-generation functionality.</p>
+
+<p>The Random module provide the following API:</p>
+
+<h4>rand ()</h4>
+
+<p>Return a random float number between 0 and 1.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print(Random.rand())
+</code></p>
+
+<h4>rand_int ([min,] max)</h4>
+
+<p>Return a random int number between min and max.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print(Random.rand_int(2, 10)) # print a random number between 2 to 10 (inclusive)
+print(Random.rand_int(5)) # print a random number between 0 to 5 (inclusive)
+</code></p>
+
+<h4>rand_float ([min,] max)</h4>
+
+<p>Return a random float number between min and max.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print(Random.rand_float(2, 10)) # print a random number between 2.0 to 10.0 (inclusive)
+print(Random.rand_float(5)) # print a random number between 0.0 to 5.0 (inclusive)
+</code></p>
+
+<h4>select (iterable)</h4>
+
+<p>Return a random value from a list or a set (doesn't work with dictionaries).</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print(Random.select(list(1,2,3,4,5))) # get a random value from list options
+print(Random.select(set(1,2,3,4,5))) # get a random value from set options
+</code></p>
+
+<h4>boolean ()</h4>
+
+<p>Return either <code>True</code> or <code>False</code>.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print("And the answer is: " + Random.boolean())
+</code></p>
+
+<h4>binary ()</h4>
+
+<p>Return either <code>0</code> or <code>1</code>.</p>
+
+<p>Example:</p>
+
+<p><code>Python
+print("0 or 1: " + Random.binary())
+</code></p>
+
+<h3>Alert</h3>
+
+<p>Provide functionality to show alerts to user (in browser). Use it for debug purposes, not recommended for production.</p>
+
+<p>The Alert module provide the following API:</p>
+
+<h4>alert (msg)</h4>
+
+<p>Show a standard browser alert box with msg string.</p>
+
+<h3>Input</h3>
+
+<p>Provide functionality to get input from user (in browser). Use it for debug purposes, not recommended for production.</p>
+
+<p>The Input module provide the following API:</p>
+
+<h4>rawInput (msg, [default])</h4>
+
+<p>Show a standard browser prompt box with msg string, and a default value (if provided).</p>
+
+<h1>What Next</h1>
+
+<p>If you want to start using Adder Scripts it is recommended you get familiar with the language.
+Check out the Adder Sandbox (TBD LINK) and the examples there, or take a look at the following cool game made with Adder (TBD LINK).</p>
+
+<p>If you find any bugs, problems or security breaches in Adder, please report in the git repository, or drop me an email at ronenness@gmail.com.</p>
+
+
+
+            <footer class="site-footer">
+                <span class="site-footer-owner"><a href="https://github.com/RonenNess/adder">Adder</a> is maintained by <a href="https://github.com/RonenNess">RonenNess</a>.</span> <span class=
+                "site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by
+                <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+            </footer>
+
+        </section>
+
+    </body>
+</html>
