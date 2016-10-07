@@ -963,7 +963,7 @@ A list instance have the following functions:
 
 Create a shallow copy of the list.
 
-Example:
+For example:
 
 ```Python
 a = list(1,2,3)
@@ -974,7 +974,7 @@ b = a.clone()  # <-- 'b' will now be equal to 'a', but not the same object.
 
 Return true if the list is empty, false otherwise.
 
-Example:
+For example:
 
 ```Python
 a = list()
@@ -986,7 +986,7 @@ if a.empty():
 
 Convert the list to a Set object (described later).
 
-Example:
+For example:
 
 ```Python
 a = list(1, 2, 3)
@@ -997,7 +997,7 @@ b = list.to_set()  # <-- 'b' is now a set with values 1, 2 and 3.
 
 Return list length.
 
-Example:
+For example:
 
 ```Python
 a = list(1,2)
@@ -1008,7 +1008,7 @@ print(a.len())  # <-- will print '2'.
 
 Add a value to the end of the list.
 
-Example:
+For example:
 
 ```Python
 a = list("foo", "bar")
@@ -1019,7 +1019,7 @@ a.append("foobar")  # <-- list will now contain: "foo", "bar", "foobar".
 
 Return if the list contains a given value.
 
-Example:
+For example:
 
 ```Python
 a = list("foo", "bar")
@@ -1031,7 +1031,7 @@ if a.has("foo"):
 
 Clear the list (remove all values from it).
 
-Example:
+For example:
 
 ```Python
 a = list("foo", "bar")
@@ -1042,7 +1042,7 @@ a.clear()  # <-- 'a' will now be an empty list.
 
 Return how many times a given value appears in the list.
 
-Example:
+For example:
 
 ```Python
 a = list("foo", "bar", "foo", "hello")
@@ -1053,7 +1053,7 @@ print(a.count("foo"))  # <-- will print 2 ("foo" appears twice in list).
 
 Extend this list with another list (like concat).
 
-Example:
+For example:
 
 ```Python
 a = list("foo", "bar")
@@ -1065,7 +1065,7 @@ a.extend(b)  # <-- 'a' will be a list with: "foo", "bar", "hello", "world". 'b' 
 
 Return the first index of a given value in the list (or -1 if value not found).
 
-Example:
+For example:
 
 ```Python
 a = list("foo", "bar", "hello")
@@ -1077,7 +1077,7 @@ print(a.index("other"))  # <-- will print '-1', since "other" is not in list.
 
 Add a value to the list at a given position (index).
 
-Example:
+For example:
 
 ```Python
 a = list("foo", "bar")
@@ -1088,7 +1088,7 @@ a.insert("hello", 1)  # <-- 'a' will now contain: "foo", "hello", "bar".
 
 Remove and return the last value from list, or from a given position (if provided position argument).
 
-Example:
+For example:
 
 ```Python
 # using pop without position param
@@ -1104,7 +1104,7 @@ a.pop(1)  # <-- will remove and return "bar", which is the value with index 1 in
 
 Remove and return the first value from the list.
 
-Example:
+For example:
 
 ```Python
 a = list("foo", "bar", "foobar")
@@ -1115,7 +1115,7 @@ a.shift()  # <-- will remove and return "foo", the first value in the list.
 
 Remove a given value from list (if found).
 
-Example:
+For example:
 
 ```Python
 a = list("foo", "bar", "hello")
@@ -1126,7 +1126,7 @@ a.remove("bar")  # <-- will remove "bar" from the list.
 
 Reverse the list.
 
-Example:
+For example:
 
 ```Python
 a = list("foo", "bar", "hello")
@@ -1137,7 +1137,7 @@ a.reverse()  # <-- 'a' will now contain: "hello", "bar", "foo".
 
 Return a segment of the list from a starting position and an optional ending position (ending position value will not be included).
 
-Example:
+For example:
 
 ```Python
 fruits = list("Banana", "Orange", "Lemon", "Apple", "Mango")
@@ -1148,7 +1148,7 @@ print(fruits.slice(1, 3))  # <-- will print "Orange,Lemon".
 
 Convert the list to a string with an optional delimiter (if delimiter is not provided, a comma will be used).
 
-Example:
+For example:
 
 ```Python
 a = list("foo", "bar", "hello")
@@ -1159,7 +1159,7 @@ print(a.join("--"))  # <-- will print "foo--bar--hello".
 
 Sort the list values by a default string sorting.
 
-Example:
+For example:
 
 ```Python
 a = list("b", "c", "a")
@@ -1170,7 +1170,7 @@ a.sort()  # <-- 'a' will now contain: "a", "b", "c".
 
 Return value from a given position in list.
 
-Example:
+For example:
 
 ```Python
 a = list("foo", "bar", "hello")
@@ -1211,7 +1211,7 @@ A set instance have the following functions:
 
 Create a shallow copy of the set.
 
-Example:
+For example:
 
 ```Python
 a = set(1,2,3)
@@ -1222,7 +1222,7 @@ b = a.clone()  # <-- 'b' will now be equal to 'a', but not the same object.
 
 Return true if set is empty, false otherwise.
 
-Example:
+For example:
 
 ```Python
 a = set()
@@ -1234,7 +1234,7 @@ if a.empty():
 
 Convert the set to a List object.
 
-Example:
+For example:
 
 ```Python
 a = set(1, 2, 3)
@@ -1245,7 +1245,7 @@ b = a.to_list()  # <-- 'b' is now a new list with values 1, 2, 3.
 
 Return set length.
 
-Example:
+For example:
 
 ```Python
 a = set(1,2)
@@ -1256,7 +1256,7 @@ print(a.len())  # <-- will print '2'.
 
 Add a value to the end of the set. If value already exist in set, will not do anything (as sets may only contain each value once).
 
-Example:
+For example:
 
 ```Python
 a = set("foo", "bar")
@@ -1267,7 +1267,7 @@ a.add("foobar")  # <-- set will now contain: "foo", "bar", "foobar".
 
 Return if the set contains a given value.
 
-Example:
+For example:
 
 ```Python
 # create a set
@@ -1289,7 +1289,7 @@ if "foo" in set("foo", "bar"):
 
 Clear the set (remove all values from it).
 
-Example:
+For example:
 
 ```Python
 a = set("foo", "bar")
@@ -1300,7 +1300,7 @@ a.clear()  # <-- set will now be an empty set.
 
 Extend this set with another set (like concat).
 
-Example:
+For example:
 
 ```Python
 a = set("foo", "bar")
@@ -1312,7 +1312,7 @@ a.extend(b)  # <-- 'a' will be a set with: "foo", "bar", "hello", "world". 'b' w
 
 Return the index of a given value in set (or -1 if value not found).
 
-Example:
+For example:
 
 ```Python
 a = set("foo", "bar", "hello")
@@ -1324,7 +1324,7 @@ print(a.index("other"))  # <-- will print '-1', since "other" is not in list.
 
 Remove a given value from the set (if found).
 
-Example:
+For example:
 
 ```Python
 a = set("foo", "bar", "hello")
@@ -1335,7 +1335,7 @@ a.remove("bar")  # <-- will remove "bar" from the set.
 
 Convert the set to a string connected with a given delimiter (if delimiter is not provided, a comma will be used).
 
-Example:
+For example:
 
 ```Python
 a = set("foo", "bar", "hello")
@@ -1377,7 +1377,7 @@ A dictionary instance have the following functions:
 
 Creates a shallow copy of the dictionary.
 
-Example:
+For example:
 
 ```Python
 a = dict()
@@ -1388,7 +1388,7 @@ b = a.clone()  # <-- 'b' will now be equal to 'a', but not the same object.
 
 Add a key-value to the dictionary.
 
-Example:
+For example:
 
 ```Python
 a = dict()
@@ -1400,7 +1400,7 @@ a.set("key", "value")  #  <-- dict will now contain a single key, "key", that wi
 Get a value from the dictionary by key.
 If key is not found in dictionary, ```default``` will be returned. If no ```default``` argument is provided, ```None``` will be returned instead.
 
-Example:
+For example:
 
 ```Python
 # create the dictionary and add value
@@ -1421,7 +1421,7 @@ print(a.get("some-key", "not-found"))  # <-- will print "not-found"
 
 Return a list with all keys in the dictionary.
 
-Example:
+For example:
 
 ```Python
 a = dict()
@@ -1435,7 +1435,7 @@ print(a.keys())  # <-- will print "foo,bar"
 
 Return a list with all values in the dictionary.
 
-Example:
+For example:
 
 ```Python
 a = dict()
@@ -1449,7 +1449,7 @@ print(a.values())  # <-- will print "1,2"
 
 Return how many keys are in the dictionary.
 
-Example:
+For example:
 
 ```Python
 # create the dictionary
@@ -1465,7 +1465,7 @@ print(a.len())  # <-- will print 2.
 
 Remove a key from the dictionary.
 
-Example:
+For example:
 
 ```Python
 a = dict()
@@ -1479,7 +1479,7 @@ a.remove("bla")  # <-- won't do anything, since "bla" doesn't exist.
 
 Clear the dictionary completely, leaving it empty.
 
-Example:
+For example:
 
 ```Python
 a = dict()
@@ -1491,7 +1491,7 @@ a.clear()  # <-- 'a' will now be an empty dictionary.
 
 Return if the dictionary is empty, eg if it has no keys in it.
 
-Example:
+For example:
 
 ```Python
 a = dict()
@@ -1503,7 +1503,7 @@ if a.empty():
 
 Return if the dictionary have a given key.
 
-Example:
+For example:
 
 ```Python
 # create dictionary
@@ -1531,7 +1531,7 @@ if "foo" in a:
 
 Extend this dictionary with another dictionary (like concat).
 
-Example:
+For example:
 
 ```Python
 a = dict()
@@ -1569,7 +1569,7 @@ Print output (either a single or multiple string messages to print).
 
 The default ```print``` implementation uses console.log, however the host application may override it using the 'outputFunc' init option.
 
-Example:
+For example:
 
 ```Python
 print("Hello World!")
@@ -1579,7 +1579,7 @@ print("Hello World!")
 
 Return true only if all given values are true or can be evaluated as boolean true.
 
-Example:
+For example:
 
 ```Python
 print(all(1, True, Math))  # print True
@@ -1590,7 +1590,7 @@ print(all(1, True, Math, None))  # print False, because of the 'None' in the end
 
 Return true if any of the given values is true or can be evaluated as boolean true.
 
-Example:
+For example:
 
 ```Python
 print(any(0, True, None))  # print true, thanks to the second 'True' value
@@ -1602,7 +1602,7 @@ print(any(0, False, None))  # print false, because none of the values are true
 
 Return a binary representation of a number (as string).
 
-Example:
+For example:
 
 ```Python
 print(bin(15))  # will print "1111"
@@ -1612,7 +1612,7 @@ print(bin(15))  # will print "1111"
 
 Cast any value to a boolean (either ```True``` or ```False```).
 
-Example:
+For example:
 
 ```Python
 print(bool(False)) # False
@@ -1629,7 +1629,7 @@ print(bool(Math))  # True
 
 Return true if given variable is a callable function.
 
-Example:
+For example:
 
 ```Python
 print(callable(bin))        # will print "True"
@@ -1647,7 +1647,7 @@ print(callable(None))   # will print "False"
 
 Convert a number to its ASCII character.
 
-Example:
+For example:
 
 ```Python
 print(chr(97))  # <-- will print 'a'
@@ -1658,7 +1658,7 @@ print(chr(97))  # <-- will print 'a'
 Compare two numeric values.
 Returns the sign of the difference of two numbers: -1 if x < y, 0 if x == y, or 1 if x > y.
 
-Example:
+For example:
 
 ```Python
 cmp(1, 2)  # <-- returns -1
@@ -1670,7 +1670,7 @@ cmp(2, 1)  # <-- returns 1
 
 Convert an int or a string to a float.
 
-Example:
+For example:
 
 ```Python
 print(float("4.3") + 0.2)  # <-- will print 4.5
@@ -1680,7 +1680,7 @@ print(float("4.3") + 0.2)  # <-- will print 4.5
 
 Convert a float or a string to an int.
 
-Example:
+For example:
 
 ```Python
 print(int("4") + 1)  # <-- will print 5
@@ -1691,7 +1691,7 @@ print(int("4") + 1)  # <-- will print 5
 Return the length of an object (depends on object type).
 This is equivalent to ```val.len()```.
 
-Example:
+For example:
 
 ```Python
 a = list(1,2,3)
@@ -1702,7 +1702,7 @@ print(len(a))  # <-- will print 3
 
 Return the ASCII value of a character.
 
-Example:
+For example:
 
 ```Python
 print(ord('a'))  # <-- will print 97
@@ -1714,7 +1714,7 @@ Return a list containing the values between a given starting point, ending point
 
 This method is extremely useful with ```for``` loops.
 
-Example:
+For example:
 
 ```Python
 # will print numbers 0 to 9 (including). total of 10 iterations.
@@ -1737,7 +1737,7 @@ a = range(10)
 
 Convert an object or value to a string.
 
-Example:
+For example:
 
 ```Python
 str(95)            # <-- return "95".
@@ -1751,7 +1751,7 @@ str("foo")         # <-- return "foo".
 
 Return the language representation of an object, as a string.
 
-Example:
+For example:
 
 ```Python
 repr(95)            # <-- return "95".
@@ -1765,7 +1765,7 @@ repr("foo")         # <-- return '"foo"' (with quotes)
 
 Return the type of the object.
 
-Example:
+For example:
 
 ```Python
 type("string")  # "string"
@@ -1784,7 +1784,7 @@ type(5 * "str") # "NaN"
 
 Create a new list with optional starting values.
 
-Example:
+For example:
 
 ```Python
 a = list()
@@ -1795,7 +1795,7 @@ b = list(1,2,3)
 
 Create a new set with optional starting values.
 
-Example:
+For example:
 
 ```Python
 a = set()
@@ -1806,7 +1806,7 @@ b = set(1,2,3)
 
 Create a new empty dictionary.
 
-Example:
+For example:
 
 ```Python
 a = dict()
@@ -1817,7 +1817,7 @@ a = dict()
 Reverse a list copy, without changing the original list.
 This is equivalent to ```a.clone().reverse()```.
 
-Example:
+For example:
 
 ```Python
 a = list(1,2,3)
@@ -1831,7 +1831,7 @@ print(b)  # <-- will print "3,2,1"
 Return ```True``` if both values are equal, ```False``` otherwise.
 This is equivalent to ```a == b```, but usable as a function, so you can do things like ```compare_func = equal``` and later use 'compare_func' or override it.
 
-Example:
+For example:
 
 ```Python
 a = list(1,2,3)
@@ -1846,7 +1846,7 @@ Return all the keys in current scope or in object's API.
 
 This function should not be used for production purposes, its mostly useful to examine objects in shell.
 
-Example:
+For example:
 
 ```Python
 # will print everything in global scope
@@ -1860,7 +1860,7 @@ print(dir(Math))
 
 Remove a variable.
 
-Example:
+For example:
 
 ```Python
 a = 5
@@ -1871,7 +1871,7 @@ delete(a)  # <-- 'a' will no longer exist after this.
 
 Return ```True``` if variable name exists in current scope or globals.
 
-Example:
+For example:
 
 ```Python
 if exist("a"):
@@ -1904,7 +1904,7 @@ The Math module provide the following API:
 
 Convert a number to its absolute value.
 
-Example:
+For example:
 
 ```Python
 Math.abs(-5)  # <-- will return 5.
@@ -1914,7 +1914,7 @@ Math.abs(-5)  # <-- will return 5.
 
 Get a list of numeric arguments (or a single list argument) and return the smallest value.
 
-Example:
+For example:
 
 ```Python
 Math.min(1, 5)  # <-- will return 1.
@@ -1926,7 +1926,7 @@ Math.min(list(1, 2), 5)  # <-- will return NaN - can't mix numeric and list argu
 
 Get a list of numeric arguments (or a single list argument) and return the largest value.
 
-Example:
+For example:
 
 ```Python
 Math.max(1, 5)  # <-- will return 5.
@@ -1938,7 +1938,7 @@ Math.max(list(1, 2), 5)  # <-- will return NaN - can't mix numeric and list argu
 
 Do power between two numbers (equivalent to the ```**``` operator).
 
-Example:
+For example:
 
 ```Python
 Math.pow(3, 2)  # <-- will return 9, equivalent to '3 ** 2'
@@ -1948,7 +1948,7 @@ Math.pow(3, 2)  # <-- will return 9, equivalent to '3 ** 2'
 
 Round a numeric value to its closest round number.
 
-Example:
+For example:
 
 ```Python
 Math.round(5.2)  # <-- will return 5.
@@ -1959,7 +1959,7 @@ Math.round(5.6)  # <-- will return 6.
 
 Round *down* a numeric value.
 
-Example:
+For example:
 
 ```Python
 Math.round(5.2)  # <-- will return 5.
@@ -1970,7 +1970,7 @@ Math.round(5.6)  # <-- will also return 5.
 
 Round *up* a numeric value.
 
-Example:
+For example:
 
 ```Python
 Math.round(5.2)  # <-- will return 6.
@@ -1981,7 +1981,7 @@ Math.round(5.6)  # <-- will also return 6.
 
 Calculate cos on a numeric value.
 
-Example:
+For example:
 
 ```Python
 print("Cos of 1: ", Math.cos(1))
@@ -1991,7 +1991,7 @@ print("Cos of 1: ", Math.cos(1))
 
 Calculate sin on a numeric value.
 
-Example:
+For example:
 
 ```Python
 print("Sin of 1: ", Math.sin(1))
@@ -2001,7 +2001,7 @@ print("Sin of 1: ", Math.sin(1))
 
 Calculate atan on a numeric value.
 
-Example:
+For example:
 
 ```Python
 print("Atan of 1: ", Math.atan(1))
@@ -2011,7 +2011,7 @@ print("Atan of 1: ", Math.atan(1))
 
 Calculate exp on a numeric value.
 
-Example:
+For example:
 
 ```Python
 print("Exp of 1: ", Math.exp(1))
@@ -2021,7 +2021,7 @@ print("Exp of 1: ", Math.exp(1))
 
 Calculate tan on a numeric value.
 
-Example:
+For example:
 
 ```Python
 print("Tan of 1: ", Math.tan(1))
@@ -2031,7 +2031,7 @@ print("Tan of 1: ", Math.tan(1))
 
 Calculate log on a numeric value.
 
-Example:
+For example:
 
 ```Python
 print("Log of 1: ", Math.log(1))
@@ -2041,7 +2041,7 @@ print("Log of 1: ", Math.log(1))
 
 Square root a numeric value.
 
-Example:
+For example:
 
 ```Python
 print("Square root of 4: ", Math.sqrt(4))
@@ -2051,7 +2051,7 @@ print("Square root of 4: ", Math.sqrt(4))
 
 Return 1 for positive values, -1 for negatives, 0 for 0.
 
-Example:
+For example:
 
 ```Python
 Math.sign(4)  # <-- will return 1
@@ -2063,7 +2063,7 @@ Math.sign(0)  # <-- will return 0
 
 Get a list of numeric arguments (or a single list argument) and return the sum of the values.
 
-Example:
+For example:
 
 ```Python
 Math.sum(1,2,3)  # <-- will return 1+2+3 = 6
@@ -2074,7 +2074,7 @@ Math.sum(list(1,2,3))  # <-- will return 1+2+3 = 6
 
 Get a list of numeric arguments (or a single list argument) and return the multiplication of the values.
 
-Example:
+For example:
 
 ```Python
 Math.mul(2,2,3)  # <-- will return 2*2*3 = 12
@@ -2103,7 +2103,7 @@ The Random module provide the following API:
 
 Return a random float number between 0 and 1.
 
-Example:
+For example:
 
 ```Python
 print(Random.rand())
@@ -2113,7 +2113,7 @@ print(Random.rand())
 
 Return a random int number between min and max.
 
-Example:
+For example:
 
 ```Python
 print(Random.rand_int(2, 10)) # print a random number between 2 to 10 (inclusive)
@@ -2124,7 +2124,7 @@ print(Random.rand_int(5)) # print a random number between 0 to 5 (inclusive)
 
 Return a random float number between min and max.
 
-Example:
+For example:
 
 ```Python
 print(Random.rand_float(2, 10)) # print a random number between 2.0 to 10.0 (inclusive)
@@ -2135,7 +2135,7 @@ print(Random.rand_float(5)) # print a random number between 0.0 to 5.0 (inclusiv
 
 Return a random value from a list or a set (doesn't work with dictionaries).
 
-Example:
+For example:
 
 ```Python
 print(Random.select(list(1,2,3,4,5))) # get a random value from list options
@@ -2146,7 +2146,7 @@ print(Random.select(set(1,2,3,4,5))) # get a random value from set options
 
 Return either ```True``` or ```False```.
 
-Example:
+For example:
 
 ```Python
 print("And the answer is: " + Random.boolean())
@@ -2156,7 +2156,7 @@ print("And the answer is: " + Random.boolean())
 
 Return either ```0``` or ```1```.
 
-Example:
+For example:
 
 ```Python
 print("0 or 1: " + Random.binary())
