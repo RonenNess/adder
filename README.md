@@ -1,5 +1,9 @@
 ![AdderScript](img/logo-sm.png "AdderScript")
 
+[Official Site](http://adderscript.com/)
+
+[Official Docs](http://adderscript.com/docs.html)
+
 # AdderScript
 
 Executing untrusted code with ease.
@@ -2184,6 +2188,6 @@ Show a standard browser prompt box with msg string, and a default value (if prov
 # What Next
 
 If you want to start using Adder Scripts it is recommended you get familiar with the language.
-Check out the Adder Sandbox (TBD LINK) and the examples there, or take a look at the following cool game made with Adder (TBD LINK).
+Check out the [Adder Sandbox](http://adderscript.com/examples/sandbox.html) and the examples there, or take a look at the following [Cool Game](http://adderscript.com/examples/BotWars/BotWars.html) made with Adder.
 
 If you find any bugs, problems or security breaches in Adder, please report in the git repository, or drop me an email at ronenness@gmail.com.
