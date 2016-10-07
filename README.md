@@ -10,7 +10,7 @@ Executing untrusted code with ease.
 
 ## What is it
 
-Adder is a lightweight python-like language, implemented on top of JavaScript, and 100% secured to execute untrusted code.
+Adder is a lightweight python-like language, implemented on top of JavaScript and designed to be safe to execute untrusted code.
 
 ### Why?
 
