@@ -1,0 +1,27 @@
+{
+  "name": "adder-script",
+  "version": "1.0.0",
+  "description": "Python like language to execute untrusted codes in browsers and Node.js.",
+  "main": "dist/adder.js",
+  "scripts": {
+    "test": "qunit-cli tests/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RonenNess/adder.git"
+  },
+  "keywords": [
+    "safe eval",
+	"python",
+	"untrusted",
+    "cage",
+    "eval",
+    "user code"
+  ],
+  "author": "Ronen Ness",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RonenNess/adder/issues"
+  },
+  "homepage": "https://ronenness.github.io/adder/"
+}

@@ -1,0 +1,1 @@
+qunit-cli tests/test.js

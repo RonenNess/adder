@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Adder Performance Tests</title>
+
+    <!-- jquery and bootstrap css -->
+    <script type="text/javascript" src="libs/jquery.min.js"></script>
+    <link href="libs/bootstrap.min.css" rel="stylesheet">
+
+    <!-- favicon -->
+    <link rel="icon" href="./../img/AdderIcon-xs.png">
+
+    <style>
+        .code {
+            border:1px solid black;
+            background-color:#EEEEFF;
+            padding:6px;
+            font-family: "Courier New";
+            font-size:0.9em;
+        }
+    </style>
+
+</head>
+<body>
+
+  <script src="../dist/adder_4tests.js"></script>
+
+  <div class="container">
+      <h1>AdderScript Performance Tests</h1>
+      <p>The following tests will compare AdderScript performance to plain JavaScript execution time. We will evaluate plain JavaScript using eval(), and the corresponding AdderScript code using the interpreter. In every test we'll execute the plain JavaScript and AdderScript codes few thousands times, and then compare the timing.
+
+        <br /><br />Few things to note:</p>
+      <ui>
+        <li>Tests result may change from run to run and between browsers. It is recommended to run this test several times and average the results.</li>
+        <li>AdderScript performance measurement do not include compile and parse time; This happens once beforehand.</li>
+        <li>Note that AdderScript have some internal caching and optimization mechanisms, which makes it more efficient when executing the same code multiple times. Executing AdderScript once will be less efficient compared to executing same code lots of times.</li>
+      </ui>
+      <br />
+      <h3>Please leave the browser in focus while tests are running!</h3>
+      <p>[Yes they are running.. Please stand by..]</p>
+  </div>
+    <br /><br />
+
+  <!-- run all performance tests -->
+  <script>
+
+    // add title to test
+    function addHeader(title, jsCode, scriptCode) {
+
+      $(".container").append($("<h3>Running test: " + title + "</h3>"));
+      var code = $("<p class='code'></p>"); code.text(jsCode); $(".container").append($("<span>JavaScript: </span>").append(code));
+      var code = $("<p class='code'></p>"); code.text(scriptCode); $(".container").append($("<span>AdderScript: </span>").append(code));
+      window.scrollTo(0,document.body.scrollHeight);
+    }
+
+    // add results
+    function addResults(js, adder) {
+
+        // print plain and AdderScript times
+        $(".container").append($("<h4>JavaScript time: " + js + " ms</h4>"));
+        $(".container").append($("<h4>AdderScript time: " + adder + " ms</h4>"));
+
+        // print performance hit with color (green or red, depends if we were faster or slower)
+        var hitPercent = Math.round(((adder / js) * 100.0) - 100.0);
+        var performanceColor = (hitPercent <= 0) ? "green" : hitPercent < 50 ? "Blue" : "red";
+        console.log(hitPercent, performanceColor);
+        var speedFac = roundMathResult(js / adder);
+        $(".container").append($("<h4>Performance hit: <font color='" + performanceColor + "'>" + hitPercent + "%" + "</font> (" + speedFac + " of native JS speed)</h4>"));
+        if (hitPercent < 0 ) {
+            $(".container").append($("<p style='color:green'>Thanks to internal optimizations, AdderScript was faster in this test (only for multiple runs, in a single run native JavaScript will always be faster).</p>"));
+        } else if (hitPercent <= 25 ) {
+            $(".container").append($("<p style='color:green'>Almost as fast as native JavaScript!</p>"));
+        }
+		
+        // scroll all the way down
+        window.scrollTo(0,document.body.scrollHeight);
+    }
+	
+	// when finish running
+	function endTest(jsTotal, adderTotal) {
+	    $(".container").append($("<br /><br /><h1>Finished all tests!</h1>"));
+        $(".container").append($("<h3>JavaScript total time: " + Math.round(jsTotal) + "ms</h3>"));
+        $(".container").append($("<h3>Adder total time: " + Math.round(adderTotal) + "ms</h3>"));
+        $(".container").append($("<p>For accurate results, consider running this test several times and look at results average.</p>"));
+        window.scrollTo(0,document.body.scrollHeight);
+	}
+  </script>
+
+    <script src="performance.js"></script>
+  
+</body>
+</html>
