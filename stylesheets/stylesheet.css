@@ -88,21 +88,21 @@ a {
     font-size: 1.75rem; } }
 
 .project-tagline {
-  margin-bottom: 2rem;
+  margin-top: 0.4rem;
   font-weight: normal;
-  opacity: 0.7; }
+  opacity: 0.8; }
 
 @media screen and (min-width: 64em) {
   .project-tagline {
-    font-size: 1.25rem; } }
+    font-size: 2.65rem; } }
 
 @media screen and (min-width: 42em) and (max-width: 64em) {
   .project-tagline {
-    font-size: 1.15rem; } }
+    font-size: 2.15rem; } }
 
 @media screen and (max-width: 42em) {
   .project-tagline {
-    font-size: 1rem; } }
+    font-size: 1.75rem; } }
 
 .main-content :first-child {
   margin-top: 0; }
