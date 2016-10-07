@@ -770,7 +770,7 @@ A list instance have the following functions:</p>
 
 <p>Create a shallow copy of the list.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
 b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will now be equal to 'a', but not the same object.</span></pre></div>
@@ -779,7 +779,7 @@ b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will no
 
 <p>Return true if the list is empty, false otherwise.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>()
 <span class="pl-k">if</span> a.empty():
@@ -789,7 +789,7 @@ b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will no
 
 <p>Convert the list to a Set object (described later).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>, <span class="pl-c1">3</span>)
 b <span class="pl-k">=</span> <span class="pl-c1">list</span>.to_set()  <span class="pl-c"># &lt;-- 'b' is now a set with values 1, 2 and 3.</span></pre></div>
@@ -798,7 +798,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>.to_set()  <span cl
 
 <p>Return list length.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>)
 <span class="pl-c1">print</span>(a.len())  <span class="pl-c"># &lt;-- will print '2'.</span></pre></div>
@@ -807,7 +807,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>.to_set()  <span cl
 
 <p>Add a value to the end of the list.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 a.append(<span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- list will now contain: "foo", "bar", "foobar".</span></pre></div>
@@ -816,7 +816,7 @@ a.append(<span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-p
 
 <p>Return if the list contains a given value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 <span class="pl-k">if</span> a.has(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>):
@@ -826,7 +826,7 @@ a.append(<span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-p
 
 <p>Clear the list (remove all values from it).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 a.clear()  <span class="pl-c"># &lt;-- 'a' will now be an empty list.</span></pre></div>
@@ -835,7 +835,7 @@ a.clear()  <span class="pl-c"># &lt;-- 'a' will now be an empty list.</span></pr
 
 <p>Return how many times a given value appears in the list.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 <span class="pl-c1">print</span>(a.count(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print 2 ("foo" appears twice in list).</span></pre></div>
@@ -844,7 +844,7 @@ a.clear()  <span class="pl-c"># &lt;-- 'a' will now be an empty list.</span></pr
 
 <p>Extend this list with another list (like concat).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)
@@ -854,7 +854,7 @@ a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a list with: "foo", "bar", 
 
 <p>Return the first index of a given value in the list (or -1 if value not found).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 <span class="pl-c1">print</span>(a.index(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print '1', the index of "foo".</span>
@@ -864,7 +864,7 @@ a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a list with: "foo", "bar", 
 
 <p>Add a value to the list at a given position (index).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 a.insert(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- 'a' will now contain: "foo", "hello", "bar".</span></pre></div>
@@ -873,7 +873,7 @@ a.insert(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pd
 
 <p>Remove and return the last value from list, or from a given position (if provided position argument).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c"># using pop without position param</span>
 a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
@@ -887,7 +887,7 @@ a.pop(<span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- will remove and
 
 <p>Remove and return the first value from the list.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-pds">"</span></span>)
 a.shift()  <span class="pl-c"># &lt;-- will remove and return "foo", the first value in the list.</span></pre></div>
@@ -896,7 +896,7 @@ a.shift()  <span class="pl-c"># &lt;-- will remove and return "foo", the first v
 
 <p>Remove a given value from list (if found).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 a.remove(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- will remove "bar" from the list.</span></pre></div>
@@ -905,7 +905,7 @@ a.remove(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds"
 
 <p>Reverse the list.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 a.reverse()  <span class="pl-c"># &lt;-- 'a' will now contain: "hello", "bar", "foo".</span></pre></div>
@@ -914,7 +914,7 @@ a.reverse()  <span class="pl-c"># &lt;-- 'a' will now contain: "hello", "bar", "
 
 <p>Return a segment of the list from a starting position and an optional ending position (ending position value will not be included).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>fruits <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>Banana<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Orange<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Lemon<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Apple<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Mango<span class="pl-pds">"</span></span>)
 <span class="pl-c1">print</span>(fruits.slice(<span class="pl-c1">1</span>, <span class="pl-c1">3</span>))  <span class="pl-c"># &lt;-- will print "Orange,Lemon".</span></pre></div>
@@ -923,7 +923,7 @@ a.reverse()  <span class="pl-c"># &lt;-- 'a' will now contain: "hello", "bar", "
 
 <p>Convert the list to a string with an optional delimiter (if delimiter is not provided, a comma will be used).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 <span class="pl-c1">print</span>(a.join(<span class="pl-s"><span class="pl-pds">"</span>--<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print "foo--bar--hello".</span></pre></div>
@@ -932,7 +932,7 @@ a.reverse()  <span class="pl-c"># &lt;-- 'a' will now contain: "hello", "bar", "
 
 <p>Sort the list values by a default string sorting.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>b<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>c<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>)
 a.sort()  <span class="pl-c"># &lt;-- 'a' will now contain: "a", "b", "c".</span></pre></div>
@@ -941,7 +941,7 @@ a.sort()  <span class="pl-c"># &lt;-- 'a' will now contain: "a", "b", "c".</span
 
 <p>Return value from a given position in list.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 <span class="pl-c1">print</span>(a.at(<span class="pl-c1">1</span>))  <span class="pl-c"># &lt;-- will print "bar"</span></pre></div>
@@ -975,7 +975,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s">
 
 <p>Create a shallow copy of the set.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
 b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will now be equal to 'a', but not the same object.</span></pre></div>
@@ -984,7 +984,7 @@ b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will no
 
 <p>Return true if set is empty, false otherwise.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>()
 <span class="pl-k">if</span> a.empty():
@@ -994,7 +994,7 @@ b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will no
 
 <p>Convert the set to a List object.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>, <span class="pl-c1">3</span>)
 b <span class="pl-k">=</span> a.to_list()  <span class="pl-c"># &lt;-- 'b' is now a new list with values 1, 2, 3.</span></pre></div>
@@ -1003,7 +1003,7 @@ b <span class="pl-k">=</span> a.to_list()  <span class="pl-c"># &lt;-- 'b' is no
 
 <p>Return set length.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>)
 <span class="pl-c1">print</span>(a.len())  <span class="pl-c"># &lt;-- will print '2'.</span></pre></div>
@@ -1012,7 +1012,7 @@ b <span class="pl-k">=</span> a.to_list()  <span class="pl-c"># &lt;-- 'b' is no
 
 <p>Add a value to the end of the set. If value already exist in set, will not do anything (as sets may only contain each value once).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 a.add(<span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- set will now contain: "foo", "bar", "foobar".</span></pre></div>
@@ -1021,7 +1021,7 @@ a.add(<span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-pds"
 
 <p>Return if the set contains a given value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c"># create a set</span>
 a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
@@ -1039,7 +1039,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s">
 
 <p>Clear the set (remove all values from it).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 a.clear()  <span class="pl-c"># &lt;-- set will now be an empty set.</span></pre></div>
@@ -1048,7 +1048,7 @@ a.clear()  <span class="pl-c"># &lt;-- set will now be an empty set.</span></pre
 
 <p>Extend this set with another set (like concat).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 b <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)
@@ -1058,7 +1058,7 @@ a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a set with: "foo", "bar", "
 
 <p>Return the index of a given value in set (or -1 if value not found).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 <span class="pl-c1">print</span>(a.index(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print '1', the index of "foo".</span>
@@ -1068,7 +1068,7 @@ a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a set with: "foo", "bar", "
 
 <p>Remove a given value from the set (if found).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 a.remove(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- will remove "bar" from the set.</span></pre></div>
@@ -1077,7 +1077,7 @@ a.remove(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds"
 
 <p>Convert the set to a string connected with a given delimiter (if delimiter is not provided, a comma will be used).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 <span class="pl-c1">print</span>(a.join(<span class="pl-s"><span class="pl-pds">"</span>--<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print "foo--bar--hello".</span></pre></div>
@@ -1113,7 +1113,7 @@ a.get(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"<
 
 <p>Creates a shallow copy of the dictionary.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
 b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will now be equal to 'a', but not the same object.</span></pre></div>
@@ -1122,7 +1122,7 @@ b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will no
 
 <p>Add a key-value to the dictionary.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
 a.set(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>value<span class="pl-pds">"</span></span>)  <span class="pl-c">#  &lt;-- dict will now contain a single key, "key", that will lead to the value "value".</span></pre></div>
@@ -1132,7 +1132,7 @@ a.set(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"<
 <p>Get a value from the dictionary by key.
 If key is not found in dictionary, <code>default</code> will be returned. If no <code>default</code> argument is provided, <code>None</code> will be returned instead.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c"># create the dictionary and add value</span>
 a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
@@ -1151,7 +1151,7 @@ a.set(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"<
 
 <p>Return a list with all keys in the dictionary.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
 a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>)
@@ -1163,7 +1163,7 @@ a.set(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"<
 
 <p>Return a list with all values in the dictionary.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
 a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>)
@@ -1175,7 +1175,7 @@ a.set(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"<
 
 <p>Return how many keys are in the dictionary.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c"># create the dictionary</span>
 a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
@@ -1189,7 +1189,7 @@ a.set(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"<
 
 <p>Remove a key from the dictionary.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
 a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>)
@@ -1201,7 +1201,7 @@ a.remove(<span class="pl-s"><span class="pl-pds">"</span>bla<span class="pl-pds"
 
 <p>Clear the dictionary completely, leaving it empty.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
 a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>)
@@ -1211,7 +1211,7 @@ a.clear()  <span class="pl-c"># &lt;-- 'a' will now be an empty dictionary.</spa
 
 <p>Return if the dictionary is empty, eg if it has no keys in it.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
 <span class="pl-k">if</span> a.empty():
@@ -1221,7 +1221,7 @@ a.clear()  <span class="pl-c"># &lt;-- 'a' will now be an empty dictionary.</spa
 
 <p>Return if the dictionary have a given key.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c"># create dictionary</span>
 a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
@@ -1245,7 +1245,7 @@ a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"<
 
 <p>Extend this dictionary with another dictionary (like concat).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
 a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
@@ -1279,7 +1279,7 @@ The built-in functions you should know are:</p>
 
 <p>The default <code>print</code> implementation uses console.log, however the host application may override it using the 'outputFunc' init option.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>)</pre></div>
 
@@ -1287,7 +1287,7 @@ The built-in functions you should know are:</p>
 
 <p>Return true only if all given values are true or can be evaluated as boolean true.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">all</span>(<span class="pl-c1">1</span>, <span class="pl-c1">True</span>, Math))  <span class="pl-c"># print True</span>
 <span class="pl-c1">print</span>(<span class="pl-c1">all</span>(<span class="pl-c1">1</span>, <span class="pl-c1">True</span>, Math, <span class="pl-c1">None</span>))  <span class="pl-c"># print False, because of the 'None' in the end</span></pre></div>
@@ -1296,7 +1296,7 @@ The built-in functions you should know are:</p>
 
 <p>Return true if any of the given values is true or can be evaluated as boolean true.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">any</span>(<span class="pl-c1">0</span>, <span class="pl-c1">True</span>, <span class="pl-c1">None</span>))  <span class="pl-c"># print true, thanks to the second 'True' value</span>
 <span class="pl-c1">print</span>(<span class="pl-c1">any</span>(<span class="pl-c1">0</span>, <span class="pl-c1">1</span>, <span class="pl-c1">None</span>))  <span class="pl-c"># print true, thanks to the second '1' value, which casts to true</span>
@@ -1306,7 +1306,7 @@ The built-in functions you should know are:</p>
 
 <p>Return a binary representation of a number (as string).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">bin</span>(<span class="pl-c1">15</span>))  <span class="pl-c"># will print "1111"</span></pre></div>
 
@@ -1314,7 +1314,7 @@ The built-in functions you should know are:</p>
 
 <p>Cast any value to a boolean (either <code>True</code> or <code>False</code>).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">bool</span>(<span class="pl-c1">False</span>)) <span class="pl-c"># False</span>
 <span class="pl-c1">print</span>(<span class="pl-c1">bool</span>(<span class="pl-c1">True</span>))  <span class="pl-c"># True</span>
@@ -1329,7 +1329,7 @@ The built-in functions you should know are:</p>
 
 <p>Return true if given variable is a callable function.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">callable</span>(<span class="pl-c1">bin</span>))        <span class="pl-c"># will print "True"</span>
 <span class="pl-c1">print</span>(<span class="pl-c1">callable</span>(Math.abs))   <span class="pl-c"># will print "True"</span>
@@ -1345,7 +1345,7 @@ The built-in functions you should know are:</p>
 
 <p>Convert a number to its ASCII character.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">chr</span>(<span class="pl-c1">97</span>))  <span class="pl-c"># &lt;-- will print 'a'</span></pre></div>
 
@@ -1354,7 +1354,7 @@ The built-in functions you should know are:</p>
 <p>Compare two numeric values.
 Returns the sign of the difference of two numbers: -1 if x &lt; y, 0 if x == y, or 1 if x &gt; y.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-v">cmp</span>(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>)  <span class="pl-c"># &lt;-- returns -1</span>
 <span class="pl-v">cmp</span>(<span class="pl-c1">1</span>, <span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- returns 0</span>
@@ -1364,7 +1364,7 @@ Returns the sign of the difference of two numbers: -1 if x &lt; y, 0 if x == y, 
 
 <p>Convert an int or a string to a float.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">float</span>(<span class="pl-s"><span class="pl-pds">"</span>4.3<span class="pl-pds">"</span></span>) <span class="pl-k">+</span> <span class="pl-c1">0.2</span>)  <span class="pl-c"># &lt;-- will print 4.5</span></pre></div>
 
@@ -1372,7 +1372,7 @@ Returns the sign of the difference of two numbers: -1 if x &lt; y, 0 if x == y, 
 
 <p>Convert a float or a string to an int.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">int</span>(<span class="pl-s"><span class="pl-pds">"</span>4<span class="pl-pds">"</span></span>) <span class="pl-k">+</span> <span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- will print 5</span></pre></div>
 
@@ -1381,7 +1381,7 @@ Returns the sign of the difference of two numbers: -1 if x &lt; y, 0 if x == y, 
 <p>Return the length of an object (depends on object type).
 This is equivalent to <code>val.len()</code>.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
 <span class="pl-c1">print</span>(<span class="pl-c1">len</span>(a))  <span class="pl-c"># &lt;-- will print 3</span></pre></div>
@@ -1390,7 +1390,7 @@ This is equivalent to <code>val.len()</code>.</p>
 
 <p>Return the ASCII value of a character.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">ord</span>(<span class="pl-s"><span class="pl-pds">'</span>a<span class="pl-pds">'</span></span>))  <span class="pl-c"># &lt;-- will print 97</span></pre></div>
 
@@ -1400,7 +1400,7 @@ This is equivalent to <code>val.len()</code>.</p>
 
 <p>This method is extremely useful with <code>for</code> loops.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c"># will print numbers 0 to 9 (including). total of 10 iterations.</span>
 <span class="pl-k">for</span> i <span class="pl-k">in</span> <span class="pl-c1">range</span>(<span class="pl-c1">10</span>):
@@ -1421,7 +1421,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">range</span>(<span class="pl-c
 
 <p>Convert an object or value to a string.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">str</span>(<span class="pl-c1">95</span>)            <span class="pl-c"># &lt;-- return "95".</span>
 <span class="pl-c1">str</span>(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>))   <span class="pl-c"># &lt;-- return "1,2,3".</span>
@@ -1433,7 +1433,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">range</span>(<span class="pl-c
 
 <p>Return the language representation of an object, as a string.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">repr</span>(<span class="pl-c1">95</span>)            <span class="pl-c"># &lt;-- return "95".</span>
 <span class="pl-c1">repr</span>(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>))   <span class="pl-c"># &lt;-- return "list(1,2,3)".</span>
@@ -1445,7 +1445,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">range</span>(<span class="pl-c
 
 <p>Return the type of the object.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">type</span>(<span class="pl-s"><span class="pl-pds">"</span>string<span class="pl-pds">"</span></span>)  <span class="pl-c"># "string"</span>
 <span class="pl-c1">type</span>(<span class="pl-c1">4</span>)         <span class="pl-c"># "number"</span>
@@ -1462,7 +1462,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">range</span>(<span class="pl-c
 
 <p>Create a new list with optional starting values.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>()
 b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)</pre></div>
@@ -1471,7 +1471,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1
 
 <p>Create a new set with optional starting values.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>()
 b <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)</pre></div>
@@ -1480,7 +1480,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1"
 
 <p>Create a new empty dictionary.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()</pre></div>
 
@@ -1489,7 +1489,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1"
 <p>Reverse a list copy, without changing the original list.
 This is equivalent to <code>a.clone().reverse()</code>.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
 b <span class="pl-k">=</span> <span class="pl-c1">reversed</span>(a)
@@ -1501,7 +1501,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">reversed</span>(a)
 <p>Return <code>True</code> if both values are equal, <code>False</code> otherwise.
 This is equivalent to <code>a == b</code>, but usable as a function, so you can do things like <code>compare_func = equal</code> and later use 'compare_func' or override it.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
 b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
@@ -1514,7 +1514,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1
 
 <p>This function should not be used for production purposes, its mostly useful to examine objects in shell.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c"># will print everything in global scope</span>
 <span class="pl-c1">print</span>(<span class="pl-c1">dir</span>())
@@ -1526,7 +1526,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1
 
 <p>Remove a variable.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">5</span>
 delete(a)  <span class="pl-c"># &lt;-- 'a' will no longer exist after this.</span></pre></div>
@@ -1535,7 +1535,7 @@ delete(a)  <span class="pl-c"># &lt;-- 'a' will no longer exist after this.</spa
 
 <p>Return <code>True</code> if variable name exists in current scope or globals.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-k">if</span> exist(<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>):
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' exists: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> a)</pre></div>
@@ -1564,7 +1564,7 @@ delete(a)  <span class="pl-c"># &lt;-- 'a' will no longer exist after this.</spa
 
 <p>Convert a number to its absolute value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>Math.abs(<span class="pl-k">-</span><span class="pl-c1">5</span>)  <span class="pl-c"># &lt;-- will return 5.</span></pre></div>
 
@@ -1572,7 +1572,7 @@ delete(a)  <span class="pl-c"># &lt;-- 'a' will no longer exist after this.</spa
 
 <p>Get a list of numeric arguments (or a single list argument) and return the smallest value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>Math.min(<span class="pl-c1">1</span>, <span class="pl-c1">5</span>)  <span class="pl-c"># &lt;-- will return 1.</span>
 Math.min(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span class="pl-c1">5</span>))  <span class="pl-c"># &lt;-- will return 1.</span>
@@ -1582,7 +1582,7 @@ Math.min(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span cla
 
 <p>Get a list of numeric arguments (or a single list argument) and return the largest value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>Math.max(<span class="pl-c1">1</span>, <span class="pl-c1">5</span>)  <span class="pl-c"># &lt;-- will return 5.</span>
 Math.max(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span class="pl-c1">5</span>))  <span class="pl-c"># &lt;-- will return 5.</span>
@@ -1592,7 +1592,7 @@ Math.max(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span cla
 
 <p>Do power between two numbers (equivalent to the <code>**</code> operator).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>Math.pow(<span class="pl-c1">3</span>, <span class="pl-c1">2</span>)  <span class="pl-c"># &lt;-- will return 9, equivalent to '3 ** 2'</span></pre></div>
 
@@ -1600,7 +1600,7 @@ Math.max(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span cla
 
 <p>Round a numeric value to its closest round number.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>Math.round(<span class="pl-c1">5.2</span>)  <span class="pl-c"># &lt;-- will return 5.</span>
 Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will return 6.</span></pre></div>
@@ -1609,7 +1609,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will ret
 
 <p>Round <em>down</em> a numeric value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>Math.round(<span class="pl-c1">5.2</span>)  <span class="pl-c"># &lt;-- will return 5.</span>
 Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will also return 5.</span></pre></div>
@@ -1618,7 +1618,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <p>Round <em>up</em> a numeric value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>Math.round(<span class="pl-c1">5.2</span>)  <span class="pl-c"># &lt;-- will return 6.</span>
 Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will also return 6.</span></pre></div>
@@ -1627,7 +1627,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <p>Calculate cos on a numeric value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Cos of 1: <span class="pl-pds">"</span></span>, Math.cos(<span class="pl-c1">1</span>))</pre></div>
 
@@ -1635,7 +1635,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <p>Calculate sin on a numeric value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Sin of 1: <span class="pl-pds">"</span></span>, Math.sin(<span class="pl-c1">1</span>))</pre></div>
 
@@ -1643,7 +1643,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <p>Calculate atan on a numeric value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Atan of 1: <span class="pl-pds">"</span></span>, Math.atan(<span class="pl-c1">1</span>))</pre></div>
 
@@ -1651,7 +1651,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <p>Calculate exp on a numeric value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Exp of 1: <span class="pl-pds">"</span></span>, Math.exp(<span class="pl-c1">1</span>))</pre></div>
 
@@ -1659,7 +1659,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <p>Calculate tan on a numeric value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Tan of 1: <span class="pl-pds">"</span></span>, Math.tan(<span class="pl-c1">1</span>))</pre></div>
 
@@ -1667,7 +1667,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <p>Calculate log on a numeric value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Log of 1: <span class="pl-pds">"</span></span>, Math.log(<span class="pl-c1">1</span>))</pre></div>
 
@@ -1675,7 +1675,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <p>Square root a numeric value.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Square root of 4: <span class="pl-pds">"</span></span>, Math.sqrt(<span class="pl-c1">4</span>))</pre></div>
 
@@ -1683,7 +1683,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <p>Return 1 for positive values, -1 for negatives, 0 for 0.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>Math.sign(<span class="pl-c1">4</span>)  <span class="pl-c"># &lt;-- will return 1</span>
 Math.sign(<span class="pl-k">-</span><span class="pl-c1">3</span>)  <span class="pl-c"># &lt;-- will return -1</span>
@@ -1693,7 +1693,7 @@ Math.sign(<span class="pl-c1">0</span>)  <span class="pl-c"># &lt;-- will return
 
 <p>Get a list of numeric arguments (or a single list argument) and return the sum of the values.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>Math.sum(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)  <span class="pl-c"># &lt;-- will return 1+2+3 = 6</span>
 Math.sum(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>))  <span class="pl-c"># &lt;-- will return 1+2+3 = 6</span></pre></div>
@@ -1702,7 +1702,7 @@ Math.sum(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span clas
 
 <p>Get a list of numeric arguments (or a single list argument) and return the multiplication of the values.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre>Math.mul(<span class="pl-c1">2</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)  <span class="pl-c"># &lt;-- will return 2*2*3 = 12</span>
 Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>))  <span class="pl-c"># &lt;-- will return 2*2*3 = 12</span></pre></div>
@@ -1729,7 +1729,7 @@ Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span clas
 
 <p>Return a random float number between 0 and 1.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(Random.rand())</pre></div>
 
@@ -1737,7 +1737,7 @@ Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span clas
 
 <p>Return a random int number between min and max.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(Random.rand_int(<span class="pl-c1">2</span>, <span class="pl-c1">10</span>)) <span class="pl-c"># print a random number between 2 to 10 (inclusive)</span>
 <span class="pl-c1">print</span>(Random.rand_int(<span class="pl-c1">5</span>)) <span class="pl-c"># print a random number between 0 to 5 (inclusive)</span></pre></div>
@@ -1746,7 +1746,7 @@ Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span clas
 
 <p>Return a random float number between min and max.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(Random.rand_float(<span class="pl-c1">2</span>, <span class="pl-c1">10</span>)) <span class="pl-c"># print a random number between 2.0 to 10.0 (inclusive)</span>
 <span class="pl-c1">print</span>(Random.rand_float(<span class="pl-c1">5</span>)) <span class="pl-c"># print a random number between 0.0 to 5.0 (inclusive)</span></pre></div>
@@ -1755,7 +1755,7 @@ Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span clas
 
 <p>Return a random value from a list or a set (doesn't work with dictionaries).</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(Random.select(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>,<span class="pl-c1">5</span>))) <span class="pl-c"># get a random value from list options</span>
 <span class="pl-c1">print</span>(Random.select(<span class="pl-c1">set</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>,<span class="pl-c1">5</span>))) <span class="pl-c"># get a random value from set options</span></pre></div>
@@ -1764,7 +1764,7 @@ Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span clas
 
 <p>Return either <code>True</code> or <code>False</code>.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>And the answer is: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> Random.boolean())</pre></div>
 
@@ -1772,7 +1772,7 @@ Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span clas
 
 <p>Return either <code>0</code> or <code>1</code>.</p>
 
-<p>Example:</p>
+<p>For example:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>0 or 1: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> Random.binary())</pre></div>
 
