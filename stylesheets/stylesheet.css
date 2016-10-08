@@ -102,7 +102,12 @@ a {
 
 @media screen and (max-width: 42em) {
   .project-tagline {
-    font-size: 1.75rem; } }
+    font-size: 1.25rem; } }
+
+@media screen and (min-width: 42em) {
+  .flat-header {
+    height:100px !important;
+    padding-top:20px !important; } }
 
 .main-content :first-child {
   margin-top: 0; }

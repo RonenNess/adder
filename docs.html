@@ -17,20 +17,27 @@
         </style>
     </head>
     <body>
-        <section class="page-header" style="height:100px; padding-top:20px;">
+        <section class="page-header flat-header">
             <a href="http://adderscript.com/"><img src="img/logo-sm-wh.png" style="height:50px; width:auto;"></a>
             <a class="btn" href="https://github.com/RonenNess/adder">View on GitHub</a> <a class="btn" href="https://github.com/RonenNess/adder/zipball/master">Download .zip</a> <a class="btn"
             href="https://github.com/RonenNess/adder/tarball/master">Download .tar.gz</a>
         </section>
         <section class="main-content">
 
-<h1><a id="user-content-executing-adder---host-application-side" class="anchor" href="#executing-adder---host-application-side" aria-hidden="true"></a>Executing Adder - Host application side</h1>
+<a id="adder--docs" class="anchor" href="#adder--docs" aria-hidden="true"><h1>ADDER DOCS</h1></a>
+
+<p>Welcome to <a href="http://adderscript.com/" target="_blank">AdderScript</a> official docs. <br /><br />
+Since Adder is a Scripting language implemented on top of JavaScript, the docs are divided in two parts: <b>Host application side</b>, eg how to setup and execute Adder scripts in your Node.js / JavaScrtipt projects, and <b>Writing Adder Scripts</b>, eg the language itself, its syntax, and how to write Adder scripts.</p>
+
+<p>Note: for your convenience there's an online interactive <a href="http://adderscript.com/examples/sandbox.html" target="_blank">Adder Sandbox</a> you can experiment with while learning Adder.</p>
+
+<a id="executing-adder---host-application-side" class="anchor" href="#executing-adder---host-application-side" aria-hidden="true"><h1>Executing Adder - Host application side</h1></a>
 
 <p>This part of the docs explain how to setup and execute Adder from the host application side, eg the client JavaScript or your Node.js server.</p>
 
 <p>Later in these docs we'll learn the language itself and how to write Adder scripts.</p>
 
-<h2><a id="user-content-quick-example" class="anchor" href="#quick-example" aria-hidden="true"></a>Quick Example</h2>
+<a id="quick-example" class="anchor" href="#quick-example" aria-hidden="true"><h2>Quick Example</h2></a>
 
 <p>Before diving into the APIs, lets start with a simple example:</p>
 
@@ -49,20 +56,20 @@ compiledCode <span class="pl-k">=</span> <span class="pl-smi">AdderScript</span>
 
 <p>Pretty simple right? Now lets dive in a little deeper.</p>
 
-<h2><a id="user-content-init-environment" class="anchor" href="#init-environment" aria-hidden="true"></a>Init Environment</h2>
+<a id="init-environment" class="anchor" href="#init-environment" aria-hidden="true"><h2>Init Environment</h2></a>
 
 <p>To run Adder scripts you first need to init environment:</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// if you don't provide any params output will go to console.log and default flags will apply</span>
 <span class="pl-smi">AdderScript</span>.<span class="pl-en">init</span>();</pre></div>
 
-<h2><a id="user-content-compile-code" class="anchor" href="#compile-code" aria-hidden="true"></a>Compile Code</h2>
+<a id="user-content-compile-code" class="anchor" href="#user-content-compile-code" aria-hidden="true"><h2>Compile Code</h2></a>
 
 <p>Once the environment is ready, you can compile Adder codes using the compile function:</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> compiled <span class="pl-k">=</span> <span class="pl-smi">AdderScript</span>.<span class="pl-c1">compile</span>(someCodeString);</pre></div>
 
-<h2><a id="user-content-save--load-pre-compiled-code" class="anchor" href="#save--load-pre-compiled-code" aria-hidden="true"></a>Save / Load pre-compiled code</h2>
+<a id="user-content-save--load-pre-compiled-code" class="anchor" href="#save--load-pre-compiled-code" aria-hidden="true"><h2>Save / Load pre-compiled code</h2></a>
 
 <p>If you want to save the compiled code for later usage, you can simply JSON.stringify() it into a file:</p>
 
@@ -80,7 +87,7 @@ compiledCode <span class="pl-k">=</span> <span class="pl-smi">AdderScript</span>
     compiledCode <span class="pl-k">=</span> <span class="pl-c1">JSON</span>.<span class="pl-c1">parse</span>(data);
 });</pre></div>
 
-<h2><a id="user-content-create--execute-programs" class="anchor" href="#create--execute-programs" aria-hidden="true"></a>Create &amp; Execute Programs</h2>
+<a id="user-content-create--execute-programs" class="anchor" href="#create--execute-programs" aria-hidden="true"><h2>Create &amp; Execute Programs</h2></a>
 
 <p>An Adder <code>Program</code> can be think of as a process executing a single Adder script one or more times.
 However, the Adder <code>program</code> is not a real process but an object living on the same memory space as the host application.</p>
@@ -102,7 +109,7 @@ In addition, global scope variables will stay alive between different executions
 
 <div class="highlight highlight-source-js"><pre><span class="pl-smi">program</span>.<span class="pl-en">resetContext</span>();</pre></div>
 
-<h2><a id="user-content-get-values-and-execution-errors" class="anchor" href="#get-values-and-execution-errors" aria-hidden="true"></a>Get values and execution errors</h2>
+<a id="user-content-get-values-and-execution-errors" class="anchor" href="#get-values-and-execution-errors" aria-hidden="true"><h2>Get values and execution errors</h2></a>
 
 <p>You can easily access the last evaluated result and get it as a native JavaScript object, using <code>getLastValue()</code>:</p>
 
@@ -127,7 +134,7 @@ In addition, global scope variables will stay alive between different executions
 
 <p>You can see all Adder error types in object <code>AdderScript.Errors</code>, or in file <em>errors.js</em>.</p>
 
-<h2><a id="user-content-advanced-init-settings" class="anchor" href="#advanced-init-settings" aria-hidden="true"></a>Advanced init settings</h2>
+<a id="user-content-advanced-init-settings" class="anchor" href="#advanced-init-settings" aria-hidden="true"><h2>Advanced init settings</h2></a>
 
 <p>When init Adder environment you can provide a dictionary with the following settings:</p>
 
@@ -138,7 +145,7 @@ In addition, global scope variables will stay alive between different executions
     showDebugConsole<span class="pl-k">:</span> <span class="pl-c1">true</span>,     <span class="pl-c">// if true, Adder will dump some extra debug data to console.</span>
 });</pre></div>
 
-<h3><a id="user-content-flags" class="anchor" href="#flags" aria-hidden="true"></a>flags</h3>
+<a id="user-content-flags" class="anchor" href="#flags" aria-hidden="true"><h3>flags</h3></a>
 
 <p>The following are all the flags you can set when you init Adder environment (as the 'flags' option):</p>
 
@@ -154,7 +161,7 @@ In addition, global scope variables will stay alive between different executions
     throwErrors<span class="pl-k">:</span> <span class="pl-c1">false</span>,             <span class="pl-c">// If true, will throw exceptions from Adder execution if occur. If false, you need to check errors with getLastError().</span>
 }</pre></div>
 
-<h3><a id="user-content-modules" class="anchor" href="#modules" aria-hidden="true"></a>modules</h3>
+<a id="user-content-modules" class="anchor" href="#modules" aria-hidden="true"><h3>modules</h3></a>
 
 <p>Modules are objects with functions and consts you can access from Adder scripts.
 For example, there's the built-in <em>Math</em> module that provide all the Math-related functionality and consts.</p>
@@ -170,7 +177,7 @@ However, that's not recommended in production, as it will include modules that c
 
 <p>All available modules will be described later in the chapter about writing Adder scripts.</p>
 
-<h3><a id="user-content-outputfunc" class="anchor" href="#outputfunc" aria-hidden="true"></a>outputFunc</h3>
+<a id="user-content-outputfunc" class="anchor" href="#outputfunc" aria-hidden="true"><h3>outputFunc</h3></a>
 
 <p>An optional function to handle script output when <code>print</code> is called. For example, if you want to send all <code>print</code> output directly to console:</p>
 
@@ -180,11 +187,11 @@ However, that's not recommended in production, as it will include modules that c
 
 <p>Note that this is the default behavior; If no outputFunc is provided, all output will go to console.log by default.</p>
 
-<h3><a id="user-content-showdebugconsole" class="anchor" href="#showdebugconsole" aria-hidden="true"></a>showDebugConsole</h3>
+<a id="user-content-showdebugconsole" class="anchor" href="#showdebugconsole" aria-hidden="true"><h3>showDebugConsole</h3></a>
 
 <p>If set to true, Adder will show some useful debug data in console.</p>
 
-<h2><a id="user-content-register-functions" class="anchor" href="#register-functions" aria-hidden="true"></a>Register Functions</h2>
+<a id="user-content-register-functions" class="anchor" href="#register-functions" aria-hidden="true"><h2>Register Functions</h2></a>
 
 <p>The most simple way to extend Adder's API and create an interface to the host application, is via builtin functions.</p>
 
@@ -208,7 +215,7 @@ However, that's not recommended in production, as it will include modules that c
 <div class="highlight highlight-source-python"><pre><span class="pl-c"># will alert "Hello World!"</span>
 test(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h2><a id="user-content-register-a-custom-module" class="anchor" href="#register-a-custom-module" aria-hidden="true"></a>Register A Custom Module</h2>
+<a id="user-content-register-a-custom-module" class="anchor" href="#register-a-custom-module" aria-hidden="true"><h2>Register A Custom Module</h2></a>
 
 <p>Just like registering a builtin function, you can register a custom module to Adder's API.</p>
 
@@ -241,7 +248,7 @@ test(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl
 <div class="highlight highlight-source-python"><pre><span class="pl-c"># will alert "Hello World!" (Test.bar equals to "World")</span>
 Test.foo(<span class="pl-s"><span class="pl-pds">"</span>Hello <span class="pl-pds">"</span></span> <span class="pl-k">+</span> Test.bar <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h2><a id="user-content-define-a-built-in-object-type" class="anchor" href="#define-a-built-in-object-type" aria-hidden="true"></a>Define a built-in object type</h2>
+<a id="user-content-define-a-built-in-object-type" class="anchor" href="#define-a-built-in-object-type" aria-hidden="true"><h2>Define a built-in object type</h2></a>
 
 <p>A module acts like a singleton. But what if you need an object you can instantiate, like Adder's <code>list</code>, <code>dict</code> or <code>set</code>?</p>
 
@@ -278,18 +285,18 @@ a.say_hello()</pre></div>
 
 <hr>
 
-<h1><a id="user-content-writing-adder-scripts" class="anchor" href="#writing-adder-scripts" aria-hidden="true"></a>Writing Adder Scripts</h1>
+<a id="user-content-writing-adder-scripts" class="anchor" href="#writing-adder-scripts" aria-hidden="true"><h1>Writing Adder Scripts</h1></a>
 
 <p>Previously we learned how to execute adder scripts and interact with them from the host application side.
 In this part of the tutorial we'll learn how to actually write Adder scripts.</p>
 
-<h2><a id="user-content-basic-syntax" class="anchor" href="#basic-syntax" aria-hidden="true"></a>Basic Syntax</h2>
+<a id="user-content-basic-syntax" class="anchor" href="#basic-syntax" aria-hidden="true"><h2>Basic Syntax</h2></a>
 
 <p>Adder syntax is the same as <a href="https://www.python.org">Python</a>, so if you know Python you know Adder and can skip this part.</p>
 
 <p>If you are not familiar with Python, here's a quick summary (after this you will also be able to use Python!).</p>
 
-<h3><a id="user-content-indentation" class="anchor" href="#indentation" aria-hidden="true"></a>Indentation</h3>
+<a id="user-content-indentation" class="anchor" href="#indentation" aria-hidden="true"><h3>Indentation</h3></a>
 
 <p>Adder is indent-sensitive; indentation is used to open and close blocks (instead of curly brackets in other languages).</p>
 
@@ -302,7 +309,7 @@ In this part of the tutorial we'll learn how to actually write Adder scripts.</p
 
 <p>Indents must be multiply of 4 spaces. Wrong indentation will throw syntax errors.</p>
 
-<h3><a id="user-content-comments" class="anchor" href="#comments" aria-hidden="true"></a>Comments</h3>
+<a id="user-content-comments" class="anchor" href="#comments" aria-hidden="true"><h3>Comments</h3></a>
 
 <p>Comments in Adder begin with the hash character ("#") and are terminated by the end of line:</p>
 
@@ -310,7 +317,7 @@ In this part of the tutorial we'll learn how to actually write Adder scripts.</p
 
 a <span class="pl-k">=</span> <span class="pl-c1">5</span> <span class="pl-c"># this part is also a comment; after 'a = 5' is executed this part will be ignored.</span></pre></div>
 
-<h3><a id="user-content-variables" class="anchor" href="#variables" aria-hidden="true"></a>Variables</h3>
+<a id="user-content-variables" class="anchor" href="#variables" aria-hidden="true"><h3>Variables</h3></a>
 
 <p>To create a new variable you just need to assign a value to it:</p>
 
@@ -322,7 +329,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">5</span> <span class="pl-c"># 
 a <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>   <span class="pl-c"># now 'a' is a string.</span>
 a <span class="pl-k">=</span> <span class="pl-c1">True</span>    <span class="pl-c"># and now 'a' is a boolean.</span></pre></div>
 
-<h4><a id="user-content-variables--scopes" class="anchor" href="#variables--scopes" aria-hidden="true"></a>Variables &amp; Scopes</h4>
+<a id="user-content-variables--scopes" class="anchor" href="#variables--scopes" aria-hidden="true"><h4>Variables &amp; Scopes</h4></a>
 
 <p>If 'a' is defined in a parent's block, setting its value will override it. For example:</p>
 
@@ -354,12 +361,12 @@ test()
 <p>If you are familiar with Python you will notice this behavior is slightly different;
 In Python, you need to use the <code>global</code> statement to override global variables from inside a function. In Adder, all variable assignment is <code>global</code> by default.</p>
 
-<h3><a id="user-content-string-variables" class="anchor" href="#string-variables" aria-hidden="true"></a>String variables</h3>
+<a id="user-content-string-variables" class="anchor" href="#string-variables" aria-hidden="true"><h3>String variables</h3></a>
 
 <p>String variables have an extended API that normal variables don't share.
 This API contains useful query and string manipulation functions:</p>
 
-<h4><a id="user-content-len-" class="anchor" href="#len-" aria-hidden="true"></a>len ()</h4>
+<a id="user-content-len-" class="anchor" href="#len-" aria-hidden="true"><h4>len ()</h4></a>
 
 <p>Return string length.</p>
 
@@ -367,7 +374,7 @@ This API contains useful query and string manipulation functions:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.len()  <span class="pl-c"># &lt;-- return 11.</span></pre></div>
 
-<h4><a id="user-content-split-delimiter" class="anchor" href="#split-delimiter" aria-hidden="true"></a>split ([delimiter])</h4>
+<a id="user-content-split-delimiter" class="anchor" href="#split-delimiter" aria-hidden="true"><h4>split ([delimiter])</h4></a>
 
 <p>Break the string into a list of string, separated by a given delimiter (or space if not provided).</p>
 
@@ -377,7 +384,7 @@ This API contains useful query and string manipulation functions:</p>
 <span class="pl-s"><span class="pl-pds">"</span>hello-world<span class="pl-pds">"</span></span>.split(<span class="pl-s"><span class="pl-pds">"</span>-<span class="pl-pds">"</span></span>)    <span class="pl-c"># &lt;-- return list("hello", "world").</span>
 <span class="pl-s"><span class="pl-pds">"</span>hello-world<span class="pl-pds">"</span></span>.split(<span class="pl-s"><span class="pl-pds">"</span>+<span class="pl-pds">"</span></span>)    <span class="pl-c"># &lt;-- return list("hello-world"), since delimiter not found.</span></pre></div>
 
-<h4><a id="user-content-replace-search-replace" class="anchor" href="#replace-search-replace" aria-hidden="true"></a>replace (search, replace)</h4>
+<a id="user-content-replace-search-replace" class="anchor" href="#replace-search-replace" aria-hidden="true"><h4>replace (search, replace)</h4></a>
 
 <p>Replace all occurrences of a search term with a given string.</p>
 
@@ -385,7 +392,7 @@ This API contains useful query and string manipulation functions:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.replace(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>friends<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return "hello friends".</span></pre></div>
 
-<h4><a id="user-content-remove-search-replace" class="anchor" href="#remove-search-replace" aria-hidden="true"></a>remove (search, replace)</h4>
+<a id="user-content-remove-search-replace" class="anchor" href="#remove-search-replace" aria-hidden="true"><h4>remove (search, replace)</h4></a>
 
 <p>Remove all occurrences of a search term.</p>
 
@@ -393,7 +400,7 @@ This API contains useful query and string manipulation functions:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.remove(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return "hello ".</span></pre></div>
 
-<h4><a id="user-content-index-search" class="anchor" href="#index-search" aria-hidden="true"></a>index (search)</h4>
+<a id="user-content-index-search" class="anchor" href="#index-search" aria-hidden="true"><h4>index (search)</h4></a>
 
 <p>Return the index of a search term in string, or -1 if not found.</p>
 
@@ -402,7 +409,7 @@ This API contains useful query and string manipulation functions:</p>
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.index(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return 6.</span>
 <span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.index(<span class="pl-s"><span class="pl-pds">"</span>dog<span class="pl-pds">"</span></span>)    <span class="pl-c"># &lt;-- return -1.</span></pre></div>
 
-<h4><a id="user-content-has-search" class="anchor" href="#has-search" aria-hidden="true"></a>has (search)</h4>
+<a id="user-content-has-search" class="anchor" href="#has-search" aria-hidden="true"><h4>has (search)</h4></a>
 
 <p>Return string containing a search term (equivalent to <code>x in string</code>).</p>
 
@@ -410,7 +417,7 @@ This API contains useful query and string manipulation functions:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.has(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return True.</span></pre></div>
 
-<h4><a id="user-content-count-search" class="anchor" href="#count-search" aria-hidden="true"></a>count (search)</h4>
+<a id="user-content-count-search" class="anchor" href="#count-search" aria-hidden="true"><h4>count (search)</h4></a>
 
 <p>Count how many times a search term appears in the string.</p>
 
@@ -418,7 +425,7 @@ This API contains useful query and string manipulation functions:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world, its a beautiful world!<span class="pl-pds">"</span></span>.count(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return 2.</span></pre></div>
 
-<h4><a id="user-content-trim-" class="anchor" href="#trim-" aria-hidden="true"></a>trim ()</h4>
+<a id="user-content-trim-" class="anchor" href="#trim-" aria-hidden="true"><h4>trim ()</h4></a>
 
 <p>Remove all white spaces from the begining and the end of the string.</p>
 
@@ -426,7 +433,7 @@ This API contains useful query and string manipulation functions:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>     hello world!    <span class="pl-pds">"</span></span>.trim()  <span class="pl-c"># &lt;-- return "hello world!".</span></pre></div>
 
-<h4><a id="user-content-hash-" class="anchor" href="#hash-" aria-hidden="true"></a>hash ()</h4>
+<a id="user-content-hash-" class="anchor" href="#hash-" aria-hidden="true"><h4>hash ()</h4></a>
 
 <p>Return a numeric hash value of the string.</p>
 
@@ -434,7 +441,7 @@ This API contains useful query and string manipulation functions:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.hash()  <span class="pl-c"># &lt;-- return 1794106052.</span></pre></div>
 
-<h4><a id="user-content-starts_with-word" class="anchor" href="#starts_with-word" aria-hidden="true"></a>starts_with (word)</h4>
+<a id="user-content-starts_with-word" class="anchor" href="#starts_with-word" aria-hidden="true"><h4>starts_with (word)</h4></a>
 
 <p>Return true if string starts with a given search term.</p>
 
@@ -443,7 +450,7 @@ This API contains useful query and string manipulation functions:</p>
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.starts_with(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return True.</span>
 <span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.starts_with(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return False.</span></pre></div>
 
-<h4><a id="user-content-ends_with-word" class="anchor" href="#ends_with-word" aria-hidden="true"></a>ends_with (word)</h4>
+<a id="user-content-ends_with-word" class="anchor" href="#ends_with-word" aria-hidden="true"><h4>ends_with (word)</h4></a>
 
 <p>Return true if string ends with a given search term.</p>
 
@@ -452,7 +459,7 @@ This API contains useful query and string manipulation functions:</p>
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.ends_with(<span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return True.</span>
 <span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.ends_with(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- return False.</span></pre></div>
 
-<h4><a id="user-content-is_alpha-" class="anchor" href="#is_alpha-" aria-hidden="true"></a>is_alpha ()</h4>
+<a id="user-content-is_alpha-" class="anchor" href="#is_alpha-" aria-hidden="true"><h4>is_alpha ()</h4></a>
 
 <p>Return true if string contains only alphabetic characters in English.</p>
 
@@ -462,7 +469,7 @@ This API contains useful query and string manipulation functions:</p>
 <span class="pl-s"><span class="pl-pds">"</span>hello world<span class="pl-pds">"</span></span>.is_alpha()  <span class="pl-c"># &lt;-- return False (because of the space).</span>
 <span class="pl-s"><span class="pl-pds">"</span>helloworld2<span class="pl-pds">"</span></span>.is_alpha()  <span class="pl-c"># &lt;-- return False (because of the '2').</span></pre></div>
 
-<h4><a id="user-content-is_digit-" class="anchor" href="#is_digit-" aria-hidden="true"></a>is_digit ()</h4>
+<a id="user-content-is_digit-" class="anchor" href="#is_digit-" aria-hidden="true"><h4>is_digit ()</h4></a>
 
 <p>Return true if string contains only numeric digits.</p>
 
@@ -472,7 +479,7 @@ This API contains useful query and string manipulation functions:</p>
 <span class="pl-s"><span class="pl-pds">"</span>123 45<span class="pl-pds">"</span></span>.is_digit()     <span class="pl-c"># &lt;-- return False (because of the space).</span>
 <span class="pl-s"><span class="pl-pds">"</span>12a34<span class="pl-pds">"</span></span>.is_digit()      <span class="pl-c"># &lt;-- return False (because of the 'a').</span></pre></div>
 
-<h4><a id="user-content-lower-" class="anchor" href="#lower-" aria-hidden="true"></a>lower ()</h4>
+<a id="user-content-lower-" class="anchor" href="#lower-" aria-hidden="true"><h4>lower ()</h4></a>
 
 <p>Convert string to lower case.</p>
 
@@ -480,7 +487,7 @@ This API contains useful query and string manipulation functions:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>HeLlo WoRlD!<span class="pl-pds">"</span></span>.lower()  <span class="pl-c"># &lt;-- return "hello world!".</span></pre></div>
 
-<h4><a id="user-content-upper-" class="anchor" href="#upper-" aria-hidden="true"></a>upper ()</h4>
+<a id="user-content-upper-" class="anchor" href="#upper-" aria-hidden="true"><h4>upper ()</h4></a>
 
 <p>Convert string to upper case.</p>
 
@@ -488,7 +495,7 @@ This API contains useful query and string manipulation functions:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>HeLlo WoRlD!<span class="pl-pds">"</span></span>.upper()  <span class="pl-c"># &lt;-- return "HELLO WORLD!".</span></pre></div>
 
-<h4><a id="user-content-title-" class="anchor" href="#title-" aria-hidden="true"></a>title ()</h4>
+<a id="user-content-title-" class="anchor" href="#title-" aria-hidden="true"><h4>title ()</h4></a>
 
 <p>Convert string to title case.</p>
 
@@ -496,7 +503,7 @@ This API contains useful query and string manipulation functions:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>HeLlo WoRlD!<span class="pl-pds">"</span></span>.upper()  <span class="pl-c"># &lt;-- return "Hello World!".</span></pre></div>
 
-<h4><a id="user-content-slice-start-len" class="anchor" href="#slice-start-len" aria-hidden="true"></a>slice (start, [len])</h4>
+<a id="user-content-slice-start-len" class="anchor" href="#slice-start-len" aria-hidden="true"><h4>slice (start, [len])</h4></a>
 
 <p>Return a slice of the string.</p>
 
@@ -505,37 +512,37 @@ This API contains useful query and string manipulation functions:</p>
 <div class="highlight highlight-source-python"><pre><span class="pl-s"><span class="pl-pds">"</span>Hello world!<span class="pl-pds">"</span></span>.slice(<span class="pl-c1">3</span>)  <span class="pl-c"># &lt;-- return "lo world!" (when no length provided, slice until end).</span>
 <span class="pl-s"><span class="pl-pds">"</span>Hello world!<span class="pl-pds">"</span></span>.slice(<span class="pl-c1">3</span>, <span class="pl-c1">5</span>)  <span class="pl-c"># &lt;-- return "lo wo" (because length is limited to 5).</span></pre></div>
 
-<h3><a id="user-content-builtin-consts" class="anchor" href="#builtin-consts" aria-hidden="true"></a>Builtin Consts</h3>
+<a id="user-content-builtin-consts" class="anchor" href="#builtin-consts" aria-hidden="true"><h3>Builtin Consts</h3></a>
 
 <p>A small number of Adder constants live in the global scope. They are:</p>
 
-<h4><a id="user-content-false" class="anchor" href="#false" aria-hidden="true"></a>False</h4>
+<a id="user-content-false" class="anchor" href="#false" aria-hidden="true"><h4>False</h4></a>
 
 <p>The false value of the bool type. Assignments to False are illegal and will raise a SyntaxError.</p>
 
-<h4><a id="user-content-true" class="anchor" href="#true" aria-hidden="true"></a>True</h4>
+<a id="user-content-true" class="anchor" href="#true" aria-hidden="true"><h4>True</h4></a>
 
 <p>The true value of the bool type. Assignments to True are illegal and will raise a SyntaxError.</p>
 
-<h4><a id="user-content-none" class="anchor" href="#none" aria-hidden="true"></a>None</h4>
+<a id="user-content-none" class="anchor" href="#none" aria-hidden="true"><h4>None</h4></a>
 
 <p>None is frequently used to represent the absence of a value, as when default arguments are not passed to a function.
 Assignments to None are illegal and will raise a SyntaxError.</p>
 
-<h4><a id="user-content-nan" class="anchor" href="#nan" aria-hidden="true"></a>NaN</h4>
+<a id="user-content-nan" class="anchor" href="#nan" aria-hidden="true"><h4>NaN</h4></a>
 
 <p>NaN (Not a Number) is a special constant that represent an illegal expressions involving numbers and non-number values.
 For example, <code>5 * "a"</code> will return NaN (note however that <code>5 * "2"</code> will be evaluated as '5 * 2' and return 10).</p>
 
-<h4><a id="user-content-version" class="anchor" href="#version" aria-hidden="true"></a><strong>VERSION</strong></h4>
+<a id="user-content-version" class="anchor" href="#version" aria-hidden="true"><h4><strong>VERSION</strong></h4></a>
 
 <p>String, the current Adder Script version.</p>
 
-<h3><a id="user-content-operators" class="anchor" href="#operators" aria-hidden="true"></a>Operators</h3>
+<a id="user-content-operators" class="anchor" href="#operators" aria-hidden="true"><h3>Operators</h3></a>
 
 <p>This chapter describe all the language arithmetic and comparison operators.</p>
 
-<h4><a id="user-content-basic-arithmetic-operators" class="anchor" href="#basic-arithmetic-operators" aria-hidden="true"></a>Basic Arithmetic Operators</h4>
+<a id="user-content-basic-arithmetic-operators" class="anchor" href="#basic-arithmetic-operators" aria-hidden="true"><h4>Basic Arithmetic Operators</h4></a>
 
 <p>In adder all the basic arithmetic operators are supported - add, subtract, multiply, divide and modulate:</p>
 
@@ -549,7 +556,7 @@ e <span class="pl-k">=</span> <span class="pl-c1">5</span> <span class="pl-k">%<
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">2</span> <span class="pl-k">**</span> <span class="pl-c1">3</span>   <span class="pl-c"># equals to '2 * 2 * 2'</span></pre></div>
 
-<h4><a id="user-content-in-place-operators" class="anchor" href="#in-place-operators" aria-hidden="true"></a>In-place operators</h4>
+<a id="user-content-in-place-operators" class="anchor" href="#in-place-operators" aria-hidden="true"><h4>In-place operators</h4></a>
 
 <p>In-place operators are syntactic sugar to change the value of a variable:</p>
 
@@ -560,7 +567,7 @@ d <span class="pl-k">*=</span> <span class="pl-c1">2</span>  <span class="pl-c">
 
 <p>Most arithmetic operators have their own in-place version.</p>
 
-<h4><a id="user-content-comparison-operators" class="anchor" href="#comparison-operators" aria-hidden="true"></a>Comparison operators</h4>
+<a id="user-content-comparison-operators" class="anchor" href="#comparison-operators" aria-hidden="true"><h4>Comparison operators</h4></a>
 
 <p>Adder support all the basic comparison operators: <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>!=</code>, <code>==</code>.
 They work the same as in most programming language:</p>
@@ -575,7 +582,7 @@ They work the same as in most programming language:</p>
 <span class="pl-c1">list</span>(<span class="pl-c1">1</span>) <span class="pl-k">==</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>) <span class="pl-c"># true</span>
 <span class="pl-c1">list</span>(<span class="pl-c1">1</span>) <span class="pl-k">==</span> <span class="pl-c1">list</span>(<span class="pl-c1">2</span>) <span class="pl-c"># false</span></pre></div>
 
-<h4><a id="user-content-bitwise-operators" class="anchor" href="#bitwise-operators" aria-hidden="true"></a>Bitwise operators</h4>
+<a id="user-content-bitwise-operators" class="anchor" href="#bitwise-operators" aria-hidden="true"><h4>Bitwise operators</h4></a>
 
 <p>To perform bitwise <code>and</code> operation, use the <code>&amp;</code> operator:</p>
 
@@ -585,14 +592,14 @@ They work the same as in most programming language:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">36</span> <span class="pl-k">|</span> <span class="pl-c1">14</span>) <span class="pl-c"># will print '46'</span></pre></div>
 
-<h4><a id="user-content-not" class="anchor" href="#not" aria-hidden="true"></a>not</h4>
+<a id="user-content-not" class="anchor" href="#not" aria-hidden="true"><h4>not</h4></a>
 
 <p>The <code>not</code> operator invert a boolean value, eg turn <code>true</code> into <code>false</code> and vice-versa:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-k">if</span> <span class="pl-k">not</span> <span class="pl-c1">True</span>:
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>hello!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4><a id="user-content-or" class="anchor" href="#or" aria-hidden="true"></a>or</h4>
+<a id="user-content-or" class="anchor" href="#or" aria-hidden="true"><h4>or</h4></a>
 
 <p>To create a conditional 'or', use the <code>or</code> operator:</p>
 
@@ -609,7 +616,7 @@ This means you can also use <code>or</code> to assign the first value option.</p
 a <span class="pl-k">=</span> <span class="pl-c1">False</span> <span class="pl-k">or</span> <span class="pl-c1">None</span> <span class="pl-k">or</span> <span class="pl-s"><span class="pl-pds">"</span>yay!<span class="pl-pds">"</span></span> <span class="pl-k">or</span> <span class="pl-c1">True</span>
 <span class="pl-c1">print</span>(a)</pre></div>
 
-<h4><a id="user-content-and" class="anchor" href="#and" aria-hidden="true"></a>and</h4>
+<a id="user-content-and" class="anchor" href="#and" aria-hidden="true"><h4>and</h4></a>
 
 <p>To create a conditional 'and', use the <code>and</code> operator:</p>
 
@@ -620,7 +627,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">2</span>
 
 <p>With <code>and</code> operator the condition is met only if all parts are true.</p>
 
-<h4><a id="user-content-in" class="anchor" href="#in" aria-hidden="true"></a>in</h4>
+<a id="user-content-in" class="anchor" href="#in" aria-hidden="true"><h4>in</h4></a>
 
 <p>In General, <code>in</code> is used to check if a value is contained in an object.</p>
 
@@ -637,7 +644,7 @@ dct.set(<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"<
 <span class="pl-k">if</span> <span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span> <span class="pl-k">in</span> dct:
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' is a key inside the dictionary!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4><a id="user-content-not-in" class="anchor" href="#not-in" aria-hidden="true"></a>not in</h4>
+<a id="user-content-not-in" class="anchor" href="#not-in" aria-hidden="true"><h4>not in</h4></a>
 
 <p><code>not in</code> is a syntactic sugar to test if a value is <em>not</em> in another value:</p>
 
@@ -645,7 +652,7 @@ dct.set(<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"<
 <span class="pl-k">if</span> <span class="pl-c1">5</span> <span class="pl-k">not</span> <span class="pl-k">in</span> lst:
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>5 is not in the list!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4><a id="user-content-is" class="anchor" href="#is" aria-hidden="true"></a>is</h4>
+<a id="user-content-is" class="anchor" href="#is" aria-hidden="true"><h4>is</h4></a>
 
 <p><code>is</code> operator is used to check if two values are the same object, or strictly equal. For example:</p>
 
@@ -656,7 +663,7 @@ dct.set(<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"<
 <span class="pl-c1">0</span> <span class="pl-k">is</span> <span class="pl-c1">False</span>          <span class="pl-c"># false</span>
 a <span class="pl-k">=</span> <span class="pl-c1">list</span>(); a <span class="pl-k">is</span> a  <span class="pl-c"># true</span></pre></div>
 
-<h4><a id="user-content-is-not" class="anchor" href="#is-not" aria-hidden="true"></a>is not</h4>
+<a id="user-content-is-not" class="anchor" href="#is-not" aria-hidden="true"><h4>is not</h4></a>
 
 <p>As a syntactic sugar, to test if value is not the same object as other value. For example:</p>
 
@@ -665,11 +672,11 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>()
 <span class="pl-k">if</span> a <span class="pl-k">is</span> <span class="pl-k">not</span> b:
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' is not 'b'!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h3><a id="user-content-conditions-if-else-elif" class="anchor" href="#conditions-if-else-elif" aria-hidden="true"></a>Conditions (if, else, elif)</h3>
+<a id="user-content-conditions-if-else-elif" class="anchor" href="#conditions-if-else-elif" aria-hidden="true"><h3>Conditions (if, else, elif)</h3></a>
 
 <p>Conditions test an expression and determine weather or not to execute the following block.</p>
 
-<h4><a id="user-content-if" class="anchor" href="#if" aria-hidden="true"></a>if</h4>
+<a id="user-content-if" class="anchor" href="#if" aria-hidden="true"><h4>if</h4></a>
 
 <p>To write a conditional block, you use the <code>if</code> statement:</p>
 
@@ -682,7 +689,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>()
 
 <div class="highlight highlight-source-python"><pre><span class="pl-k">if</span> a <span class="pl-k">==</span> <span class="pl-c1">5</span>: <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' equals 5<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4><a id="user-content-else" class="anchor" href="#else" aria-hidden="true"></a>else</h4>
+<a id="user-content-else" class="anchor" href="#else" aria-hidden="true"><h4>else</h4></a>
 
 <p><code>else</code> statements will execute their following block only if the last <code>if</code> condition was false.</p>
 
@@ -693,7 +700,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>()
 <span class="pl-k">else</span>:
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' does not equal 5<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4><a id="user-content-elif" class="anchor" href="#elif" aria-hidden="true"></a>elif</h4>
+<a id="user-content-elif" class="anchor" href="#elif" aria-hidden="true"><h4>elif</h4></a>
 
 <p>It is possible to add a conditional <code>if</code> to any <code>else</code> statement, eg make a block that will execute only if the previous <code>if</code> was false <em>and</em> a new condition is met.</p>
 
@@ -706,11 +713,11 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>()
 <span class="pl-k">else</span>:
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>a is neither '5' nor '6'<span class="pl-pds">"</span></span>)</pre></div>
 
-<h3><a id="user-content-loops" class="anchor" href="#loops" aria-hidden="true"></a>Loops</h3>
+<a id="user-content-loops" class="anchor" href="#loops" aria-hidden="true"><h3>Loops</h3></a>
 
 <p>There are two ways to make loops / iterate in Adder. We'll explain them in this chapter.</p>
 
-<h4><a id="user-content-for" class="anchor" href="#for" aria-hidden="true"></a>for</h4>
+<a id="user-content-for" class="anchor" href="#for" aria-hidden="true"><h4>for</h4></a>
 
 <p><code>for</code> statement iterate over the values of a container. For example, to iterate over the values of a list:</p>
 
@@ -718,7 +725,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>()
 <span class="pl-k">for</span> i <span class="pl-k">in</span> a:
     <span class="pl-c1">print</span>(i)</pre></div>
 
-<h4><a id="user-content-while" class="anchor" href="#while" aria-hidden="true"></a>while</h4>
+<a id="user-content-while" class="anchor" href="#while" aria-hidden="true"><h4>while</h4></a>
 
 <p><code>while</code> statement will repeat the block as long as the condition is true:</p>
 
@@ -727,7 +734,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>()
     <span class="pl-c1">print</span>(a)
     a <span class="pl-k">-=</span> <span class="pl-c1">1</span></pre></div>
 
-<h3><a id="user-content-functions" class="anchor" href="#functions" aria-hidden="true"></a>Functions</h3>
+<a id="user-content-functions" class="anchor" href="#functions" aria-hidden="true"><h3>Functions</h3></a>
 
 <p>To define a new function, use the <code>def</code> statement:</p>
 
@@ -747,11 +754,11 @@ hello_world()</pre></div>
 <span class="pl-c"># use it</span>
 hello_someone(<span class="pl-s"><span class="pl-pds">"</span>Bob<span class="pl-pds">"</span></span>)</pre></div>
 
-<h2><a id="user-content-containers-list-set-dict" class="anchor" href="#containers-list-set-dict" aria-hidden="true"></a>Containers (list, set, dict)</h2>
+<a id="user-content-containers-list-set-dict" class="anchor" href="#containers-list-set-dict" aria-hidden="true"><h2>Containers (list, set, dict)</h2></a>
 
 <p>There are 3 built-in containers you should know in Adder:</p>
 
-<h3><a id="user-content-list" class="anchor" href="#list" aria-hidden="true"></a>List</h3>
+<a id="user-content-list" class="anchor" href="#list" aria-hidden="true"><h3>List</h3></a>
 
 <p>List hold a list of values, while preserving the order of insertion.</p>
 
@@ -766,7 +773,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1
 <p>The list API is slightly different than Python's list.
 A list instance have the following functions:</p>
 
-<h4><a id="user-content-clone-" class="anchor" href="#clone-" aria-hidden="true"></a>clone ()</h4>
+<a id="user-content-clone-" class="anchor" href="#clone-" aria-hidden="true"><h4>clone ()</h4></a>
 
 <p>Create a shallow copy of the list.</p>
 
@@ -775,7 +782,7 @@ A list instance have the following functions:</p>
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
 b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will now be equal to 'a', but not the same object.</span></pre></div>
 
-<h4><a id="user-content-empty-" class="anchor" href="#empty-" aria-hidden="true"></a>empty ()</h4>
+<a id="user-content-empty-" class="anchor" href="#empty-" aria-hidden="true"><h4>empty ()</h4></a>
 
 <p>Return true if the list is empty, false otherwise.</p>
 
@@ -785,7 +792,7 @@ b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will no
 <span class="pl-k">if</span> a.empty():
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>List is empty!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4><a id="user-content-to_set-" class="anchor" href="#to_set-" aria-hidden="true"></a>to_set ()</h4>
+<a id="user-content-to_set-" class="anchor" href="#to_set-" aria-hidden="true"><h4>to_set ()</h4></a>
 
 <p>Convert the list to a Set object (described later).</p>
 
@@ -794,7 +801,7 @@ b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will no
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>, <span class="pl-c1">3</span>)
 b <span class="pl-k">=</span> <span class="pl-c1">list</span>.to_set()  <span class="pl-c"># &lt;-- 'b' is now a set with values 1, 2 and 3.</span></pre></div>
 
-<h4><a id="user-content-len--1" class="anchor" href="#len--1" aria-hidden="true"></a>len ()</h4>
+<a id="user-content-len--1" class="anchor" href="#len--1" aria-hidden="true"><h4>len ()</h4></a>
 
 <p>Return list length.</p>
 
@@ -803,7 +810,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>.to_set()  <span cl
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>)
 <span class="pl-c1">print</span>(a.len())  <span class="pl-c"># &lt;-- will print '2'.</span></pre></div>
 
-<h4><a id="user-content-append-val" class="anchor" href="#append-val" aria-hidden="true"></a>append (val)</h4>
+<a id="user-content-append-val" class="anchor" href="#append-val" aria-hidden="true"><h4>append (val)</h4></a>
 
 <p>Add a value to the end of the list.</p>
 
@@ -812,7 +819,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>.to_set()  <span cl
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 a.append(<span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- list will now contain: "foo", "bar", "foobar".</span></pre></div>
 
-<h4><a id="user-content-has-val" class="anchor" href="#has-val" aria-hidden="true"></a>has (val)</h4>
+<a id="user-content-has-val" class="anchor" href="#has-val" aria-hidden="true"><h4>has (val)</h4></a>
 
 <p>Return if the list contains a given value.</p>
 
@@ -822,7 +829,7 @@ a.append(<span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-p
 <span class="pl-k">if</span> a.has(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>):
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>List have value 'foo'<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4><a id="user-content-clear-" class="anchor" href="#clear-" aria-hidden="true"></a>clear ()</h4>
+<a id="user-content-clear-" class="anchor" href="#clear-" aria-hidden="true"><h4>clear ()</h4></a>
 
 <p>Clear the list (remove all values from it).</p>
 
@@ -831,7 +838,7 @@ a.append(<span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-p
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 a.clear()  <span class="pl-c"># &lt;-- 'a' will now be an empty list.</span></pre></div>
 
-<h4><a id="user-content-count-val" class="anchor" href="#count-val" aria-hidden="true"></a>count (val)</h4>
+<a id="user-content-count-val" class="anchor" href="#count-val" aria-hidden="true"><h4>count (val)</h4></a>
 
 <p>Return how many times a given value appears in the list.</p>
 
@@ -840,7 +847,7 @@ a.clear()  <span class="pl-c"># &lt;-- 'a' will now be an empty list.</span></pr
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 <span class="pl-c1">print</span>(a.count(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print 2 ("foo" appears twice in list).</span></pre></div>
 
-<h4><a id="user-content-extend-other" class="anchor" href="#extend-other" aria-hidden="true"></a>extend (other)</h4>
+<a id="user-content-extend-other" class="anchor" href="#extend-other" aria-hidden="true"><h4>extend (other)</h4></a>
 
 <p>Extend this list with another list (like concat).</p>
 
@@ -850,7 +857,7 @@ a.clear()  <span class="pl-c"># &lt;-- 'a' will now be an empty list.</span></pr
 b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)
 a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a list with: "foo", "bar", "hello", "world". 'b' will remain unchanged.</span></pre></div>
 
-<h4><a id="user-content-index-val" class="anchor" href="#index-val" aria-hidden="true"></a>index (val)</h4>
+<a id="user-content-index-val" class="anchor" href="#index-val" aria-hidden="true"><h4>index (val)</h4></a>
 
 <p>Return the first index of a given value in the list (or -1 if value not found).</p>
 
@@ -860,7 +867,7 @@ a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a list with: "foo", "bar", 
 <span class="pl-c1">print</span>(a.index(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print '1', the index of "foo".</span>
 <span class="pl-c1">print</span>(a.index(<span class="pl-s"><span class="pl-pds">"</span>other<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print '-1', since "other" is not in list.</span></pre></div>
 
-<h4><a id="user-content-insert-val-position" class="anchor" href="#insert-val-position" aria-hidden="true"></a>insert (val, position)</h4>
+<a id="user-content-insert-val-position" class="anchor" href="#insert-val-position" aria-hidden="true"><h4>insert (val, position)</h4></a>
 
 <p>Add a value to the list at a given position (index).</p>
 
@@ -869,7 +876,7 @@ a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a list with: "foo", "bar", 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 a.insert(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- 'a' will now contain: "foo", "hello", "bar".</span></pre></div>
 
-<h4><a id="user-content-pop-position" class="anchor" href="#pop-position" aria-hidden="true"></a>pop ([position])</h4>
+<a id="user-content-pop-position" class="anchor" href="#pop-position" aria-hidden="true"><h4>pop ([position])</h4></a>
 
 <p>Remove and return the last value from list, or from a given position (if provided position argument).</p>
 
@@ -883,7 +890,7 @@ a.pop()  <span class="pl-c"># &lt;-- will remove and return "hello", which is th
 a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 a.pop(<span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- will remove and return "bar", which is the value with index 1 in the list.</span></pre></div>
 
-<h4><a id="user-content-shift-" class="anchor" href="#shift-" aria-hidden="true"></a>shift ()</h4>
+<a id="user-content-shift-" class="anchor" href="#shift-" aria-hidden="true"><h4>shift ()</h4></a>
 
 <p>Remove and return the first value from the list.</p>
 
@@ -892,7 +899,7 @@ a.pop(<span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- will remove and
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-pds">"</span></span>)
 a.shift()  <span class="pl-c"># &lt;-- will remove and return "foo", the first value in the list.</span></pre></div>
 
-<h4><a id="user-content-remove-val" class="anchor" href="#remove-val" aria-hidden="true"></a>remove (val)</h4>
+<a id="user-content-remove-val" class="anchor" href="#remove-val" aria-hidden="true"><h4>remove (val)</h4></a>
 
 <p>Remove a given value from list (if found).</p>
 
@@ -901,7 +908,7 @@ a.shift()  <span class="pl-c"># &lt;-- will remove and return "foo", the first v
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 a.remove(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- will remove "bar" from the list.</span></pre></div>
 
-<h4><a id="user-content-reverse-" class="anchor" href="#reverse-" aria-hidden="true"></a>reverse ()</h4>
+<a id="user-content-reverse-" class="anchor" href="#reverse-" aria-hidden="true"><h4>reverse ()</h4></a>
 
 <p>Reverse the list.</p>
 
@@ -910,7 +917,7 @@ a.remove(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds"
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 a.reverse()  <span class="pl-c"># &lt;-- 'a' will now contain: "hello", "bar", "foo".</span></pre></div>
 
-<h4><a id="user-content-slice-start-end" class="anchor" href="#slice-start-end" aria-hidden="true"></a>slice (start, [end])</h4>
+<a id="user-content-slice-start-end" class="anchor" href="#slice-start-end" aria-hidden="true"><h4>slice (start, [end])</h4></a>
 
 <p>Return a segment of the list from a starting position and an optional ending position (ending position value will not be included).</p>
 
@@ -919,7 +926,7 @@ a.reverse()  <span class="pl-c"># &lt;-- 'a' will now contain: "hello", "bar", "
 <div class="highlight highlight-source-python"><pre>fruits <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>Banana<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Orange<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Lemon<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Apple<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Mango<span class="pl-pds">"</span></span>)
 <span class="pl-c1">print</span>(fruits.slice(<span class="pl-c1">1</span>, <span class="pl-c1">3</span>))  <span class="pl-c"># &lt;-- will print "Orange,Lemon".</span></pre></div>
 
-<h4><a id="user-content-join-delimiter" class="anchor" href="#join-delimiter" aria-hidden="true"></a>join ([delimiter])</h4>
+<a id="user-content-join-delimiter" class="anchor" href="#join-delimiter" aria-hidden="true"><h4>join ([delimiter])</h4></a>
 
 <p>Convert the list to a string with an optional delimiter (if delimiter is not provided, a comma will be used).</p>
 
@@ -928,7 +935,7 @@ a.reverse()  <span class="pl-c"># &lt;-- 'a' will now contain: "hello", "bar", "
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 <span class="pl-c1">print</span>(a.join(<span class="pl-s"><span class="pl-pds">"</span>--<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print "foo--bar--hello".</span></pre></div>
 
-<h4><a id="user-content-sort-" class="anchor" href="#sort-" aria-hidden="true"></a>sort ()</h4>
+<a id="user-content-sort-" class="anchor" href="#sort-" aria-hidden="true"><h4>sort ()</h4></a>
 
 <p>Sort the list values by a default string sorting.</p>
 
@@ -937,7 +944,7 @@ a.reverse()  <span class="pl-c"># &lt;-- 'a' will now contain: "hello", "bar", "
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>b<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>c<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>)
 a.sort()  <span class="pl-c"># &lt;-- 'a' will now contain: "a", "b", "c".</span></pre></div>
 
-<h4><a id="user-content-at-position" class="anchor" href="#at-position" aria-hidden="true"></a>at (position)</h4>
+<a id="user-content-at-position" class="anchor" href="#at-position" aria-hidden="true"><h4>at (position)</h4></a>
 
 <p>Return value from a given position in list.</p>
 
@@ -946,7 +953,7 @@ a.sort()  <span class="pl-c"># &lt;-- 'a' will now contain: "a", "b", "c".</span
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 <span class="pl-c1">print</span>(a.at(<span class="pl-c1">1</span>))  <span class="pl-c"># &lt;-- will print "bar"</span></pre></div>
 
-<h4><a id="user-content-iterating-lists" class="anchor" href="#iterating-lists" aria-hidden="true"></a>Iterating lists</h4>
+<a id="user-content-iterating-lists" class="anchor" href="#iterating-lists" aria-hidden="true"><h4>Iterating lists</h4></a>
 
 <p>To iterate over the values in a List, use <code>for-in</code> loop:</p>
 
@@ -954,7 +961,7 @@ a.sort()  <span class="pl-c"># &lt;-- 'a' will now contain: "a", "b", "c".</span
 <span class="pl-k">for</span> val <span class="pl-k">in</span> a:
     <span class="pl-c1">print</span>(val)</pre></div>
 
-<h3><a id="user-content-set" class="anchor" href="#set" aria-hidden="true"></a>Set</h3>
+<a id="user-content-set" class="anchor" href="#set" aria-hidden="true"><h3>Set</h3></a>
 
 <p>A Set is like a list, but in a set each value may only appear once. In addition, a Set may only contain simple types and not objects.
 Sets are much faster when you need to check if values exist or not.</p>
@@ -971,7 +978,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s">
 
 <p>A set instance have the following functions:</p>
 
-<h4><a id="user-content-clone--1" class="anchor" href="#clone--1" aria-hidden="true"></a>clone ()</h4>
+<a id="user-content-clone--1" class="anchor" href="#clone--1" aria-hidden="true"><h4>clone ()</h4></a>
 
 <p>Create a shallow copy of the set.</p>
 
@@ -980,7 +987,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s">
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
 b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will now be equal to 'a', but not the same object.</span></pre></div>
 
-<h4><a id="user-content-empty--1" class="anchor" href="#empty--1" aria-hidden="true"></a>empty ()</h4>
+<a id="user-content-empty--1" class="anchor" href="#empty--1" aria-hidden="true"><h4>empty ()</h4></a>
 
 <p>Return true if set is empty, false otherwise.</p>
 
@@ -990,7 +997,7 @@ b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will no
 <span class="pl-k">if</span> a.empty():
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Set 'a' is empty!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4><a id="user-content-to_list-" class="anchor" href="#to_list-" aria-hidden="true"></a>to_list ()</h4>
+<a id="user-content-to_list-" class="anchor" href="#to_list-" aria-hidden="true"><h4>to_list ()</h4></a>
 
 <p>Convert the set to a List object.</p>
 
@@ -999,7 +1006,7 @@ b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will no
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>, <span class="pl-c1">3</span>)
 b <span class="pl-k">=</span> a.to_list()  <span class="pl-c"># &lt;-- 'b' is now a new list with values 1, 2, 3.</span></pre></div>
 
-<h4><a id="user-content-len--2" class="anchor" href="#len--2" aria-hidden="true"></a>len ()</h4>
+<a id="user-content-len--2" class="anchor" href="#len--2" aria-hidden="true"><h4>len ()</h4></a>
 
 <p>Return set length.</p>
 
@@ -1008,7 +1015,7 @@ b <span class="pl-k">=</span> a.to_list()  <span class="pl-c"># &lt;-- 'b' is no
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>)
 <span class="pl-c1">print</span>(a.len())  <span class="pl-c"># &lt;-- will print '2'.</span></pre></div>
 
-<h4><a id="user-content-add-val" class="anchor" href="#add-val" aria-hidden="true"></a>add (val)</h4>
+<a id="user-content-add-val" class="anchor" href="#add-val" aria-hidden="true"><h4>add (val)</h4></a>
 
 <p>Add a value to the end of the set. If value already exist in set, will not do anything (as sets may only contain each value once).</p>
 
@@ -1017,7 +1024,7 @@ b <span class="pl-k">=</span> a.to_list()  <span class="pl-c"># &lt;-- 'b' is no
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 a.add(<span class="pl-s"><span class="pl-pds">"</span>foobar<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- set will now contain: "foo", "bar", "foobar".</span></pre></div>
 
-<h4><a id="user-content-has-val-1" class="anchor" href="#has-val-1" aria-hidden="true"></a>has (val)</h4>
+<a id="user-content-has-val-1" class="anchor" href="#has-val-1" aria-hidden="true"><h4>has (val)</h4></a>
 
 <p>Return if the set contains a given value.</p>
 
@@ -1035,7 +1042,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s">
 <div class="highlight highlight-source-python"><pre><span class="pl-k">if</span> <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span> <span class="pl-k">in</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>):
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'foo' is in set<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4><a id="user-content-clear--1" class="anchor" href="#clear--1" aria-hidden="true"></a>clear ()</h4>
+<a id="user-content-clear--1" class="anchor" href="#clear--1" aria-hidden="true"><h4>clear ()</h4></a>
 
 <p>Clear the set (remove all values from it).</p>
 
@@ -1044,7 +1051,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s">
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)
 a.clear()  <span class="pl-c"># &lt;-- set will now be an empty set.</span></pre></div>
 
-<h4><a id="user-content-extend-other-1" class="anchor" href="#extend-other-1" aria-hidden="true"></a>extend (other)</h4>
+<a id="user-content-extend-other-1" class="anchor" href="#extend-other-1" aria-hidden="true"><h4>extend (other)</h4></a>
 
 <p>Extend this set with another set (like concat).</p>
 
@@ -1054,7 +1061,7 @@ a.clear()  <span class="pl-c"># &lt;-- set will now be an empty set.</span></pre
 b <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)
 a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a set with: "foo", "bar", "hello", "world". 'b' will remain unchanged.</span></pre></div>
 
-<h4><a id="user-content-index-val-1" class="anchor" href="#index-val-1" aria-hidden="true"></a>index (val)</h4>
+<a id="user-content-index-val-1" class="anchor" href="#index-val-1" aria-hidden="true"><h4>index (val)</h4></a>
 
 <p>Return the index of a given value in set (or -1 if value not found).</p>
 
@@ -1064,7 +1071,7 @@ a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a set with: "foo", "bar", "
 <span class="pl-c1">print</span>(a.index(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print '1', the index of "foo".</span>
 <span class="pl-c1">print</span>(a.index(<span class="pl-s"><span class="pl-pds">"</span>other<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print '-1', since "other" is not in list.</span></pre></div>
 
-<h4><a id="user-content-remove-val-1" class="anchor" href="#remove-val-1" aria-hidden="true"></a>remove (val)</h4>
+<a id="user-content-remove-val-1" class="anchor" href="#remove-val-1" aria-hidden="true"><h4>remove (val)</h4></a>
 
 <p>Remove a given value from the set (if found).</p>
 
@@ -1073,7 +1080,7 @@ a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a set with: "foo", "bar", "
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 a.remove(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- will remove "bar" from the set.</span></pre></div>
 
-<h4><a id="user-content-join-delimiter-1" class="anchor" href="#join-delimiter-1" aria-hidden="true"></a>join ([delimiter])</h4>
+<a id="user-content-join-delimiter-1" class="anchor" href="#join-delimiter-1" aria-hidden="true"><h4>join ([delimiter])</h4></a>
 
 <p>Convert the set to a string connected with a given delimiter (if delimiter is not provided, a comma will be used).</p>
 
@@ -1082,7 +1089,7 @@ a.remove(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds"
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>)
 <span class="pl-c1">print</span>(a.join(<span class="pl-s"><span class="pl-pds">"</span>--<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print "foo--bar--hello".</span></pre></div>
 
-<h4><a id="user-content-iterating-sets" class="anchor" href="#iterating-sets" aria-hidden="true"></a>Iterating sets</h4>
+<a id="user-content-iterating-sets" class="anchor" href="#iterating-sets" aria-hidden="true"><h4>Iterating sets</h4></a>
 
 <p>To iterate over the values in a Set, use the <code>for-in</code> loop:</p>
 
@@ -1090,7 +1097,7 @@ a.remove(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds"
 <span class="pl-k">for</span> val <span class="pl-k">in</span> a:
     <span class="pl-c1">print</span>(val)</pre></div>
 
-<h3><a id="user-content-dictionary" class="anchor" href="#dictionary" aria-hidden="true"></a>Dictionary</h3>
+<a id="user-content-dictionary" class="anchor" href="#dictionary" aria-hidden="true"><h3>Dictionary</h3></a>
 
 <p>A dictionary, often known as “associative arrays” or "hash table", is a table of string keys leading to values.</p>
 
@@ -1109,7 +1116,7 @@ a.get(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"<
 
 <p>A dictionary instance have the following functions:</p>
 
-<h4><a id="user-content-clone--2" class="anchor" href="#clone--2" aria-hidden="true"></a>clone ()</h4>
+<a id="user-content-clone--2" class="anchor" href="#clone--2" aria-hidden="true"><h4>clone ()</h4></a>
 
 <p>Creates a shallow copy of the dictionary.</p>
 
@@ -1118,7 +1125,7 @@ a.get(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"<
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
 b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will now be equal to 'a', but not the same object.</span></pre></div>
 
-<h4><a id="user-content-set-key-value" class="anchor" href="#set-key-value" aria-hidden="true"></a>set (key, value)</h4>
+<a id="user-content-set-key-value" class="anchor" href="#set-key-value" aria-hidden="true"><h4>set (key, value)</h4></a>
 
 <p>Add a key-value to the dictionary.</p>
 
@@ -1127,7 +1134,7 @@ b <span class="pl-k">=</span> a.clone()  <span class="pl-c"># &lt;-- 'b' will no
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()
 a.set(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>value<span class="pl-pds">"</span></span>)  <span class="pl-c">#  &lt;-- dict will now contain a single key, "key", that will lead to the value "value".</span></pre></div>
 
-<h4><a id="user-content-get-key-default" class="anchor" href="#get-key-default" aria-hidden="true"></a>get (key, [default])</h4>
+<a id="user-content-get-key-default" class="anchor" href="#get-key-default" aria-hidden="true"><h4>get (key, [default])</h4></a>
 
 <p>Get a value from the dictionary by key.
 If key is not found in dictionary, <code>default</code> will be returned. If no <code>default</code> argument is provided, <code>None</code> will be returned instead.</p>
@@ -1147,7 +1154,7 @@ a.set(<span class="pl-s"><span class="pl-pds">"</span>key<span class="pl-pds">"<
 <span class="pl-c"># get non-existing value with default</span>
 <span class="pl-c1">print</span>(a.get(<span class="pl-s"><span class="pl-pds">"</span>some-key<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>not-found<span class="pl-pds">"</span></span>))  <span class="pl-c"># &lt;-- will print "not-found"</span></pre></div>
 
-<h4><a id="user-content-keys-" class="anchor" href="#keys-" aria-hidden="true"></a>keys ()</h4>
+<a id="user-content-keys-" class="anchor" href="#keys-" aria-hidden="true"><h4>keys ()</h4></a>
 
 <p>Return a list with all keys in the dictionary.</p>
 
@@ -1159,7 +1166,7 @@ a.set(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"<
 
 <span class="pl-c1">print</span>(a.keys())  <span class="pl-c"># &lt;-- will print "foo,bar"</span></pre></div>
 
-<h4><a id="user-content-values-" class="anchor" href="#values-" aria-hidden="true"></a>values ()</h4>
+<a id="user-content-values-" class="anchor" href="#values-" aria-hidden="true"><h4>values ()</h4></a>
 
 <p>Return a list with all values in the dictionary.</p>
 
@@ -1171,7 +1178,7 @@ a.set(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"<
 
 <span class="pl-c1">print</span>(a.values())  <span class="pl-c"># &lt;-- will print "1,2"</span></pre></div>
 
-<h4><a id="user-content-len--3" class="anchor" href="#len--3" aria-hidden="true"></a>len ()</h4>
+<a id="user-content-len--3" class="anchor" href="#len--3" aria-hidden="true"><h4>len ()</h4></a>
 
 <p>Return how many keys are in the dictionary.</p>
 
@@ -1185,7 +1192,7 @@ a.set(<span class="pl-s"><span class="pl-pds">"</span>bar<span class="pl-pds">"<
 <span class="pl-c"># print its length</span>
 <span class="pl-c1">print</span>(a.len())  <span class="pl-c"># &lt;-- will print 2.</span></pre></div>
 
-<h4><a id="user-content-remove-key" class="anchor" href="#remove-key" aria-hidden="true"></a>remove (key)</h4>
+<a id="user-content-remove-key" class="anchor" href="#remove-key" aria-hidden="true"><h4>remove (key)</h4></a>
 
 <p>Remove a key from the dictionary.</p>
 
@@ -1197,7 +1204,7 @@ a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"<
 a.remove(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- will remove "foo" from the dictionary.</span>
 a.remove(<span class="pl-s"><span class="pl-pds">"</span>bla<span class="pl-pds">"</span></span>)  <span class="pl-c"># &lt;-- won't do anything, since "bla" doesn't exist.</span></pre></div>
 
-<h4><a id="user-content-clear--2" class="anchor" href="#clear--2" aria-hidden="true"></a>clear ()</h4>
+<a id="user-content-clear--2" class="anchor" href="#clear--2" aria-hidden="true"><h4>clear ()</h4></a>
 
 <p>Clear the dictionary completely, leaving it empty.</p>
 
@@ -1207,7 +1214,7 @@ a.remove(<span class="pl-s"><span class="pl-pds">"</span>bla<span class="pl-pds"
 a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>)
 a.clear()  <span class="pl-c"># &lt;-- 'a' will now be an empty dictionary.</span></pre></div>
 
-<h4><a id="user-content-empty--2" class="anchor" href="#empty--2" aria-hidden="true"></a>empty ()</h4>
+<a id="user-content-empty--2" class="anchor" href="#empty--2" aria-hidden="true"><h4>empty ()</h4></a>
 
 <p>Return if the dictionary is empty, eg if it has no keys in it.</p>
 
@@ -1217,7 +1224,7 @@ a.clear()  <span class="pl-c"># &lt;-- 'a' will now be an empty dictionary.</spa
 <span class="pl-k">if</span> a.empty():
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Dictionary is empty!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4><a id="user-content-has-key" class="anchor" href="#has-key" aria-hidden="true"></a>has (key)</h4>
+<a id="user-content-has-key" class="anchor" href="#has-key" aria-hidden="true"><h4>has (key)</h4></a>
 
 <p>Return if the dictionary have a given key.</p>
 
@@ -1241,7 +1248,7 @@ a.set(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"<
 <span class="pl-k">if</span> <span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span> <span class="pl-k">in</span> a:
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>There's a key 'foo' in dictionary!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h4><a id="user-content-extend-other-2" class="anchor" href="#extend-other-2" aria-hidden="true"></a>extend (other)</h4>
+<a id="user-content-extend-other-2" class="anchor" href="#extend-other-2" aria-hidden="true"><h4>extend (other)</h4></a>
 
 <p>Extend this dictionary with another dictionary (like concat).</p>
 
@@ -1255,7 +1262,7 @@ b.set(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">
 
 a.extend(b)  <span class="pl-c"># &lt;-- 'a' will be a dictionary with: "foo" = "bar", "hello" = "world". 'b' will remain unchanged.</span></pre></div>
 
-<h4><a id="user-content-iterating-dictionaries" class="anchor" href="#iterating-dictionaries" aria-hidden="true"></a>Iterating dictionaries</h4>
+<a id="user-content-iterating-dictionaries" class="anchor" href="#iterating-dictionaries" aria-hidden="true"><h4>Iterating dictionaries</h4></a>
 
 <p>To iterate over the keys of a dictionary, use a <code>for</code> loop:</p>
 
@@ -1268,12 +1275,12 @@ a.set(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">
 <span class="pl-k">for</span> key <span class="pl-k">in</span> a:
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Key: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> key <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>, <span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>Value: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> a.get(key))</pre></div>
 
-<h2><a id="user-content-built-ins" class="anchor" href="#built-ins" aria-hidden="true"></a>Built-ins</h2>
+<a id="user-content-built-ins" class="anchor" href="#built-ins" aria-hidden="true"><h2>Built-ins</h2></a>
 
 <p>Adder have a set of built-in functions in global scope that provide some basic language functionality.
 The built-in functions you should know are:</p>
 
-<h3><a id="user-content-print-" class="anchor" href="#print-" aria-hidden="true"></a>print (...)</h3>
+<a id="user-content-print-" class="anchor" href="#print-" aria-hidden="true"><h3>print (...)</h3></a>
 
 <p>Print output (either a single or multiple string messages to print).</p>
 
@@ -1283,7 +1290,7 @@ The built-in functions you should know are:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h3><a id="user-content-all-" class="anchor" href="#all-" aria-hidden="true"></a>all (...)</h3>
+<a id="user-content-all-" class="anchor" href="#all-" aria-hidden="true"><h3>all (...)</h3></a>
 
 <p>Return true only if all given values are true or can be evaluated as boolean true.</p>
 
@@ -1292,7 +1299,7 @@ The built-in functions you should know are:</p>
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">all</span>(<span class="pl-c1">1</span>, <span class="pl-c1">True</span>, Math))  <span class="pl-c"># print True</span>
 <span class="pl-c1">print</span>(<span class="pl-c1">all</span>(<span class="pl-c1">1</span>, <span class="pl-c1">True</span>, Math, <span class="pl-c1">None</span>))  <span class="pl-c"># print False, because of the 'None' in the end</span></pre></div>
 
-<h3><a id="user-content-any-" class="anchor" href="#any-" aria-hidden="true"></a>any (...)</h3>
+<a id="user-content-any-" class="anchor" href="#any-" aria-hidden="true"><h3>any (...)</h3></a>
 
 <p>Return true if any of the given values is true or can be evaluated as boolean true.</p>
 
@@ -1302,7 +1309,7 @@ The built-in functions you should know are:</p>
 <span class="pl-c1">print</span>(<span class="pl-c1">any</span>(<span class="pl-c1">0</span>, <span class="pl-c1">1</span>, <span class="pl-c1">None</span>))  <span class="pl-c"># print true, thanks to the second '1' value, which casts to true</span>
 <span class="pl-c1">print</span>(<span class="pl-c1">any</span>(<span class="pl-c1">0</span>, <span class="pl-c1">False</span>, <span class="pl-c1">None</span>))  <span class="pl-c"># print false, because none of the values are true</span></pre></div>
 
-<h3><a id="user-content-bin-num" class="anchor" href="#bin-num" aria-hidden="true"></a>bin (num)</h3>
+<a id="user-content-bin-num" class="anchor" href="#bin-num" aria-hidden="true"><h3>bin (num)</h3></a>
 
 <p>Return a binary representation of a number (as string).</p>
 
@@ -1310,7 +1317,7 @@ The built-in functions you should know are:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">bin</span>(<span class="pl-c1">15</span>))  <span class="pl-c"># will print "1111"</span></pre></div>
 
-<h3><a id="user-content-bool-val" class="anchor" href="#bool-val" aria-hidden="true"></a>bool (val)</h3>
+<a id="user-content-bool-val" class="anchor" href="#bool-val" aria-hidden="true"><h3>bool (val)</h3></a>
 
 <p>Cast any value to a boolean (either <code>True</code> or <code>False</code>).</p>
 
@@ -1325,7 +1332,7 @@ The built-in functions you should know are:</p>
 <span class="pl-c1">print</span>(<span class="pl-c1">bool</span>(<span class="pl-s"><span class="pl-pds">"</span>Foo<span class="pl-pds">"</span></span>)) <span class="pl-c"># True</span>
 <span class="pl-c1">print</span>(<span class="pl-c1">bool</span>(Math))  <span class="pl-c"># True</span></pre></div>
 
-<h3><a id="user-content-callable-val" class="anchor" href="#callable-val" aria-hidden="true"></a>callable (val)</h3>
+<a id="user-content-callable-val" class="anchor" href="#callable-val" aria-hidden="true"><h3>callable (val)</h3></a>
 
 <p>Return true if given variable is a callable function.</p>
 
@@ -1341,7 +1348,7 @@ The built-in functions you should know are:</p>
 <span class="pl-c1">print</span>(<span class="pl-c1">callable</span>(<span class="pl-c1">True</span>))   <span class="pl-c"># will print "False"</span>
 <span class="pl-c1">print</span>(<span class="pl-c1">callable</span>(<span class="pl-c1">None</span>))   <span class="pl-c"># will print "False"</span></pre></div>
 
-<h3><a id="user-content-chr-num" class="anchor" href="#chr-num" aria-hidden="true"></a>chr (num)</h3>
+<a id="user-content-chr-num" class="anchor" href="#chr-num" aria-hidden="true"><h3>chr (num)</h3></a>
 
 <p>Convert a number to its ASCII character.</p>
 
@@ -1349,7 +1356,7 @@ The built-in functions you should know are:</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">chr</span>(<span class="pl-c1">97</span>))  <span class="pl-c"># &lt;-- will print 'a'</span></pre></div>
 
-<h3><a id="user-content-cmp-x-y" class="anchor" href="#cmp-x-y" aria-hidden="true"></a>cmp (x, y)</h3>
+<a id="user-content-cmp-x-y" class="anchor" href="#cmp-x-y" aria-hidden="true"><h3>cmp (x, y)</h3></a>
 
 <p>Compare two numeric values.
 Returns the sign of the difference of two numbers: -1 if x &lt; y, 0 if x == y, or 1 if x &gt; y.</p>
@@ -1360,7 +1367,7 @@ Returns the sign of the difference of two numbers: -1 if x &lt; y, 0 if x == y, 
 <span class="pl-v">cmp</span>(<span class="pl-c1">1</span>, <span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- returns 0</span>
 <span class="pl-v">cmp</span>(<span class="pl-c1">2</span>, <span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- returns 1</span></pre></div>
 
-<h3><a id="user-content-float-val" class="anchor" href="#float-val" aria-hidden="true"></a>float (val)</h3>
+<a id="user-content-float-val" class="anchor" href="#float-val" aria-hidden="true"><h3>float (val)</h3></a>
 
 <p>Convert an int or a string to a float.</p>
 
@@ -1368,7 +1375,7 @@ Returns the sign of the difference of two numbers: -1 if x &lt; y, 0 if x == y, 
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">float</span>(<span class="pl-s"><span class="pl-pds">"</span>4.3<span class="pl-pds">"</span></span>) <span class="pl-k">+</span> <span class="pl-c1">0.2</span>)  <span class="pl-c"># &lt;-- will print 4.5</span></pre></div>
 
-<h3><a id="user-content-int-val" class="anchor" href="#int-val" aria-hidden="true"></a>int (val)</h3>
+<a id="user-content-int-val" class="anchor" href="#int-val" aria-hidden="true"><h3>int (val)</h3></a>
 
 <p>Convert a float or a string to an int.</p>
 
@@ -1376,7 +1383,7 @@ Returns the sign of the difference of two numbers: -1 if x &lt; y, 0 if x == y, 
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">int</span>(<span class="pl-s"><span class="pl-pds">"</span>4<span class="pl-pds">"</span></span>) <span class="pl-k">+</span> <span class="pl-c1">1</span>)  <span class="pl-c"># &lt;-- will print 5</span></pre></div>
 
-<h3><a id="user-content-len-val" class="anchor" href="#len-val" aria-hidden="true"></a>len (val)</h3>
+<a id="user-content-len-val" class="anchor" href="#len-val" aria-hidden="true"><h3>len (val)</h3></a>
 
 <p>Return the length of an object (depends on object type).
 This is equivalent to <code>val.len()</code>.</p>
@@ -1386,7 +1393,7 @@ This is equivalent to <code>val.len()</code>.</p>
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)
 <span class="pl-c1">print</span>(<span class="pl-c1">len</span>(a))  <span class="pl-c"># &lt;-- will print 3</span></pre></div>
 
-<h3><a id="user-content-ord-chr" class="anchor" href="#ord-chr" aria-hidden="true"></a>ord (chr)</h3>
+<a id="user-content-ord-chr" class="anchor" href="#ord-chr" aria-hidden="true"><h3>ord (chr)</h3></a>
 
 <p>Return the ASCII value of a character.</p>
 
@@ -1394,7 +1401,7 @@ This is equivalent to <code>val.len()</code>.</p>
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-c1">ord</span>(<span class="pl-s"><span class="pl-pds">'</span>a<span class="pl-pds">'</span></span>))  <span class="pl-c"># &lt;-- will print 97</span></pre></div>
 
-<h3><a id="user-content-range-start-end-step" class="anchor" href="#range-start-end-step" aria-hidden="true"></a>range ([start], end, [step])</h3>
+<a id="user-content-range-start-end-step" class="anchor" href="#range-start-end-step" aria-hidden="true"><h3>range ([start], end, [step])</h3></a>
 
 <p>Return a list containing the values between a given starting point, ending point, and with an optional step size.</p>
 
@@ -1417,7 +1424,7 @@ This is equivalent to <code>val.len()</code>.</p>
 <span class="pl-c"># will create a list with values 0-9 (including).</span>
 a <span class="pl-k">=</span> <span class="pl-c1">range</span>(<span class="pl-c1">10</span>)</pre></div>
 
-<h3><a id="user-content-str-obj" class="anchor" href="#str-obj" aria-hidden="true"></a>str (obj)</h3>
+<a id="user-content-str-obj" class="anchor" href="#str-obj" aria-hidden="true"><h3>str (obj)</h3></a>
 
 <p>Convert an object or value to a string.</p>
 
@@ -1429,7 +1436,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">range</span>(<span class="pl-c
 <span class="pl-c1">str</span>(<span class="pl-c1">True</span>)          <span class="pl-c"># &lt;-- return "true".</span>
 <span class="pl-c1">str</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>)         <span class="pl-c"># &lt;-- return "foo".</span></pre></div>
 
-<h3><a id="user-content-repr-obj" class="anchor" href="#repr-obj" aria-hidden="true"></a>repr (obj)</h3>
+<a id="user-content-repr-obj" class="anchor" href="#repr-obj" aria-hidden="true"><h3>repr (obj)</h3></a>
 
 <p>Return the language representation of an object, as a string.</p>
 
@@ -1441,7 +1448,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">range</span>(<span class="pl-c
 <span class="pl-c1">repr</span>(<span class="pl-c1">True</span>)          <span class="pl-c"># &lt;-- return "True".</span>
 <span class="pl-c1">repr</span>(<span class="pl-s"><span class="pl-pds">"</span>foo<span class="pl-pds">"</span></span>)         <span class="pl-c"># &lt;-- return '"foo"' (with quotes)</span></pre></div>
 
-<h3><a id="user-content-type-obj" class="anchor" href="#type-obj" aria-hidden="true"></a>type (obj)</h3>
+<a id="user-content-type-obj" class="anchor" href="#type-obj" aria-hidden="true"><h3>type (obj)</h3></a>
 
 <p>Return the type of the object.</p>
 
@@ -1458,7 +1465,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">range</span>(<span class="pl-c
 <span class="pl-c1">type</span>(<span class="pl-c1">dict</span>())    <span class="pl-c"># "dict"</span>
 <span class="pl-c1">type</span>(<span class="pl-c1">5</span> <span class="pl-k">*</span> <span class="pl-s"><span class="pl-pds">"</span>str<span class="pl-pds">"</span></span>) <span class="pl-c"># "NaN"</span></pre></div>
 
-<h3><a id="user-content-list-" class="anchor" href="#list-" aria-hidden="true"></a>list (...)</h3>
+<a id="user-content-list-" class="anchor" href="#list-" aria-hidden="true"><h3>list (...)</h3></a>
 
 <p>Create a new list with optional starting values.</p>
 
@@ -1467,7 +1474,7 @@ a <span class="pl-k">=</span> <span class="pl-c1">range</span>(<span class="pl-c
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">list</span>()
 b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)</pre></div>
 
-<h3><a id="user-content-set-" class="anchor" href="#set-" aria-hidden="true"></a>set (...)</h3>
+<a id="user-content-set-" class="anchor" href="#set-" aria-hidden="true"><h3>set (...)</h3></a>
 
 <p>Create a new set with optional starting values.</p>
 
@@ -1476,7 +1483,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">set</span>()
 b <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)</pre></div>
 
-<h3><a id="user-content-dict-" class="anchor" href="#dict-" aria-hidden="true"></a>dict ()</h3>
+<a id="user-content-dict-" class="anchor" href="#dict-" aria-hidden="true"><h3>dict ()</h3></a>
 
 <p>Create a new empty dictionary.</p>
 
@@ -1484,7 +1491,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">set</span>(<span class="pl-c1"
 
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">dict</span>()</pre></div>
 
-<h3><a id="user-content-reversed-lst" class="anchor" href="#reversed-lst" aria-hidden="true"></a>reversed (lst)</h3>
+<a id="user-content-reversed-lst" class="anchor" href="#reversed-lst" aria-hidden="true"><h3>reversed (lst)</h3></a>
 
 <p>Reverse a list copy, without changing the original list.
 This is equivalent to <code>a.clone().reverse()</code>.</p>
@@ -1496,7 +1503,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">reversed</span>(a)
 <span class="pl-c1">print</span>(a)  <span class="pl-c"># &lt;-- will print "1,2,3"</span>
 <span class="pl-c1">print</span>(b)  <span class="pl-c"># &lt;-- will print "3,2,1"</span></pre></div>
 
-<h3><a id="user-content-equal-a-b" class="anchor" href="#equal-a-b" aria-hidden="true"></a>equal (a, b)</h3>
+<a id="user-content-equal-a-b" class="anchor" href="#equal-a-b" aria-hidden="true"><h3>equal (a, b)</h3></a>
 
 <p>Return <code>True</code> if both values are equal, <code>False</code> otherwise.
 This is equivalent to <code>a == b</code>, but usable as a function, so you can do things like <code>compare_func = equal</code> and later use 'compare_func' or override it.</p>
@@ -1508,7 +1515,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1
 <span class="pl-k">if</span> equal(a, b):
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Lists are equal!<span class="pl-pds">"</span></span>)</pre></div>
 
-<h3><a id="user-content-dir-obj" class="anchor" href="#dir-obj" aria-hidden="true"></a>dir ([obj])</h3>
+<a id="user-content-dir-obj" class="anchor" href="#dir-obj" aria-hidden="true"><h3>dir ([obj])</h3></a>
 
 <p>Return all the keys in current scope or in object's API.</p>
 
@@ -1522,7 +1529,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1
 <span class="pl-c"># will print the API functions and vars of the 'Math' module</span>
 <span class="pl-c1">print</span>(<span class="pl-c1">dir</span>(Math))</pre></div>
 
-<h3><a id="user-content-delete-obj" class="anchor" href="#delete-obj" aria-hidden="true"></a>delete (obj)</h3>
+<a id="user-content-delete-obj" class="anchor" href="#delete-obj" aria-hidden="true"><h3>delete (obj)</h3></a>
 
 <p>Remove a variable.</p>
 
@@ -1531,7 +1538,7 @@ b <span class="pl-k">=</span> <span class="pl-c1">list</span>(<span class="pl-c1
 <div class="highlight highlight-source-python"><pre>a <span class="pl-k">=</span> <span class="pl-c1">5</span>
 delete(a)  <span class="pl-c"># &lt;-- 'a' will no longer exist after this.</span></pre></div>
 
-<h3><a id="user-content-exist-obj" class="anchor" href="#exist-obj" aria-hidden="true"></a>exist (obj)</h3>
+<a id="user-content-exist-obj" class="anchor" href="#exist-obj" aria-hidden="true"><h3>exist (obj)</h3></a>
 
 <p>Return <code>True</code> if variable name exists in current scope or globals.</p>
 
@@ -1540,7 +1547,7 @@ delete(a)  <span class="pl-c"># &lt;-- 'a' will no longer exist after this.</spa
 <div class="highlight highlight-source-python"><pre><span class="pl-k">if</span> exist(<span class="pl-s"><span class="pl-pds">"</span>a<span class="pl-pds">"</span></span>):
     <span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>'a' exists: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> a)</pre></div>
 
-<h2><a id="user-content-modules-1" class="anchor" href="#modules-1" aria-hidden="true"></a>Modules</h2>
+<a id="user-content-modules-1" class="anchor" href="#modules-1" aria-hidden="true"><h2>Modules</h2></a>
 
 <p>Modules are objects with built-in functions and constants that Adder scripts can access and use.</p>
 
@@ -1554,13 +1561,13 @@ delete(a)  <span class="pl-c"># &lt;-- 'a' will no longer exist after this.</spa
 
 <p>In this chapter we'll go over the basic built-in modules and describe their APIs.</p>
 
-<h3><a id="user-content-math" class="anchor" href="#math" aria-hidden="true"></a>Math</h3>
+<a id="user-content-math" class="anchor" href="#math" aria-hidden="true"><h3>Math</h3></a>
 
 <p>Provide basic math-related functionality and constants.</p>
 
 <p>The Math module provide the following API:</p>
 
-<h4><a id="user-content-abs-val" class="anchor" href="#abs-val" aria-hidden="true"></a>abs (val)</h4>
+<a id="user-content-abs-val" class="anchor" href="#abs-val" aria-hidden="true"><h4>abs (val)</h4></a>
 
 <p>Convert a number to its absolute value.</p>
 
@@ -1568,7 +1575,7 @@ delete(a)  <span class="pl-c"># &lt;-- 'a' will no longer exist after this.</spa
 
 <div class="highlight highlight-source-python"><pre>Math.abs(<span class="pl-k">-</span><span class="pl-c1">5</span>)  <span class="pl-c"># &lt;-- will return 5.</span></pre></div>
 
-<h4><a id="user-content-min-" class="anchor" href="#min-" aria-hidden="true"></a>min (...)</h4>
+<a id="user-content-min-" class="anchor" href="#min-" aria-hidden="true"><h4>min (...)</h4></a>
 
 <p>Get a list of numeric arguments (or a single list argument) and return the smallest value.</p>
 
@@ -1578,7 +1585,7 @@ delete(a)  <span class="pl-c"># &lt;-- 'a' will no longer exist after this.</spa
 Math.min(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span class="pl-c1">5</span>))  <span class="pl-c"># &lt;-- will return 1.</span>
 Math.min(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>), <span class="pl-c1">5</span>)  <span class="pl-c"># &lt;-- will return NaN - can't mix numeric and list arguments.</span></pre></div>
 
-<h4><a id="user-content-max-" class="anchor" href="#max-" aria-hidden="true"></a>max (...)</h4>
+<a id="user-content-max-" class="anchor" href="#max-" aria-hidden="true"><h4>max (...)</h4></a>
 
 <p>Get a list of numeric arguments (or a single list argument) and return the largest value.</p>
 
@@ -1588,7 +1595,7 @@ Math.min(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span cla
 Math.max(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span class="pl-c1">5</span>))  <span class="pl-c"># &lt;-- will return 5.</span>
 Math.max(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span class="pl-c1">2</span>), <span class="pl-c1">5</span>)  <span class="pl-c"># &lt;-- will return NaN - can't mix numeric and list arguments.</span></pre></div>
 
-<h4><a id="user-content-pow-x-y" class="anchor" href="#pow-x-y" aria-hidden="true"></a>pow (x, y)</h4>
+<a id="user-content-pow-x-y" class="anchor" href="#pow-x-y" aria-hidden="true"><h4>pow (x, y)</h4></a>
 
 <p>Do power between two numbers (equivalent to the <code>**</code> operator).</p>
 
@@ -1596,7 +1603,7 @@ Math.max(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span cla
 
 <div class="highlight highlight-source-python"><pre>Math.pow(<span class="pl-c1">3</span>, <span class="pl-c1">2</span>)  <span class="pl-c"># &lt;-- will return 9, equivalent to '3 ** 2'</span></pre></div>
 
-<h4><a id="user-content-round-val" class="anchor" href="#round-val" aria-hidden="true"></a>round (val)</h4>
+<a id="user-content-round-val" class="anchor" href="#round-val" aria-hidden="true"><h4>round (val)</h4></a>
 
 <p>Round a numeric value to its closest round number.</p>
 
@@ -1605,7 +1612,7 @@ Math.max(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>, <span cla
 <div class="highlight highlight-source-python"><pre>Math.round(<span class="pl-c1">5.2</span>)  <span class="pl-c"># &lt;-- will return 5.</span>
 Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will return 6.</span></pre></div>
 
-<h4><a id="user-content-floor-val" class="anchor" href="#floor-val" aria-hidden="true"></a>floor (val)</h4>
+<a id="user-content-floor-val" class="anchor" href="#floor-val" aria-hidden="true"><h4>floor (val)</h4></a>
 
 <p>Round <em>down</em> a numeric value.</p>
 
@@ -1614,7 +1621,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will ret
 <div class="highlight highlight-source-python"><pre>Math.round(<span class="pl-c1">5.2</span>)  <span class="pl-c"># &lt;-- will return 5.</span>
 Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will also return 5.</span></pre></div>
 
-<h4><a id="user-content-ceil-val" class="anchor" href="#ceil-val" aria-hidden="true"></a>ceil (val)</h4>
+<a id="user-content-ceil-val" class="anchor" href="#ceil-val" aria-hidden="true"><h4>ceil (val)</h4></a>
 
 <p>Round <em>up</em> a numeric value.</p>
 
@@ -1623,7 +1630,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 <div class="highlight highlight-source-python"><pre>Math.round(<span class="pl-c1">5.2</span>)  <span class="pl-c"># &lt;-- will return 6.</span>
 Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will also return 6.</span></pre></div>
 
-<h4><a id="user-content-cos-val" class="anchor" href="#cos-val" aria-hidden="true"></a>cos (val)</h4>
+<a id="user-content-cos-val" class="anchor" href="#cos-val" aria-hidden="true"><h4>cos (val)</h4></a>
 
 <p>Calculate cos on a numeric value.</p>
 
@@ -1631,7 +1638,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Cos of 1: <span class="pl-pds">"</span></span>, Math.cos(<span class="pl-c1">1</span>))</pre></div>
 
-<h4><a id="user-content-sin-val" class="anchor" href="#sin-val" aria-hidden="true"></a>sin (val)</h4>
+<a id="user-content-sin-val" class="anchor" href="#sin-val" aria-hidden="true"><h4>sin (val)</h4></a>
 
 <p>Calculate sin on a numeric value.</p>
 
@@ -1639,7 +1646,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Sin of 1: <span class="pl-pds">"</span></span>, Math.sin(<span class="pl-c1">1</span>))</pre></div>
 
-<h4><a id="user-content-atan-val" class="anchor" href="#atan-val" aria-hidden="true"></a>atan (val)</h4>
+<a id="user-content-atan-val" class="anchor" href="#atan-val" aria-hidden="true"><h4>atan (val)</h4></a>
 
 <p>Calculate atan on a numeric value.</p>
 
@@ -1647,7 +1654,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Atan of 1: <span class="pl-pds">"</span></span>, Math.atan(<span class="pl-c1">1</span>))</pre></div>
 
-<h4><a id="user-content-exp-val" class="anchor" href="#exp-val" aria-hidden="true"></a>exp (val)</h4>
+<a id="user-content-exp-val" class="anchor" href="#exp-val" aria-hidden="true"><h4>exp (val)</h4></a>
 
 <p>Calculate exp on a numeric value.</p>
 
@@ -1655,7 +1662,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Exp of 1: <span class="pl-pds">"</span></span>, Math.exp(<span class="pl-c1">1</span>))</pre></div>
 
-<h4><a id="user-content-tan-val" class="anchor" href="#tan-val" aria-hidden="true"></a>tan (val)</h4>
+<a id="user-content-tan-val" class="anchor" href="#tan-val" aria-hidden="true"><h4>tan (val)</h4></a>
 
 <p>Calculate tan on a numeric value.</p>
 
@@ -1663,7 +1670,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Tan of 1: <span class="pl-pds">"</span></span>, Math.tan(<span class="pl-c1">1</span>))</pre></div>
 
-<h4><a id="user-content-log-val" class="anchor" href="#log-val" aria-hidden="true"></a>log (val)</h4>
+<a id="user-content-log-val" class="anchor" href="#log-val" aria-hidden="true"><h4>log (val)</h4></a>
 
 <p>Calculate log on a numeric value.</p>
 
@@ -1671,7 +1678,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Log of 1: <span class="pl-pds">"</span></span>, Math.log(<span class="pl-c1">1</span>))</pre></div>
 
-<h4><a id="user-content-sqrt-val" class="anchor" href="#sqrt-val" aria-hidden="true"></a>sqrt (val)</h4>
+<a id="user-content-sqrt-val" class="anchor" href="#sqrt-val" aria-hidden="true"><h4>sqrt (val)</h4></a>
 
 <p>Square root a numeric value.</p>
 
@@ -1679,7 +1686,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>Square root of 4: <span class="pl-pds">"</span></span>, Math.sqrt(<span class="pl-c1">4</span>))</pre></div>
 
-<h4><a id="user-content-sign-val" class="anchor" href="#sign-val" aria-hidden="true"></a>sign (val)</h4>
+<a id="user-content-sign-val" class="anchor" href="#sign-val" aria-hidden="true"><h4>sign (val)</h4></a>
 
 <p>Return 1 for positive values, -1 for negatives, 0 for 0.</p>
 
@@ -1689,7 +1696,7 @@ Math.round(<span class="pl-c1">5.6</span>)  <span class="pl-c"># &lt;-- will als
 Math.sign(<span class="pl-k">-</span><span class="pl-c1">3</span>)  <span class="pl-c"># &lt;-- will return -1</span>
 Math.sign(<span class="pl-c1">0</span>)  <span class="pl-c"># &lt;-- will return 0</span></pre></div>
 
-<h4><a id="user-content-sum-" class="anchor" href="#sum-" aria-hidden="true"></a>sum (...)</h4>
+<a id="user-content-sum-" class="anchor" href="#sum-" aria-hidden="true"><h4>sum (...)</h4></a>
 
 <p>Get a list of numeric arguments (or a single list argument) and return the sum of the values.</p>
 
@@ -1698,7 +1705,7 @@ Math.sign(<span class="pl-c1">0</span>)  <span class="pl-c"># &lt;-- will return
 <div class="highlight highlight-source-python"><pre>Math.sum(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)  <span class="pl-c"># &lt;-- will return 1+2+3 = 6</span>
 Math.sum(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>))  <span class="pl-c"># &lt;-- will return 1+2+3 = 6</span></pre></div>
 
-<h4><a id="user-content-mul-" class="anchor" href="#mul-" aria-hidden="true"></a>mul (...)</h4>
+<a id="user-content-mul-" class="anchor" href="#mul-" aria-hidden="true"><h4>mul (...)</h4></a>
 
 <p>Get a list of numeric arguments (or a single list argument) and return the multiplication of the values.</p>
 
@@ -1707,25 +1714,25 @@ Math.sum(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span clas
 <div class="highlight highlight-source-python"><pre>Math.mul(<span class="pl-c1">2</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>)  <span class="pl-c"># &lt;-- will return 2*2*3 = 12</span>
 Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>))  <span class="pl-c"># &lt;-- will return 2*2*3 = 12</span></pre></div>
 
-<h4><a id="user-content-e" class="anchor" href="#e" aria-hidden="true"></a>E</h4>
+<a id="user-content-e" class="anchor" href="#e" aria-hidden="true"><h4>E</h4></a>
 
 <p>E constant.</p>
 
-<h4><a id="user-content-pi" class="anchor" href="#pi" aria-hidden="true"></a>PI</h4>
+<a id="user-content-pi" class="anchor" href="#pi" aria-hidden="true"><h4>PI</h4></a>
 
 <p>PI constant.</p>
 
-<h4><a id="user-content-sqrt2" class="anchor" href="#sqrt2" aria-hidden="true"></a>SQRT2</h4>
+<a id="user-content-sqrt2" class="anchor" href="#sqrt2" aria-hidden="true"><h4>SQRT2</h4></a>
 
 <p>SQRT2 constant.</p>
 
-<h3><a id="user-content-random" class="anchor" href="#random" aria-hidden="true"></a>Random</h3>
+<a id="user-content-random" class="anchor" href="#random" aria-hidden="true"><h3>Random</h3></a>
 
 <p>Provide random-generation functionality.</p>
 
 <p>The Random module provide the following API:</p>
 
-<h4><a id="user-content-rand-" class="anchor" href="#rand-" aria-hidden="true"></a>rand ()</h4>
+<a id="user-content-rand-" class="anchor" href="#rand-" aria-hidden="true"><h4>rand ()</h4></a>
 
 <p>Return a random float number between 0 and 1.</p>
 
@@ -1733,7 +1740,7 @@ Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span clas
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(Random.rand())</pre></div>
 
-<h4><a id="user-content-rand_int-min-max" class="anchor" href="#rand_int-min-max" aria-hidden="true"></a>rand_int ([min,] max)</h4>
+<a id="user-content-rand_int-min-max" class="anchor" href="#rand_int-min-max" aria-hidden="true"><h4>rand_int ([min,] max)</h4></a>
 
 <p>Return a random int number between min and max.</p>
 
@@ -1742,7 +1749,7 @@ Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span clas
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(Random.rand_int(<span class="pl-c1">2</span>, <span class="pl-c1">10</span>)) <span class="pl-c"># print a random number between 2 to 10 (inclusive)</span>
 <span class="pl-c1">print</span>(Random.rand_int(<span class="pl-c1">5</span>)) <span class="pl-c"># print a random number between 0 to 5 (inclusive)</span></pre></div>
 
-<h4><a id="user-content-rand_float-min-max" class="anchor" href="#rand_float-min-max" aria-hidden="true"></a>rand_float ([min,] max)</h4>
+<a id="user-content-rand_float-min-max" class="anchor" href="#rand_float-min-max" aria-hidden="true"><h4>rand_float ([min,] max)</h4></a>
 
 <p>Return a random float number between min and max.</p>
 
@@ -1751,7 +1758,7 @@ Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span clas
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(Random.rand_float(<span class="pl-c1">2</span>, <span class="pl-c1">10</span>)) <span class="pl-c"># print a random number between 2.0 to 10.0 (inclusive)</span>
 <span class="pl-c1">print</span>(Random.rand_float(<span class="pl-c1">5</span>)) <span class="pl-c"># print a random number between 0.0 to 5.0 (inclusive)</span></pre></div>
 
-<h4><a id="user-content-select-iterable" class="anchor" href="#select-iterable" aria-hidden="true"></a>select (iterable)</h4>
+<a id="user-content-select-iterable" class="anchor" href="#select-iterable" aria-hidden="true"><h4>select (iterable)</h4></a>
 
 <p>Return a random value from a list or a set (doesn't work with dictionaries).</p>
 
@@ -1760,7 +1767,7 @@ Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span clas
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(Random.select(<span class="pl-c1">list</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>,<span class="pl-c1">5</span>))) <span class="pl-c"># get a random value from list options</span>
 <span class="pl-c1">print</span>(Random.select(<span class="pl-c1">set</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>,<span class="pl-c1">5</span>))) <span class="pl-c"># get a random value from set options</span></pre></div>
 
-<h4><a id="user-content-boolean-" class="anchor" href="#boolean-" aria-hidden="true"></a>boolean ()</h4>
+<a id="user-content-boolean-" class="anchor" href="#boolean-" aria-hidden="true"><h4>boolean ()</h4></a>
 
 <p>Return either <code>True</code> or <code>False</code>.</p>
 
@@ -1768,7 +1775,7 @@ Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span clas
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>And the answer is: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> Random.boolean())</pre></div>
 
-<h4><a id="user-content-binary-" class="anchor" href="#binary-" aria-hidden="true"></a>binary ()</h4>
+<a id="user-content-binary-" class="anchor" href="#binary-" aria-hidden="true"><h4>binary ()</h4></a>
 
 <p>Return either <code>0</code> or <code>1</code>.</p>
 
@@ -1776,27 +1783,27 @@ Math.mul(<span class="pl-c1">list</span>(<span class="pl-c1">2</span>,<span clas
 
 <div class="highlight highlight-source-python"><pre><span class="pl-c1">print</span>(<span class="pl-s"><span class="pl-pds">"</span>0 or 1: <span class="pl-pds">"</span></span> <span class="pl-k">+</span> Random.binary())</pre></div>
 
-<h3><a id="user-content-alert" class="anchor" href="#alert" aria-hidden="true"></a>Alert</h3>
+<a id="user-content-alert" class="anchor" href="#alert" aria-hidden="true"><h3>Alert</h3></a>
 
 <p>Provide functionality to show alerts to user (in browser). Use it for debug purposes, not recommended for production.</p>
 
 <p>The Alert module provide the following API:</p>
 
-<h4><a id="user-content-alert-msg" class="anchor" href="#alert-msg" aria-hidden="true"></a>alert (msg)</h4>
+<a id="user-content-alert-msg" class="anchor" href="#alert-msg" aria-hidden="true"><h4>alert (msg)</h4></a>
 
 <p>Show a standard browser alert box with msg string.</p>
 
-<h3><a id="user-content-input" class="anchor" href="#input" aria-hidden="true"></a>Input</h3>
+<a id="user-content-input" class="anchor" href="#input" aria-hidden="true"><h3>Input</h3></a>
 
 <p>Provide functionality to get input from user (in browser). Use it for debug purposes, not recommended for production.</p>
 
 <p>The Input module provide the following API:</p>
 
-<h4><a id="user-content-rawinput-msg-default" class="anchor" href="#rawinput-msg-default" aria-hidden="true"></a>rawInput (msg, [default])</h4>
+<a id="user-content-rawinput-msg-default" class="anchor" href="#rawinput-msg-default" aria-hidden="true"><h4>rawInput (msg, [default])</h4></a>
 
 <p>Show a standard browser prompt box with msg string, and a default value (if provided).</p>
 
-<h1><a id="user-content-what-next" class="anchor" href="#what-next" aria-hidden="true"></a>What Next</h1>
+<a id="user-content-what-next" class="anchor" href="#what-next" aria-hidden="true"><h1>What Next</h1></a>
 
 <p>If you want to start using Adder Scripts it is recommended you get familiar with the language.
 Check out the <a href="http://adderscript.com/examples/sandbox.html">Adder Sandbox</a> and the examples there, or take a look at the following <a href="http://adderscript.com/examples/BotWars/BotWars.html">Cool Game</a> made with Adder.</p>
