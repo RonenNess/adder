@@ -1,8 +1,8 @@
 {
   "name": "adder-script",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Python like language to execute untrusted codes in browsers and Node.js.",
-  "main": "dist/adder.js",
+  "main": "dist/node-adder.js",
   "scripts": {
     "test": "qunit-cli tests/test.js"
   },
