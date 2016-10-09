@@ -10,8 +10,25 @@
 // prepare the object to export
 var adder = require("./environment");
 
+// get general defs
+var defs = require('./defs');
+
+// set adder internals
+adder._internals = {
+    version: defs.version,
+    Utils: require('./utils'),
+    Compiler: require('./compiler'),
+    Interpreter: require('./interpreter'),
+    Core: require('./core'),
+    Language: require('./language/index'),
+    Lexer: require('./compiler/lexer'),
+    Parser: require('./compiler/parser'),
+    Adder: require('./environment'),
+    Console: require("./console"),
+};
+
 // if in browsers add to window object
-if (typeof window !== undefined) {
+if (typeof window !== "undefined") {
     window.AdderScript = adder;
 };
 
