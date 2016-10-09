@@ -1,1 +1,1 @@
-browserify src/index.js -o dist/adder.js & uglifyjs --keep-fnames -o dist/adder.min.js dist/adder.js & browserify src/index_tests.js -o dist/adder_4tests.js
+browserify -e src/index.js -o dist/adder.js --standalone AdderScript & uglifyjs --keep-fnames -o dist/adder.min.js dist/adder.js

@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.AdderScript = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
 /**
@@ -3707,7 +3707,7 @@ var APIs = {
 
 // global defs
 module.exports = {
-    'version': "1.0.0",
+    'version': "1.0.1",
     'about': "AdderScript is a lightweight minimalistic script language, aimed to execute untrusted code in a safe way.\nDesigned and built by Ronen Ness",
     'author': "Ronen Ness",
 };
@@ -4263,14 +4263,31 @@ module.exports = {
 // prepare the object to export
 var adder = require("./environment");
 
+// get general defs
+var defs = require('./defs');
+
+// set adder internals
+adder._internals = {
+    version: defs.version,
+    Utils: require('./utils'),
+    Compiler: require('./compiler'),
+    Interpreter: require('./interpreter'),
+    Core: require('./core'),
+    Language: require('./language/index'),
+    Lexer: require('./compiler/lexer'),
+    Parser: require('./compiler/parser'),
+    Adder: require('./environment'),
+    Console: require("./console"),
+};
+
 // if in browsers add to window object
-if (typeof window !== undefined) {
+if (typeof window !== "undefined") {
     window.AdderScript = adder;
 };
 
 // export main object
 module.exports = adder;
-},{"./environment":25}],29:[function(require,module,exports){
+},{"./compiler":3,"./compiler/lexer":4,"./compiler/parser":5,"./console":6,"./core":13,"./defs":22,"./environment":25,"./interpreter":30,"./language/index":60,"./utils":78}],29:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -7382,4 +7399,5 @@ module.exports = {
     getTime: getTime,
     replaceAll: replaceAll,
 };
-},{"./errors":27}]},{},[28]);
+},{"./errors":27}]},{},[28])(28)
+});
