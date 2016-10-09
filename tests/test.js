@@ -5,7 +5,7 @@ var _window = typeof window === "undefined" ? global : window;
 if (typeof require != 'undefined')
 {
 	 if (typeof _window.AdderScript == 'undefined') {
-	    require("./../dist/adder_4tests");
+	    _window.AdderScript = require("./../dist/node-adder");
 	 }
 }
 
@@ -33,7 +33,7 @@ function isNumber(value)
 function executeAndReturn(code) {
 
     // create interpreter
-    var interpreter = new AdderScript.Interpreter({throwErrors: true});
+    var interpreter = new AdderScript._internals.Interpreter({throwErrors: true});
 
     // to disable print() output
     interpreter.output = function() {};
@@ -43,7 +43,7 @@ function executeAndReturn(code) {
 
     // on browsers only, connect output (on node.js we don't want it it will spam results)
     if (typeof window !== "undefined") {
-        AdderScript.Console.bindToNativeConsole();
+        AdderScript._internals.Console.bindToNativeConsole();
     }
 
     // execute
@@ -82,7 +82,7 @@ function toNativeJs(val) {
     val = val && val.getValue ? val._value : val;
 
     // handle list
-    if (val && val.constructor == _window.AdderScript.Core.List)
+    if (val && val.constructor == AdderScript._internals.Core.List)
     {
         val = val._list;
         return val.map(function(x) {
@@ -91,7 +91,7 @@ function toNativeJs(val) {
     }
 
     // handle set
-    if (val && val.constructor == _window.AdderScript.Core.Set)
+    if (val && val.constructor == AdderScript._internals.Core.Set)
     {
         val = val._set;
         var ret = new Set();
@@ -102,7 +102,7 @@ function toNativeJs(val) {
     }
 
     // handle dictionary
-    if (val && val.constructor == _window.AdderScript.Core.Dict)
+    if (val && val.constructor == AdderScript._internals.Core.Dict)
     {
         val = val._dict;
         var ret = {};
@@ -193,7 +193,7 @@ function listToTokensList(expression)
 QUnit.test("lexer", function( assert ) {
 
     // create lexer
-    var lexer = new AdderScript.Lexer();
+    var lexer = new AdderScript._internals.Lexer();
 
     // check basic expression
     assert.deepEqual(lexer.parseExpression(
@@ -326,7 +326,7 @@ QUnit.test("lexer", function( assert ) {
 QUnit.test("parser", function( assert ) {
 
     // create parser
-    var lexer = new AdderScript.Lexer();
+    var lexer = new AdderScript._internals.Lexer();
 
     // remove undefined values by json dumps-loads
     function cleanup(data)
@@ -334,13 +334,13 @@ QUnit.test("parser", function( assert ) {
         return JSON.parse(JSON.stringify(data));
     }
 
-    assert.deepEqual(cleanup(AdderScript.Parser.parse(lexer.parseExpression("5 + 2"))),
+    assert.deepEqual(cleanup(AdderScript._internals.Parser.parse(lexer.parseExpression("5 + 2"))),
         [{"type":"+","left":{"type":"number","value":"5"},"right":{"type":"number","value":"2"}}]);
-    assert.deepEqual(cleanup(AdderScript.Parser.parse(lexer.parseExpression("5 + 2 * 1"))),
+    assert.deepEqual(cleanup(AdderScript._internals.Parser.parse(lexer.parseExpression("5 + 2 * 1"))),
         [{"left": {"type": "number","value": "5"},"right": {"left": {"type": "number","value": "2"},"right": {"type": "number","value": "1"},"type": "*"},"type": "+"}]);
-    assert.deepEqual(cleanup(AdderScript.Parser.parse(lexer.parseExpression("func(2,3)"))),
+    assert.deepEqual(cleanup(AdderScript._internals.Parser.parse(lexer.parseExpression("func(2,3)"))),
         [{"args":[{"type":"number","value":"2"},{"type":"number","value":"3"}],"name":"func","type":"call"}]);
-    assert.deepEqual(cleanup(AdderScript.Parser.parse(lexer.parseExpression('5 + "2"'))),
+    assert.deepEqual(cleanup(AdderScript._internals.Parser.parse(lexer.parseExpression('5 + "2"'))),
         [{"type":"+","left":{"type":"number","value":"5"},"right":{"type":"string","value":'"2"'}}]);
 });
 
@@ -359,7 +359,7 @@ QUnit.test("statement_pass", function( assert ) {
 // comments
 QUnit.test("statement_comment", function( assert ) {
 
-    var compiler = new AdderScript.Compiler();
+    var compiler = new AdderScript._internals.Compiler();
 
     // check legal cases
     assert.deepEqual(executeAndReturn("# foo"), [null, null]);
@@ -639,9 +639,9 @@ QUnit.test("loop_while", function( assert ) {
     compareExpression(assert, 'a = 0; while a < 10 and False: a += 1; a', 0);
 
     // invalid syntax
-    assert.throws(function(){executeAndReturn('while pass')}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function(){executeAndReturn('while True pass')}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function(){executeAndReturn('while True False: pass')}, _window.AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('while pass')}, AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('while True pass')}, AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('while True False: pass')}, AdderScript.Errors.SyntaxError);
 });
 
 // test for loops
@@ -656,10 +656,10 @@ QUnit.test("loop_for", function( assert ) {
     compareExpression(assert, 'a = 1; for i in range(10): pass; a', 1);
 
     // invalid syntax
-    assert.throws(function(){executeAndReturn('a = 5; for 5 in "test": pass')}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function(){executeAndReturn('a = 5; for "a" in "test": pass')}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function(){executeAndReturn('a = 5; for vg in "test" pass')}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function(){executeAndReturn('a = 5; for vg + 5 in "test": pass')}, _window.AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('a = 5; for 5 in "test": pass')}, AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('a = 5; for "a" in "test": pass')}, AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('a = 5; for vg in "test" pass')}, AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('a = 5; for vg + 5 in "test": pass')}, AdderScript.Errors.SyntaxError);
 });
 
 // test loop continue
@@ -704,7 +704,7 @@ QUnit.test("loop_continue", function( assert ) {
     compareExpression(assert, code, 0);
 
     // invalid syntax - using continue / break outside loops
-    assert.throws(function(){executeAndReturn('a = 5; continue;')}, _window.AdderScript.Errors.RuntimeError);
+    assert.throws(function(){executeAndReturn('a = 5; continue;')}, AdderScript.Errors.RuntimeError);
 });
 
 // test loop break
@@ -729,7 +729,7 @@ QUnit.test("loop_break", function( assert ) {
     compareExpression(assert, code, 0);
 
     // invalid syntax - using continue / break outside loops
-    assert.throws(function(){executeAndReturn('a = 5; break;')}, _window.AdderScript.Errors.RuntimeError);
+    assert.throws(function(){executeAndReturn('a = 5; break;')}, AdderScript.Errors.RuntimeError);
 });
 
 // test if
@@ -762,9 +762,9 @@ QUnit.test("if_statement", function( assert ) {
     compareExpression(assert, code, 0);
 
     // invalid syntax
-    assert.throws(function(){executeAndReturn('if True a = 5')}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function(){executeAndReturn('if True')}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function(){executeAndReturn('if : a = 5')}, _window.AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('if True a = 5')}, AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('if True')}, AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('if : a = 5')}, AdderScript.Errors.SyntaxError);
 });
 
 // test else
@@ -828,10 +828,10 @@ QUnit.test("else_statement", function( assert ) {
     compareExpression(assert, code, 1);
 
     // invalid syntax
-    assert.throws(function(){executeAndReturn('if True: a = 5; else foo')}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function(){executeAndReturn('else: a = 5')}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function(){executeAndReturn('a = 6; else: a = 5;')}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function(){executeAndReturn('a=0; if False: pass; else: if 0: a = 1; else: a = 5; a')}, _window.AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('if True: a = 5; else foo')}, AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('else: a = 5')}, AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('a = 6; else: a = 5;')}, AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('a=0; if False: pass; else: if 0: a = 1; else: a = 5; a')}, AdderScript.Errors.SyntaxError);
 });
 
 // test elif
@@ -896,10 +896,10 @@ QUnit.test("elif_statement", function( assert ) {
     compareExpression(assert, code, 1);
 
     // invalid syntax
-    assert.throws(function(){executeAndReturn('if True: a = 5; elif foo')}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function(){executeAndReturn('elif True: a = 5')}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function(){executeAndReturn('a = 6; elif True: a = 5;')}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function(){executeAndReturn('a=0; if False: pass; elif: if 0: a = 1; else: a = 5; a')}, _window.AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('if True: a = 5; elif foo')}, AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('elif True: a = 5')}, AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('a = 6; elif True: a = 5;')}, AdderScript.Errors.SyntaxError);
+    assert.throws(function(){executeAndReturn('a=0; if False: pass; elif: if 0: a = 1; else: a = 5; a')}, AdderScript.Errors.SyntaxError);
 });
 
 // basic function calls
@@ -908,7 +908,7 @@ QUnit.test("basic_function_call", function( assert ) {
     // register temp test function
     _window.__adder_script_test = function()
     {
-        var args = _window.AdderScript.Utils.toArray(arguments);
+        var args = AdderScript._internals.Utils.toArray(arguments);
         if (args.length === 1) {return args[0]._value;}
         return args.map(function(x) {
             return x._value;
@@ -917,7 +917,7 @@ QUnit.test("basic_function_call", function( assert ) {
 
     // call with simple values
     var values = ["1,2,3", '"das"', "15", "__VERSION__", "15 + 5", "15 + 5 * 2 + -1", '"5+2"', '1,2 + 2,3 + "abcd"', '1, "2,3"'];
-    var results = [[1,2,3], 'das', 15, AdderScript.version, 20, 15 + 5 * 2 + -1, '5+2', [1,2 + 2 ,3 + 'abcd'], [1, '2,3']];
+    var results = [[1,2,3], 'das', 15, AdderScript._internals.version, 20, 15 + 5 * 2 + -1, '5+2', [1,2 + 2 ,3 + 'abcd'], [1, '2,3']];
     for (var i = 0; i < values.length; ++i)
     {
         var val = values[i];
@@ -1050,10 +1050,10 @@ QUnit.test("basic_function_builtins", function( assert ) {
 
     // test delete
     testReturnValue(assert, "a = 5; b = a; delete(a); b", 5);
-    assert.throws(function() {testReturnValue(assert, "a = 5; b = a; delete(a); a", 5)}, _window.AdderScript.Errors.UndefinedVariable);
-    assert.throws(function() {testReturnValue(assert, "delete(Math)", 5)}, _window.AdderScript.Errors.RuntimeError);
-    assert.throws(function() {testReturnValue(assert, "a = 5; def test(): delete(a); test(); a", 5)}, _window.AdderScript.Errors.UndefinedVariable);
-    assert.throws(function() {testReturnValue(assert, "a = 5; def test(): a = 5 and delete(a); test(); a", 5)}, _window.AdderScript.Errors.UndefinedVariable);
+    assert.throws(function() {testReturnValue(assert, "a = 5; b = a; delete(a); a", 5)}, AdderScript.Errors.UndefinedVariable);
+    assert.throws(function() {testReturnValue(assert, "delete(Math)", 5)}, AdderScript.Errors.RuntimeError);
+    assert.throws(function() {testReturnValue(assert, "a = 5; def test(): delete(a); test(); a", 5)}, AdderScript.Errors.UndefinedVariable);
+    assert.throws(function() {testReturnValue(assert, "a = 5; def test(): a = 5 and delete(a); test(); a", 5)}, AdderScript.Errors.UndefinedVariable);
     testReturnValue(assert, 'a = 5; delete(a); exist("a");', false);
 
     // test exist
@@ -1382,8 +1382,8 @@ QUnit.test("list", function( assert ) {
 QUnit.test("set", function( assert ) {
 
     // basic set creation
-    testReturnValue(assert, "set()", AdderScript.Utils.toSet());
-    testReturnValue(assert, "set(1,2,3)", AdderScript.Utils.toSet([1,2,3]));
+    testReturnValue(assert, "set()", AdderScript._internals.Utils.toSet());
+    testReturnValue(assert, "set(1,2,3)", AdderScript._internals.Utils.toSet([1,2,3]));
     testReturnValue(assert, "type(set(2))", "set");
 
     // test comparison
@@ -1392,8 +1392,8 @@ QUnit.test("set", function( assert ) {
     testReturnValue(assert, "set(1,2,3) is set(1,2,3)", false);
 
     // test clone
-    testReturnValue(assert, "a = set(2); a.clone().clear(); a", AdderScript.Utils.toSet([2]));
-    testReturnValue(assert, "a = set(2); b = a.clone(); b.clear(); b", AdderScript.Utils.toSet());
+    testReturnValue(assert, "a = set(2); a.clone().clear(); a", AdderScript._internals.Utils.toSet([2]));
+    testReturnValue(assert, "a = set(2); b = a.clone(); b.clear(); b", AdderScript._internals.Utils.toSet());
 
     // test to_list
     testReturnValue(assert, "a = set(2); type(a.to_list())", "list");
@@ -1404,8 +1404,8 @@ QUnit.test("set", function( assert ) {
     testReturnValue(assert, "a = set(); a.add(1); a.len()", 1);
 
     // test add
-    testReturnValue(assert, "a = set(); a.add(1); a", AdderScript.Utils.toSet([1]));
-    testReturnValue(assert, "a = set(); a.add(1); a.add(False); a", AdderScript.Utils.toSet([1, false]));
+    testReturnValue(assert, "a = set(); a.add(1); a", AdderScript._internals.Utils.toSet([1]));
+    testReturnValue(assert, "a = set(); a.add(1); a.add(False); a", AdderScript._internals.Utils.toSet([1, false]));
 
     // test has
     testReturnValue(assert, "a = set(); a.has(1)", false);
@@ -1433,11 +1433,11 @@ QUnit.test("set", function( assert ) {
     testReturnValue(assert, "a = set(1,2); a.clear(); a.empty()", true);
 
     // test clear
-    testReturnValue(assert, "a = set(1, 2, 3); a", AdderScript.Utils.toSet([1,2,3]));
-    testReturnValue(assert, "a = set(1, 2, 3); a.clear(); a", AdderScript.Utils.toSet());
+    testReturnValue(assert, "a = set(1, 2, 3); a", AdderScript._internals.Utils.toSet([1,2,3]));
+    testReturnValue(assert, "a = set(1, 2, 3); a.clear(); a", AdderScript._internals.Utils.toSet());
 
     // test extend
-    testReturnValue(assert, "a = set(1, 2, 3); b = set(4,5,6); a.extend(b); a", AdderScript.Utils.toSet([1,2,3,4,5,6]));
+    testReturnValue(assert, "a = set(1, 2, 3); b = set(4,5,6); a.extend(b); a", AdderScript._internals.Utils.toSet([1,2,3,4,5,6]));
     assert.throws(function(){executeAndReturn('set(1, 2, 3).extend(False);')}, AdderScript.Errors.RuntimeError);
     assert.throws(function(){executeAndReturn('set(1, 2, 3).extend(1);')}, AdderScript.Errors.RuntimeError);
     assert.throws(function(){executeAndReturn('set(1, 2, 3).extend(list());')}, AdderScript.Errors.RuntimeError);
@@ -1447,8 +1447,8 @@ QUnit.test("set", function( assert ) {
     testReturnValue(assert, "set(1, 2, 3).index(2)", 1);
 
     // test remove
-    testReturnValue(assert, "a = set(1, 2, 3); a.remove(2); a", AdderScript.Utils.toSet([1,3]));
-    testReturnValue(assert, "a = set(1, 2, 3); a.remove(5); a", AdderScript.Utils.toSet([1, 2,3]));
+    testReturnValue(assert, "a = set(1, 2, 3); a.remove(2); a", AdderScript._internals.Utils.toSet([1,3]));
+    testReturnValue(assert, "a = set(1, 2, 3); a.remove(5); a", AdderScript._internals.Utils.toSet([1, 2,3]));
     testReturnValue(assert, "a = set(1, 2, 3); a.remove(2)", true);
     testReturnValue(assert, "a = set(1, 2, 3); a.remove(5)", false);
 
@@ -1669,9 +1669,6 @@ test()';
 // execute a program and expect output
 function execProgram(assert, code, expected) {
 
-    // get AdderScript object
-    var AdderScript = _window.AdderScript.Adder;
-
     // compile code and create program
     compiledCode = AdderScript.compile(code);
     var program = AdderScript.newProgram(compiledCode);
@@ -1694,7 +1691,6 @@ function execProgram(assert, code, expected) {
 QUnit.test("add_builtin_function", function( assert ) {
 
     // init AdderScript environment
-    var AdderScript = _window.AdderScript.Adder;
     AdderScript.init({flags: {throwErrors: true}});
 
     // add builtin function
@@ -1711,8 +1707,8 @@ QUnit.test("add_builtin_function", function( assert ) {
 
 
     // call the builtin function without illegal number of params - get exceptions
-    assert.throws(function() {execProgram(assert, 'a = test(); a', null)}, _window.AdderScript.Errors.RuntimeError);
-    assert.throws(function() {execProgram(assert, 'a = test(1, 2); a', null)}, _window.AdderScript.Errors.RuntimeError);
+    assert.throws(function() {execProgram(assert, 'a = test(); a', null)}, AdderScript.Errors.RuntimeError);
+    assert.throws(function() {execProgram(assert, 'a = test(1, 2); a', null)}, AdderScript.Errors.RuntimeError);
 
     // add builtin function that returns a list
     AdderScript.addBuiltinFunction({name: "test2",                       // function name
@@ -1763,7 +1759,6 @@ QUnit.test("add_builtin_function", function( assert ) {
 QUnit.test("add_builtin_module", function( assert ) {
 
     // init AdderScript environment
-    var AdderScript = _window.AdderScript.Adder;
     AdderScript.init({flags: {throwErrors: true}});
 
     // add builtin module
@@ -1793,11 +1788,11 @@ QUnit.test("add_builtin_module", function( assert ) {
     execProgram(assert, 'if TestModule: a = 5; a', 5);
 
     // test some illegal cases
-    assert.throws(function() {execProgram(assert, 'TestModule = 5; a', null)}, _window.AdderScript.Errors.RuntimeError);
-    assert.throws(function() {execProgram(assert, 'delete(TestModule); a', null)}, _window.AdderScript.Errors.RuntimeError);
-    assert.throws(function() {execProgram(assert, 'TestModule.foo = 5; a', null)}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function() {execProgram(assert, 'TestModule.bar = 5; a', null)}, _window.AdderScript.Errors.SyntaxError);
-    assert.throws(function() {execProgram(assert, 'for i in TestModule: pass; a', null)}, _window.AdderScript.Errors.RuntimeError);
+    assert.throws(function() {execProgram(assert, 'TestModule = 5; a', null)}, AdderScript.Errors.RuntimeError);
+    assert.throws(function() {execProgram(assert, 'delete(TestModule); a', null)}, AdderScript.Errors.RuntimeError);
+    assert.throws(function() {execProgram(assert, 'TestModule.foo = 5; a', null)}, AdderScript.Errors.SyntaxError);
+    assert.throws(function() {execProgram(assert, 'TestModule.bar = 5; a', null)}, AdderScript.Errors.SyntaxError);
+    assert.throws(function() {execProgram(assert, 'for i in TestModule: pass; a', null)}, AdderScript.Errors.RuntimeError);
 
     // remove the builtin module we created for this test
     AdderScript.removeBuiltinModule("TestModule");
@@ -1807,7 +1802,6 @@ QUnit.test("add_builtin_module", function( assert ) {
 QUnit.test("add_builtin_object", function( assert ) {
 
     // init AdderScript environment
-    var AdderScript = _window.AdderScript.Adder;
     AdderScript.init({flags: {throwErrors: true}});
 
     // define the object and get a function to create a new instance
@@ -1830,7 +1824,7 @@ QUnit.test("add_builtin_object", function( assert ) {
     execProgram(assert, 'a = create_test(); type(a)', "Test");
     execProgram(assert, 'a = create_test(); a.foo(1)', 4);
     execProgram(assert, 'a = create_test(); a.foo(a.val)', 5);
-    assert.throws(function() {execProgram(assert, 'create_test = 5', null)}, _window.AdderScript.Errors.RuntimeError);
+    assert.throws(function() {execProgram(assert, 'create_test = 5', null)}, AdderScript.Errors.RuntimeError);
 });
 
 
@@ -1850,9 +1844,6 @@ QUnit.test("limits_and_flags", function( assert ) {
         removeBuiltins: [],                  // An optional list of builtin function and const names you want to remove from the language.
     };
 
-    // get AdderScript environment
-    var AdderScript = _window.AdderScript.Adder;
-
     // create and return flags dictionary based on default_flags
     function makeFlags(dict) {
         for (var key in default_flags) {
@@ -1866,46 +1857,63 @@ QUnit.test("limits_and_flags", function( assert ) {
     // test stack limit
     var flags = makeFlags({stackLimit: 5});
     AdderScript.init({flags: flags});
-    assert.throws(function() {execProgram(assert, 'def test(): test(); test()');}, _window.AdderScript.Errors.StackOverflow);
+    assert.throws(function() {execProgram(assert, 'def test(): test(); test()');}, AdderScript.Errors.StackOverflow);
 
     // test maximum statements limit
     var flags = makeFlags({maxStatementsPerRun: 3});
     AdderScript.init({flags: flags});
-    assert.throws(function() {execProgram(assert, 'a = 4; b = 5; c = 6; d = 7;');}, _window.AdderScript.Errors.ExceededStatementsLimit);
+    assert.throws(function() {execProgram(assert, 'a = 4; b = 5; c = 6; d = 7;');}, AdderScript.Errors.ExceededStatementsLimit);
 
     // test maximum statements limit
     var flags = makeFlags({maxStringLen: 5});
     AdderScript.init({flags: flags});
-    assert.throws(function() {execProgram(assert, 'a = "1234567890"');}, _window.AdderScript.Errors.ExceedMemoryLimit);
+    assert.throws(function() {execProgram(assert, 'a = "1234567890"');}, AdderScript.Errors.ExceedMemoryLimit);
 
     // test maximum container limit
     var flags = makeFlags({maxContainersLen: 3});
     AdderScript.init({flags: flags});
-    assert.throws(function() {execProgram(assert, 'list(1,2,3,4,5)');}, _window.AdderScript.Errors.ExceedMemoryLimit);
-    assert.throws(function() {execProgram(assert, 'a = list(1); a.append(1); a.append(1); a.append(1);');}, _window.AdderScript.Errors.ExceedMemoryLimit);
-    assert.throws(function() {execProgram(assert, 'set(1,2,3,4,5)');}, _window.AdderScript.Errors.ExceedMemoryLimit);
-    assert.throws(function() {execProgram(assert, 'a = set(1); a.add(2); a.add(3); a.add(4);');}, _window.AdderScript.Errors.ExceedMemoryLimit);
-    assert.throws(function() {execProgram(assert, 'a = dict(); a.set(1, 1); a.set(2, 1); a.set(3, 1); a.set(4, 1);');}, _window.AdderScript.Errors.ExceedMemoryLimit);
+    assert.throws(function() {execProgram(assert, 'list(1,2,3,4,5)');}, AdderScript.Errors.ExceedMemoryLimit);
+    assert.throws(function() {execProgram(assert, 'a = list(1); a.append(1); a.append(1); a.append(1);');}, AdderScript.Errors.ExceedMemoryLimit);
+    assert.throws(function() {execProgram(assert, 'set(1,2,3,4,5)');}, AdderScript.Errors.ExceedMemoryLimit);
+    assert.throws(function() {execProgram(assert, 'a = set(1); a.add(2); a.add(3); a.add(4);');}, AdderScript.Errors.ExceedMemoryLimit);
+    assert.throws(function() {execProgram(assert, 'a = dict(); a.set(1, 1); a.set(2, 1); a.set(3, 1); a.set(4, 1);');}, AdderScript.Errors.ExceedMemoryLimit);
 
     // test max vars in scope
     var flags = makeFlags({maxVarsInScope: 3});
     AdderScript.init({flags: flags});
-    assert.throws(function() {execProgram(assert, 'a = 1; b = 2; c = 3; d = 4; e = 5;');}, _window.AdderScript.Errors.ExceedMemoryLimit);
+    assert.throws(function() {execProgram(assert, 'a = 1; b = 2; c = 3; d = 4; e = 5;');}, AdderScript.Errors.ExceedMemoryLimit);
 
     // test time limit
     var flags = makeFlags({executionTimeLimit: 1, maxStatementsPerRun:100000000});
     AdderScript.init({flags: flags});
-    assert.throws(function() {execProgram(assert, 'for i in range(1000): for j in range(1000): x = 2 ** 6;');}, _window.AdderScript.Errors.ExceededTimeLimit);
+    assert.throws(function() {execProgram(assert, 'for i in range(1000): for j in range(1000): x = 2 ** 6;');}, AdderScript.Errors.ExceededTimeLimit);
 
     // test memory limit
     var flags = makeFlags({memoryAllocationLimit: 5});
     AdderScript.init({flags: flags});
     execProgram(assert, 'pass', null);
-    assert.throws(function() {execProgram(assert, 'a = "123456"');}, _window.AdderScript.Errors.ExceedMemoryLimit);
-    assert.throws(function() {execProgram(assert, 'a = "123"; b = "123";');}, _window.AdderScript.Errors.ExceedMemoryLimit);
-    assert.throws(function() {execProgram(assert, 'a = 1; b = 2; c = 3; d = 4; e = 5; f = 6; g = 7; h = 8;');}, _window.AdderScript.Errors.ExceedMemoryLimit);
+    assert.throws(function() {execProgram(assert, 'a = "123456"');}, AdderScript.Errors.ExceedMemoryLimit);
+    assert.throws(function() {execProgram(assert, 'a = "123"; b = "123";');}, AdderScript.Errors.ExceedMemoryLimit);
+    assert.throws(function() {execProgram(assert, 'a = 1; b = 2; c = 3; d = 4; e = 5; f = 6; g = 7; h = 8;');}, AdderScript.Errors.ExceedMemoryLimit);
 
     // test undefined variable exception
-    assert.throws(function() {execProgram(assert, 'a = b + 1');}, _window.AdderScript.Errors.UndefinedVariable);
+    assert.throws(function() {execProgram(assert, 'a = b + 1');}, AdderScript.Errors.UndefinedVariable);
 
+});
+
+
+// usage from readme first example
+QUnit.test("example", function( assert ) {
+
+    // init Adder environment
+    AdderScript.init({
+        outputFunc: function(text) {},
+    });
+
+    // create a simple script and run
+    compiledCode = AdderScript.compile('print("Hello World!"); a = 5; a;');
+    var program = AdderScript.newProgram(compiledCode);
+    program.execute();
+    assert.equal(program.getLastValue(), 5);
+    assert.equal(program.getLastError(), null);
 });
