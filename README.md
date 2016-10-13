@@ -85,7 +85,14 @@ The following is a summary of performance tests I conducted on windows 8:
 
 ![Performance table](img/performance.png "Performance table")
 
-These tests execute the same logic with Adder and JavaScript couple thousands of times, and measure the time it took to execute each code. For more info check out *tests/performance.html*.
+These tests execute the same logic with Adder and JavaScript couple thousands of times, and measure the time it took to execute each code.
+
+Please note:
+
+- The tests above don't include compile time (Adder scripts are compiled prior the tests).
+- Adder programs that execute multiple times have internal caching which makes them faster. If your project runs lots of different Adder scripts but each program only once, performance would be slightly worse.
+
+For more info check out *tests/performance.html*.
 
 ___
 
