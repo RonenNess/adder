@@ -80,7 +80,7 @@ To get a rich Adder sandbox with code examples and minimal editor, you can open 
 
 In overall, Adder appears to be 3-5 times slower than executing plain JavaScript, **on multiple executions**. On FireFox it appears to be much faster, due to caching of expressions.
 
-The following is a summary of performance tests I conducted on windows 8:
+The following is a summary of performance tests I conducted on multiple browsers (with windows 8). In bars below less is better:
 
 
 ![Performance table](img/performance.png "Performance table")
@@ -90,7 +90,7 @@ These tests execute the same logic with Adder and JavaScript couple thousands of
 Please note:
 
 - The tests above don't include compile time (Adder scripts are compiled prior the tests).
-- Adder programs that execute multiple times have internal caching which makes them faster. If your project runs lots of different Adder scripts but each program only once, performance would be slightly worse.
+- Adder programs that execute multiple times have internal caching which makes them faster. If your project run each Adder program only once, performance would be slightly worse.
 
 For more info check out *tests/performance.html*.
 
