@@ -125,7 +125,7 @@ function start_game() {
         game_data.playerself = game_data.player2;
 
         // run enemy code to get his action
-        var enemy_action;
+        var enemy_action = "idle";
         try {
             enemy.execute();
         }
@@ -140,7 +140,7 @@ function start_game() {
         game_data.playerself = game_data.player1;
 
         // run player code to get his action
-        var player_action;
+        var player_action = "idle";
         try {
             player.execute();
         }
