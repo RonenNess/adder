@@ -49,7 +49,9 @@ Adder works and heavily tested on the following browsers / platforms:
 
 ![platforms](img/supported.png "Platforms")
 
-## Insrall
+## Install
+
+There are several ways to install Adder:
 
 #### Via npm
 
