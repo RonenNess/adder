@@ -49,6 +49,28 @@ Adder works and heavily tested on the following browsers / platforms:
 
 ![platforms](img/supported.png "Platforms")
 
+## Insrall
+
+#### Via npm
+
+```
+npm install adder-script
+```
+
+#### Via bower
+
+```
+bower install adder-script
+```
+
+#### Via git (clone)
+
+```
+git clone https://github.com/RonenNess/adder.git
+```
+
+Or you can download from the [GitHub repository](https://github.com/RonenNess/adder).
+
 ## Tests & Examples
 
 ### Tests
