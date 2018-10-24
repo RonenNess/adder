@@ -49,10 +49,11 @@ var Program = Class({
     },
 
     // execute program once.
-    execute: function() {
+	// @param funcName - if provided, will call this function instead of root block.
+    execute: function(funcName) {
 
         // execute code
-        this._interpreter.execute();
+        this._interpreter.execute(funcName);
     },
 
     // reset context

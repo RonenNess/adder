@@ -221,6 +221,10 @@ var Interpreter = Class({
     // @return function ret value.
     callFunction: function(func, args, object)
     {
+		// if function is string, get it from context
+		if (typeof func === "string")
+			func = this._context.getVar(func);
+		
         // if got a var containing the function, take the function value from it
         if (func._value) {
             func = func._value;
@@ -359,8 +363,9 @@ var Interpreter = Class({
         }
     },
 
-    // execute the currently code
-    execute: function()
+    // execute the currently loaded code
+	// @param funcName - if provided, will call this function instead of root block.
+    execute: function(funcName)
     {
         // no root block is set? exception
         if (this._rootBlock === null) {
@@ -372,7 +377,12 @@ var Interpreter = Class({
 
         // start execution
         try {
-            this._rootBlock.execute();
+			if (funcName) {
+				this.callFunction(funcName, []);
+			}
+			else {
+				this._rootBlock.execute();
+			}
             this.finishExecute();
         }
         catch(e) {
