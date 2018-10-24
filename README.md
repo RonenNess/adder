@@ -126,6 +126,10 @@ This part of the docs explain how to setup and execute Adder from the host appli
 
 Later in these docs we'll learn the language itself and how to write Adder scripts.
 
+## Fast Warning - no \r !!!
+
+Adder Script don't like \r, please use only \n to break lines.
+
 ## Quick Example
 
 Before diving into the APIs, lets start with a simple example:
