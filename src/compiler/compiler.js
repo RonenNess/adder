@@ -63,8 +63,20 @@ var Compiler = Class({
 
     // compile raw code into blocks of expressions
     // return value is a list of AST expressions and their corresponding line number ([ast, line]).
-    compile: function(code)
+	// @param code - code to compile. Must be English only and use \n as line breaks, no \r\n.
+	// @param flags - different compilation flags:
+	//					fixLineBreaks: if true (default), will fix line breaks to be \n without \r.
+    compile: function(code, flags)
     {
+		// default flags
+		flags = flags || {};
+		
+		// remove illegal characters
+		if (flags.fixLineBreaks !== false)
+		{
+			code = code.trim().replace(/\r\n/g, "\n").replace(/\r/g, "");
+		}
+		
         // use the lexer to convert to tokens
         var tokens = this._lexer.parseExpression(code);
 

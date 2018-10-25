@@ -126,9 +126,6 @@ This part of the docs explain how to setup and execute Adder from the host appli
 
 Later in these docs we'll learn the language itself and how to write Adder scripts.
 
-## Fast Warning - no \r !!!
-
-Adder Script don't like \r, please use only \n to break lines.
 
 ## Quick Example
 
@@ -376,6 +373,31 @@ Once defined, you can use the new module just like any other built-in module (th
 # will alert "Hello World!" (Test.bar equals to "World")
 Test.foo("Hello " + Test.bar + "!")
 ```
+
+
+## Define an enum
+
+To create an enum you can add a custom module with nothing but consts in it. For example:
+
+
+```JavaScript
+// add an enum
+AdderScript.addBuiltinModule("Colors",
+                                  {
+                                    "Red": 0,
+									"Blue": 1,
+									"Green": 2,
+									"Yellow": 3,
+                                  }
+                              );
+```
+
+Then from code users can access it as:
+
+```Python
+color = Colors.Red
+```
+
 
 ## Define a built-in object type
 
