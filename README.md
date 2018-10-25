@@ -73,6 +73,11 @@ git clone https://github.com/RonenNess/adder.git
 
 Or you can download from the [GitHub repository](https://github.com/RonenNess/adder).
 
+#### Building The Code
+
+To build the distributed version for client side, run the command `build.bat`.
+It uses `browserify` and `uglifyjs`, so be sure to install them first.
+
 ## Tests & Examples
 
 ### Tests
