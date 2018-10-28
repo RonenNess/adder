@@ -342,6 +342,35 @@ Once registered, you can use the new function like any other built-in Adder func
 test("Hello World!")
 ```
 
+### Return Complex Objects
+
+If you want your function to return a dictionary or a complex object, and not just a basic type, you need to use ```toAdderObject``` on the returned value. For example:
+
+```JavaScript
+// the actual function implementation
+function testFunc(x) {
+	AdderScript.toAdderObject("testFuncReturnType", 
+	{
+		foo: 5,
+		bar: 10,
+	}, this);
+}
+
+// add builtin function
+AdderScript.addBuiltinFunction({name: "test",                   // function name
+                                func: testFunc,   				// the function itself
+                                requiredParams: 1,              // number of required params
+                                optionalParams: 0});            // number of additional optional params
+```
+
+Then it can be used from Adder like this:
+
+```Python
+ret = test()
+if ret.foo == 5:
+    print("Success!")
+```
+
 ## Register A Custom Module
 
 Just like registering a builtin function, you can register a custom module to Adder's API.

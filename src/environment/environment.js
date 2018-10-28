@@ -191,7 +191,11 @@ var Environment = Class({
     //                              });
     //
     // to create a new object instance:
-    // var newInstance = createFunc(this);
+    //      var newInstance = createFunc(this);
+    //
+    // Where 'this' is an interpreter instance.
+    //
+    // Note: by default users won't be able to create instances of this object on their own, you'll need to provide a function to generate it.
     //
     defineBuiltinObject: function(name, api) {
 
@@ -240,12 +244,49 @@ var Environment = Class({
 
             // create the function to return the object instance
             return function(parent) {
-                return new _ObjType(parent._context);
+                var context = parent._context || parent._interpreter._context;
+                if (!context) throw "Invalid parent param, must be interpreter or program!";
+                return new _ObjType(context);
             }
         })();
 
         // return the new object creation function
         return ret;
+    },
+
+    // Convert a JavaScript object into a simple Adder object.
+    // You can use this to return complex objects without having to define them as builtins first. For example:
+    //
+    //   function someFunc() {
+    //        return AdderScript.toAdderObject("Target", {type: "car", hp: 5, isEnemy: true});
+    //   }
+    //
+    // and later Adder script can simple use this object's API, ie:
+    //
+    //      if target.type == "car":
+    //          print ("its a car!")
+    //
+    // @param name - object type name (for example when doing type(obj) this string will be returned).
+    // @param api - a dictionary with object's API.
+    //                      to add a const value just add key value.
+    //                      to add a function add a dictionary with 'func', 'requiredParams', and 'optionalParams'.
+    //                      see addBuiltinFunction() for options.
+    //
+    // Usage example:
+    // var retObj = AdderScript.toAdderObject("Person", {
+    //                                "say_hello": {
+    //                                    func: function() {alert("Hello World!")},
+    //                                    requiredParams: 0,
+    //                                    optionalParams: 0
+    //                                 },
+    //                                 "race": "human",
+    //                              });
+    //
+    // Note: calls defineBuiltinObject() internally.
+    //
+    toAdderObject: function(name, api, program) {
+
+        return this.defineBuiltinObject(name, api)(program);
     },
 
 });

@@ -1705,10 +1705,10 @@ QUnit.test("add_builtin_function", function( assert ) {
     execProgram(assert, 'a = repr(test); a', "<custom.builtin.functions.test>");
     execProgram(assert, 'a = type(test(2)); a', "number");
 
-
     // call the builtin function without illegal number of params - get exceptions
     assert.throws(function() {execProgram(assert, 'a = test(); a', null)}, AdderScript.Errors.RuntimeError);
     assert.throws(function() {execProgram(assert, 'a = test(1, 2); a', null)}, AdderScript.Errors.RuntimeError);
+	AdderScript.removeBuiltinFunction("test");
 
     // add builtin function that returns a list
     AdderScript.addBuiltinFunction({name: "test2",                       // function name
@@ -1719,6 +1719,7 @@ QUnit.test("add_builtin_function", function( assert ) {
     // call the builtin function properly and validate return value
     execProgram(assert, 'a = type(test2(2)); a', "list");
     execProgram(assert, 'a = test2(4); a', [4]);
+	AdderScript.removeBuiltinFunction("test2");
 
     // add builtin function that returns a set
     AdderScript.addBuiltinFunction({name: "test3",                              // function name
@@ -1729,6 +1730,7 @@ QUnit.test("add_builtin_function", function( assert ) {
     // call the builtin function properly and validate return value
     execProgram(assert, 'a = type(test3()); a', "set");
     execProgram(assert, 'a = test3(); a', new Set());
+	AdderScript.removeBuiltinFunction("test3");
 
     // add builtin function that returns a dictionary
     AdderScript.addBuiltinFunction({name: "test4",                              // function name
@@ -1739,6 +1741,7 @@ QUnit.test("add_builtin_function", function( assert ) {
     // call the builtin function properly and validate return value
     execProgram(assert, 'a = type(test4()); a', "dict");
     execProgram(assert, 'a = test4(); a', {a:1});
+	AdderScript.removeBuiltinFunction("test4");
 
     // add builtin function that returns a string
     AdderScript.addBuiltinFunction({name: "test5",                              // function name
@@ -1750,9 +1753,27 @@ QUnit.test("add_builtin_function", function( assert ) {
     execProgram(assert, 'a = type(test5()); a', "string");
     execProgram(assert, 'a = test5(); a', "test");
     execProgram(assert, 'a = test5() + test5(); a', "testtest");
+	AdderScript.removeBuiltinFunction("test5");
+    
+	// Create a custom function that return a complex type
+	// the actual function implementation
+	function testFunc() {
+		return AdderScript.toAdderObject("testFuncReturnType", 
+		{
+			foo: 5,
+			bar: 10,
+		}, this);
+	}
 
-    // remove the builtin function we created for this test
-    AdderScript.removeBuiltinFunction("test");
+	// add builtin function
+	debugger;
+	AdderScript.addBuiltinFunction({name: "test6",                  // function name
+									func: testFunc,   				// the function itself
+									requiredParams: 0,              // number of required params
+									optionalParams: 0});            // number of additional optional params
+	execProgram(assert, 'a = test6(); a.foo == 5', true);
+	AdderScript.removeBuiltinFunction("test6");
+    
 });
 
 // test adding built-in module
