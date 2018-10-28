@@ -16,9 +16,11 @@
 
     <!-- code mirror -->
     <script src="../tests/libs/codemirror.js" type="text/javascript"></script>
-    <script src="../tests/libs/python.js" type="text/javascript"></script>
+	<script src="../tests/libs/show-hint.js" type="text/javascript"></script>
+    <script src="../codemirror/adder.js" type="text/javascript"></script>
     <script src="../tests/libs/matchbrackets.js" type="text/javascript"></script>
     <link href="../tests/libs/codemirror.css" rel="stylesheet">
+	<link href="../tests/libs/show-hint.css" rel="stylesheet">
 
     <!-- favicon -->
     <link rel="icon" href="./../img/AdderIcon-xs.png">
@@ -132,14 +134,15 @@
 
     <!-- init code mirror -->
     <script type="text/javascript">
+		CodeMirror.commands.autocomplete = function(cm) {
+                cm.showHint();
+        }
         var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
-            parserfile: ["../contrib/python/js/parsepython.js"],
-            stylesheet: "css/pythoncolors.css",
-            path: "../../js/",
             lineNumbers: true,
             textWrapping: false,
             indentUnit: 4,
-            parserConfig: {'pythonVersion': 2, 'strictErrors': true}
+            parserConfig: {'pythonVersion': 2, 'strictErrors': true},
+			extraKeys: {"Ctrl-Space": "autocomplete"},
         });
     </script>
 
