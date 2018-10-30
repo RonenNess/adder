@@ -3797,6 +3797,8 @@ var Utils = require("./../utils");
 // include language stuff
 var Language = require("./../language");
 
+var uniqueObjectName = 0;
+
 // the environment class.
 var Environment = Class({
 
@@ -3939,7 +3941,7 @@ var Environment = Class({
     // define a built-in object (like list, dict, set..) you can return and use in your modules and builtin functions.
     // @param name - object type name (for example when doing type(obj) this string will be returned).
     // @param api - a dictionary with object's API.
-    //                      to add a const value just add key value.
+    //                      to add a const value just add key -> value pair.
     //                      to add a function add a dictionary with 'func', 'requiredParams', and 'optionalParams'.
     //                      see addBuiltinFunction() for options.
     //
@@ -4049,7 +4051,11 @@ var Environment = Class({
     //
     toAdderObject: function(name, api, program) {
 
-        return this.defineBuiltinObject(name, api)(program);
+        var ret = new Core.Object(program._context || program._interpreter._context);
+        for (var key in api) {
+            ret.setAttr(key, api[key]);
+        }
+        return ret;
     },
 
 });
