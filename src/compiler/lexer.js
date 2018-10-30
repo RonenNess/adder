@@ -302,23 +302,28 @@ var Lexer = Class({
                     ret.push(this.makeToken(TokenTypes.cblock, lastBlockIndent));
                     inlineBlocks = 0;
                 }
-                // if its a regular block and line break was'nt ';'
+                // if its a regular block and line break wasn't ';'
                 else if (lastC !== ';')
                 {
                     // get spaces needed for block indent
                     var spacesForIndent = this._flags.spacesNeededForBlockIndent;
 
-                    // check if spaces are not multiply indent spaces, but only if last token wasn't ';' (inline break)
-                    if ((spacesInRow % spacesForIndent) !== 0) {
-                        throw new Errors.SyntaxError("Bad block indent (spaces not multiply of " +
-                                                       this._flags.spacesNeededForBlockIndent + ")", this.lineIndex);
-                    }
+                    // make sure current character is not line break, so we won't change blocks / validate indent for empty lines
+                    if (expression[i] !== '\n')
+                    {
+                        // check if spaces are not multiply indent spaces, but only if last token wasn't ';' (inline break)
+                        if ((spacesInRow % spacesForIndent) !== 0) {
+                            throw new Errors.SyntaxError("Bad block indent (spaces not multiply of " +
+                                                        this._flags.spacesNeededForBlockIndent + ")", this.lineIndex);
+                        }
 
-                    // calc current block
-                    var blockIndent = spacesInRow / spacesForIndent;
-                    if (blockIndent !== lastBlockIndent) {
-                        ret.push(this.makeToken(TokenTypes.cblock, blockIndent));
-                        lastBlockIndent = blockIndent;
+                        // calc current block indent and add block change token
+                        var blockIndent = spacesInRow / spacesForIndent;
+                        if (blockIndent !== lastBlockIndent) 
+                        {
+                                ret.push(this.makeToken(TokenTypes.cblock, blockIndent));
+                                lastBlockIndent = blockIndent;
+                        }
                     }
                 }
 
@@ -352,14 +357,20 @@ var Lexer = Class({
 
             // special case - command break
             if (c === ';' || c === '\n') {
+
+                // increase line count
                 this.lineIndex++;
+
+                // if should skip line break skip it
                 if (skipNextLineBreak) {
                     skipNextLineBreak = false;
-                } else {
-                    lastC = c;
-                    wasLineBreak = true;
-                    ret.push(this.makeToken(TokenTypes.lbreak, c));
+                    continue;
                 }
+
+                // do line break
+                lastC = c;
+                wasLineBreak = true;
+                ret.push(this.makeToken(TokenTypes.lbreak, c));
                 continue;
             }
             // special case 2 - anti-line break, eg character that combine lines together

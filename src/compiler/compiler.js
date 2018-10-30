@@ -28,11 +28,8 @@ var TokenTypes = require("./tokens");
 // include default flags
 var defaultFlags = require("./default_flags");
 
-// include language components
-var Language = require("./../language");
-
-// include core stuff
-var Core = require("./../core");
+// include errors
+var Errors = require("./../errors");
 
 // the Compiler class - compile raw code into AST.
 var Compiler = Class({
@@ -63,23 +60,26 @@ var Compiler = Class({
     // compile raw code into blocks of expressions
     // return value is a list of AST expressions and their corresponding line number ([ast, line]).
 	// @param code - code to compile. Must be English only and use \n as line breaks, no \r\n.
-	// @param flags - different compilation flags:
+	// @param flags - misc compilation flags:
     //					fixLineBreaks: if true (default), will fix line breaks to be \n without \r.
     compile: function(code, flags)
     {
 		// default flags
 		flags = flags || {};
-		
+        
+        // trim code (right side trim only)
+        code = code.replace(/\s+$/, '');
+        
 		// remove illegal line breaks
 		if (flags.fixLineBreaks || flags.fixLineBreaks === undefined) {
-			code = code.trim().replace(/\r\n/g, "\n").replace(/\r/g, "");
+			code = code.replace(/\r\n/g, "\n").replace(/\r/g, "");
         }
         
         // make sure there's no \r in code
         if (code.indexOf('\r') !== -1) {
-            throw new "Illegal character found in code: '\\r'! Please use '\\n' only for line breaks.";
+            throw new Errors.SyntaxError("Illegal character found in code: '\\r'! Please use '\\n' only for line breaks.", 0);
         }
-		
+
         // use the lexer to convert to tokens
         var tokens = this._lexer.parseExpression(code);
 

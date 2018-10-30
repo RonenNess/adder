@@ -29,11 +29,8 @@ var TokenTypes = require("./tokens");
 // include default flags
 var defaultFlags = require("./default_flags");
 
-// include language components
-var Language = require("./../language");
-
-// include core stuff
-var Core = require("./../core");
+// include errors
+var Errors = require("./../errors");
 
 // the Compiler class - compile raw code into AST.
 var Compiler = Class({
@@ -64,23 +61,26 @@ var Compiler = Class({
     // compile raw code into blocks of expressions
     // return value is a list of AST expressions and their corresponding line number ([ast, line]).
 	// @param code - code to compile. Must be English only and use \n as line breaks, no \r\n.
-	// @param flags - different compilation flags:
+	// @param flags - misc compilation flags:
     //					fixLineBreaks: if true (default), will fix line breaks to be \n without \r.
     compile: function(code, flags)
     {
 		// default flags
 		flags = flags || {};
-		
+        
+        // trim code (right side trim only)
+        code = code.replace(/\s+$/, '');
+        
 		// remove illegal line breaks
 		if (flags.fixLineBreaks || flags.fixLineBreaks === undefined) {
-			code = code.trim().replace(/\r\n/g, "\n").replace(/\r/g, "");
+			code = code.replace(/\r\n/g, "\n").replace(/\r/g, "");
         }
         
         // make sure there's no \r in code
         if (code.indexOf('\r') !== -1) {
-            throw new "Illegal character found in code: '\\r'! Please use '\\n' only for line breaks.";
+            throw new Errors.SyntaxError("Illegal character found in code: '\\r'! Please use '\\n' only for line breaks.", 0);
         }
-		
+
         // use the lexer to convert to tokens
         var tokens = this._lexer.parseExpression(code);
 
@@ -164,7 +164,7 @@ var Compiler = Class({
 module.exports = Compiler;
 
 
-},{"./../core":14,"./../dependencies/jsface":24,"./../errors":28,"./../language":61,"./default_flags":2,"./lexer":4,"./parser":5,"./tokens":6}],2:[function(require,module,exports){
+},{"./../dependencies/jsface":24,"./../errors":28,"./default_flags":2,"./lexer":4,"./parser":5,"./tokens":6}],2:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -478,23 +478,28 @@ var Lexer = Class({
                     ret.push(this.makeToken(TokenTypes.cblock, lastBlockIndent));
                     inlineBlocks = 0;
                 }
-                // if its a regular block and line break was'nt ';'
+                // if its a regular block and line break wasn't ';'
                 else if (lastC !== ';')
                 {
                     // get spaces needed for block indent
                     var spacesForIndent = this._flags.spacesNeededForBlockIndent;
 
-                    // check if spaces are not multiply indent spaces, but only if last token wasn't ';' (inline break)
-                    if ((spacesInRow % spacesForIndent) !== 0) {
-                        throw new Errors.SyntaxError("Bad block indent (spaces not multiply of " +
-                                                       this._flags.spacesNeededForBlockIndent + ")", this.lineIndex);
-                    }
+                    // make sure current character is not line break, so we won't change blocks / validate indent for empty lines
+                    if (expression[i] !== '\n')
+                    {
+                        // check if spaces are not multiply indent spaces, but only if last token wasn't ';' (inline break)
+                        if ((spacesInRow % spacesForIndent) !== 0) {
+                            throw new Errors.SyntaxError("Bad block indent (spaces not multiply of " +
+                                                        this._flags.spacesNeededForBlockIndent + ")", this.lineIndex);
+                        }
 
-                    // calc current block
-                    var blockIndent = spacesInRow / spacesForIndent;
-                    if (blockIndent !== lastBlockIndent) {
-                        ret.push(this.makeToken(TokenTypes.cblock, blockIndent));
-                        lastBlockIndent = blockIndent;
+                        // calc current block indent and add block change token
+                        var blockIndent = spacesInRow / spacesForIndent;
+                        if (blockIndent !== lastBlockIndent) 
+                        {
+                                ret.push(this.makeToken(TokenTypes.cblock, blockIndent));
+                                lastBlockIndent = blockIndent;
+                        }
                     }
                 }
 
@@ -528,14 +533,20 @@ var Lexer = Class({
 
             // special case - command break
             if (c === ';' || c === '\n') {
+
+                // increase line count
                 this.lineIndex++;
+
+                // if should skip line break skip it
                 if (skipNextLineBreak) {
                     skipNextLineBreak = false;
-                } else {
-                    lastC = c;
-                    wasLineBreak = true;
-                    ret.push(this.makeToken(TokenTypes.lbreak, c));
+                    continue;
                 }
+
+                // do line break
+                lastC = c;
+                wasLineBreak = true;
+                ret.push(this.makeToken(TokenTypes.lbreak, c));
                 continue;
             }
             // special case 2 - anti-line break, eg character that combine lines together
