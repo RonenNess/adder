@@ -23,6 +23,9 @@ var Lexer = require("./lexer");
 // include the parser
 var Parser = require("./parser");
 
+// all token types
+var TokenTypes = require("./tokens");
+
 // include default flags
 var defaultFlags = require("./default_flags");
 
@@ -52,11 +55,7 @@ var Compiler = Class({
         }
 
         // how many spaces equal one tab
-        this._spacesPerTab = ''
-        for (var i = 0; i < this._flags.spacesNeededForBlockIndent; ++i)
-        {
-            this._spacesPerTab += ' ';
-        }
+        this._spacesPerTab = ' '.repeat(this._flags.spacesNeededForBlockIndent);
 
         // create the lexer
         this._lexer = new Lexer(this._flags);
@@ -66,17 +65,21 @@ var Compiler = Class({
     // return value is a list of AST expressions and their corresponding line number ([ast, line]).
 	// @param code - code to compile. Must be English only and use \n as line breaks, no \r\n.
 	// @param flags - different compilation flags:
-	//					fixLineBreaks: if true (default), will fix line breaks to be \n without \r.
+    //					fixLineBreaks: if true (default), will fix line breaks to be \n without \r.
     compile: function(code, flags)
     {
 		// default flags
 		flags = flags || {};
 		
-		// remove illegal characters
-		if (flags.fixLineBreaks !== false)
-		{
+		// remove illegal line breaks
+		if (flags.fixLineBreaks || flags.fixLineBreaks === undefined) {
 			code = code.trim().replace(/\r\n/g, "\n").replace(/\r/g, "");
-		}
+        }
+        
+        // make sure there's no \r in code
+        if (code.indexOf('\r') !== -1) {
+            throw new "Illegal character found in code: '\\r'! Please use '\\n' only for line breaks.";
+        }
 		
         // use the lexer to convert to tokens
         var tokens = this._lexer.parseExpression(code);
@@ -94,7 +97,7 @@ var Compiler = Class({
         for (var i = 0; i < tokens.length; ++i)
         {
             // if its a block indent change token
-            if (tokens[i].t === "_")
+            if (tokens[i].t === TokenTypes.cblock)
             {
                 // get current block indent
                 var currBlockIndent = tokens[i].v;
@@ -122,7 +125,7 @@ var Compiler = Class({
             // take chunk of tokens until break
             var j = i;
             var endToken = tokens[i];
-            while (endToken && endToken.t !== 'b') {
+            while (endToken && endToken.t !== TokenTypes.lbreak) {
                 endToken = tokens[++j];
             }
 
@@ -135,7 +138,7 @@ var Compiler = Class({
             var currTokens = tokens.slice(i, j);
 
             // remove breaks from the end of tokens
-            while (currTokens[currTokens.length-1] && currTokens[currTokens.length-1].t === "b") {
+            while (currTokens[currTokens.length-1] && currTokens[currTokens.length-1].t === TokenTypes.lbreak) {
                 currTokens.pop();
             }
 
@@ -161,7 +164,7 @@ var Compiler = Class({
 module.exports = Compiler;
 
 
-},{"./../core":13,"./../dependencies/jsface":23,"./../errors":27,"./../language":60,"./default_flags":2,"./lexer":4,"./parser":5}],2:[function(require,module,exports){
+},{"./../core":14,"./../dependencies/jsface":24,"./../errors":28,"./../language":61,"./default_flags":2,"./lexer":4,"./parser":5,"./tokens":6}],2:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -205,6 +208,9 @@ var commentPrefix = '#';
 
 // get utils
 var Utils = require("./../utils");
+
+// all token types
+var TokenTypes = require("./tokens");
 
 // values that break between words
 // note: undefined is to identify out-of-string-range.
@@ -469,7 +475,7 @@ var Lexer = Class({
                 if (inlineBlocks > 0)
                 {
                     lastBlockIndent -= inlineBlocks;
-                    ret.push(this.makeToken('_', lastBlockIndent));
+                    ret.push(this.makeToken(TokenTypes.cblock, lastBlockIndent));
                     inlineBlocks = 0;
                 }
                 // if its a regular block and line break was'nt ';'
@@ -487,7 +493,7 @@ var Lexer = Class({
                     // calc current block
                     var blockIndent = spacesInRow / spacesForIndent;
                     if (blockIndent !== lastBlockIndent) {
-                        ret.push(this.makeToken('_', blockIndent));
+                        ret.push(this.makeToken(TokenTypes.cblock, blockIndent));
                         lastBlockIndent = blockIndent;
                     }
                 }
@@ -509,7 +515,7 @@ var Lexer = Class({
                 {
                     this.lineIndex++;
                     wasLineBreak = true;
-                    ret.push(this.makeToken('b', '\n'));
+                    ret.push(this.makeToken(TokenTypes.lbreak, '\n'));
                 }
 
                 // continue to next character
@@ -528,7 +534,7 @@ var Lexer = Class({
                 } else {
                     lastC = c;
                     wasLineBreak = true;
-                    ret.push(this.makeToken('b', c));
+                    ret.push(this.makeToken(TokenTypes.lbreak, c));
                 }
                 continue;
             }
@@ -545,9 +551,9 @@ var Lexer = Class({
             if (lastC === ":") {
 
                 // add break + open block
-                ret.push(this.makeToken('b', ";"));
+                ret.push(this.makeToken(TokenTypes.lbreak, ";"));
                 lastBlockIndent++;
-                ret.push(this.makeToken('_', lastBlockIndent));
+                ret.push(this.makeToken(TokenTypes.cblock, lastBlockIndent));
                 inlineBlocks++;
             }
 
@@ -570,7 +576,7 @@ var Lexer = Class({
                 var token = tokenData[0]; i = tokenData[1];
 
                 // add punctuation to tokens list
-                ret.push(this.makeToken("p", token));
+                ret.push(this.makeToken(TokenTypes.punctuation, token));
                 continue;
             }
 
@@ -582,7 +588,7 @@ var Lexer = Class({
                 var token = tokenData[0]; i = tokenData[1];
 
                 // add punctuation to tokens list
-                ret.push(this.makeToken("n", token));
+                ret.push(this.makeToken(TokenTypes.number, token));
                 continue;
             }
 
@@ -595,7 +601,7 @@ var Lexer = Class({
                 var token = tokenData[0]; i = tokenData[1];
 
                 // add operator to tokens list
-                ret.push(this.makeToken("o", token));
+                ret.push(this.makeToken(TokenTypes.operator, token));
                 continue;
             }
 
@@ -607,7 +613,7 @@ var Lexer = Class({
                 var token = tokenData[0]; i = tokenData[1];
 
                 // add operator to tokens list
-                ret.push(this.makeToken("s", token));
+                ret.push(this.makeToken(TokenTypes.string, token));
                 continue;
             }
 
@@ -622,7 +628,7 @@ var Lexer = Class({
             }
 
             // add operator to tokens list
-            ret.push(this.makeToken("v", token));
+            ret.push(this.makeToken(TokenTypes.identifier, token));
 
         }
 
@@ -634,7 +640,7 @@ var Lexer = Class({
 
 // export the Lexer class
 module.exports = Lexer;
-},{"./../console":6,"./../dependencies/jsface":23,"./../errors":27,"./../utils":78,"./default_flags":2}],5:[function(require,module,exports){
+},{"./../console":7,"./../dependencies/jsface":24,"./../errors":28,"./../utils":79,"./default_flags":2,"./tokens":6}],5:[function(require,module,exports){
 "use strict";
 
 /**
@@ -659,6 +665,9 @@ var LanguageDefs = require("./../language/defs");
 
 // set of operators that are words
 var wordOperators = Utils.toSet(Object.keys(LanguageDefs.keywords));
+
+// get all token types
+var TokenTypes = require("./tokens");
 
 // global scope that holds the current tokens and position we are parsing.
 // these are used internally in all the helper and parsing functions.
@@ -839,21 +848,21 @@ var tokenToSymbol = function (token) {
     var type;
     switch (token.t)
     {
-        case 'o':
-        case 'p':
+        case TokenTypes.operator:
+        case TokenTypes.punctuation:
             if (token.v === ':') {type = 'blockopen';}
             else {type = token.v;}
             break;
 
-        case 'n':
+        case TokenTypes.number:
             type = 'number';
             break;
 
-        case 'v':
+        case TokenTypes.identifier:
             type = 'identifier';
             break;
 
-        case 's':
+        case TokenTypes.string:
             type = 'string';
             break;
 
@@ -947,7 +956,17 @@ module.exports = {
 };
 
 
-},{"./../errors":27,"./../language/defs":33,"./../utils":78}],6:[function(require,module,exports){
+},{"./../errors":28,"./../language/defs":34,"./../utils":79,"./tokens":6}],6:[function(require,module,exports){
+module.exports = {
+    punctuation: 'p',       // punctuation: commas, etc.
+    number: 'n',            // numbers.
+    string: 's',            // strings.
+    identifier: 'v',        // identifiers / variables / keywords.
+    operator: 'o',          // operators.
+    lbreak: 'b',            // line / command break.
+    cblock: '_',            // change in block index
+}
+},{}],7:[function(require,module,exports){
 "use strict";
 
 /**
@@ -973,7 +992,7 @@ module.exports = {
         this.info = function()  {console.info   ("AdderScript.info>",     arguments);};
     },
 }
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 
 /**
@@ -1127,7 +1146,7 @@ var Block = Class(Executable, {
 // export the scope class
 module.exports = Block;
 
-},{"./../dependencies/jsface":23,"./../errors":27,"./executable":11}],8:[function(require,module,exports){
+},{"./../dependencies/jsface":24,"./../errors":28,"./executable":12}],9:[function(require,module,exports){
 "use strict";
 
 /**
@@ -1266,7 +1285,7 @@ var BuiltinFunction = Class({
 module.exports = BuiltinFunction;
 
 
-},{"./../dependencies/jsface":23,"./../errors":27,"./../utils":78,"./variable":21}],9:[function(require,module,exports){
+},{"./../dependencies/jsface":24,"./../errors":28,"./../utils":79,"./variable":22}],10:[function(require,module,exports){
 "use strict";
 
 /**
@@ -1598,7 +1617,7 @@ var Context = Class({
 module.exports = Context;
 
 
-},{"./../dependencies/jsface":23,"./../errors":27,"./../utils":78,"./scope":17,"./variable":21}],10:[function(require,module,exports){
+},{"./../dependencies/jsface":24,"./../errors":28,"./../utils":79,"./scope":18,"./variable":22}],11:[function(require,module,exports){
 "use strict";
 
 /**
@@ -1818,7 +1837,7 @@ _Object.initBuiltinApi(Dict);
 // export the Dict class
 module.exports = Dict;
 
-},{"./../dependencies/jsface":23,"./../errors":27,"./../utils":78,"./builtin_func":8,"./list":14,"./object":16,"./variable":21}],11:[function(require,module,exports){
+},{"./../dependencies/jsface":24,"./../errors":28,"./../utils":79,"./builtin_func":9,"./list":15,"./object":17,"./variable":22}],12:[function(require,module,exports){
 "use strict";
 
 /**
@@ -1880,7 +1899,7 @@ var Executable = Class({
 module.exports = Executable;
 
 
-},{"./../dependencies/jsface":23}],12:[function(require,module,exports){
+},{"./../dependencies/jsface":24}],13:[function(require,module,exports){
 "use strict";
 
 /**
@@ -2152,7 +2171,7 @@ var Expression = Class({
 module.exports = Expression;
 
 
-},{"./../compiler/lexer":4,"./../dependencies/jsface":23,"./../errors":27,"./variable":21}],13:[function(require,module,exports){
+},{"./../compiler/lexer":4,"./../dependencies/jsface":24,"./../errors":28,"./variable":22}],14:[function(require,module,exports){
 "use strict";
 
 // all builtin functions
@@ -2181,7 +2200,7 @@ for (var key in core)
 module.exports = core;
 
 
-},{"./block":7,"./builtin_func":8,"./context":9,"./dict":10,"./expression":12,"./list":14,"./module":15,"./object":16,"./scope":17,"./set":18,"./statement":19,"./variable":21}],14:[function(require,module,exports){
+},{"./block":8,"./builtin_func":9,"./context":10,"./dict":11,"./expression":13,"./list":15,"./module":16,"./object":17,"./scope":18,"./set":19,"./statement":20,"./variable":22}],15:[function(require,module,exports){
 "use strict";
 
 /**
@@ -2501,7 +2520,7 @@ module.exports = List;
 
 // require Set (do it in the end to prevent require loop)
 var _Set = require('./set');
-},{"./../dependencies/jsface":23,"./../errors":27,"./builtin_func":8,"./object":16,"./set":18,"./variable":21}],15:[function(require,module,exports){
+},{"./../dependencies/jsface":24,"./../errors":28,"./builtin_func":9,"./object":17,"./set":19,"./variable":22}],16:[function(require,module,exports){
 "use strict";
 
 /**
@@ -2565,7 +2584,7 @@ var Module = Class(_Object, {
 // export the scope class
 module.exports = Module;
 
-},{"./../dependencies/jsface":23,"./../errors":27,"./object":16}],16:[function(require,module,exports){
+},{"./../dependencies/jsface":24,"./../errors":28,"./object":17}],17:[function(require,module,exports){
 "use strict";
 
 /**
@@ -2702,7 +2721,7 @@ var _Object = Class({
 // export the scope class
 module.exports = _Object;
 
-},{"./../dependencies/jsface":23,"./../errors":27,"./../utils":78,"./builtin_func":8,"./variable":21}],17:[function(require,module,exports){
+},{"./../dependencies/jsface":24,"./../errors":28,"./../utils":79,"./builtin_func":9,"./variable":22}],18:[function(require,module,exports){
 "use strict";
 
 /**
@@ -2811,7 +2830,7 @@ var Scope = Class({
 module.exports = Scope;
 
 
-},{"./../console":6,"./../dependencies/jsface":23,"./../errors":27,"./variable":21}],18:[function(require,module,exports){
+},{"./../console":7,"./../dependencies/jsface":24,"./../errors":28,"./variable":22}],19:[function(require,module,exports){
 "use strict";
 
 /**
@@ -3055,7 +3074,7 @@ module.exports = _Set;
 
 // require the list object (do it in the end to prevent require loop)
 var List = require('./list');
-},{"./../dependencies/jsface":23,"./../errors":27,"./../utils":78,"./builtin_func":8,"./list":14,"./object":16,"./variable":21}],19:[function(require,module,exports){
+},{"./../dependencies/jsface":24,"./../errors":28,"./../utils":79,"./builtin_func":9,"./list":15,"./object":17,"./variable":22}],20:[function(require,module,exports){
 "use strict";
 
 /**
@@ -3124,7 +3143,7 @@ var Statement = Class(Executable, {
 module.exports = Statement;
 
 
-},{"./../dependencies/jsface":23,"./../errors":27,"./executable":11}],20:[function(require,module,exports){
+},{"./../dependencies/jsface":24,"./../errors":28,"./executable":12}],21:[function(require,module,exports){
 "use strict";
 
 /**
@@ -3253,7 +3272,7 @@ api.slice = BuiltinFunc.create(function(start, len)
 
 // export the api
 module.exports = api;
-},{"./../dependencies/jsface":23,"./../errors":27,"./builtin_func":8}],21:[function(require,module,exports){
+},{"./../dependencies/jsface":24,"./../errors":28,"./builtin_func":9}],22:[function(require,module,exports){
 "use strict";
 
 /**
@@ -3714,23 +3733,23 @@ var _Dict = require("./dict");
 var APIs = {
     'string': require("./string_api"),
 };
-},{"./../dependencies/jsface":23,"./../errors":27,"./../language/defs":33,"./../utils":78,"./dict":10,"./list":14,"./set":18,"./string_api":20}],22:[function(require,module,exports){
+},{"./../dependencies/jsface":24,"./../errors":28,"./../language/defs":34,"./../utils":79,"./dict":11,"./list":15,"./set":19,"./string_api":21}],23:[function(require,module,exports){
 "use strict";
 
 // global defs
 module.exports = {
-    'version': "1.0.1",
-    'about': "AdderScript is a lightweight minimalistic script language, aimed to execute untrusted code in a safe way.\nDesigned and built by Ronen Ness",
+    'version': "1.0.2",
+    'about': "AdderScript is a lightweight minimalistic script language, aimed to execute untrusted code in a safe way.\nDesigned and built by Ronen Ness.",
     'author': "Ronen Ness",
 };
 
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 
 !function(t,o,r,e,n,p,i,c,u,f){function s(t){return t&&typeof t===o&&!(typeof t.length===r&&!t.propertyIsEnumerable(e))&&t||null}function l(t){return t&&typeof t===o&&typeof t.length===r&&!t.propertyIsEnumerable(e)&&t||null}function y(t){return t&&"function"==typeof t&&t||null}function a(t){return y(t)&&t.prototype&&t===t.prototype.constructor&&t||null}function $(t,o,r,e){r&&r.hasOwnProperty(t)||(e[t]=o)}function b(t,o,r){if(l(o))for(var e=o.length;--e>=0;)b(t,o[e],r);else{r=r||{constructor:1,$super:1,prototype:1,$superp:1};var n,p,i=a(t),c=a(o),u=t.prototype;if(s(o)||i)for(n in o)$(n,o[n],r,t,i,u);if(c){p=o.prototype;for(n in p)$(n,p[n],r,t,i,u)}i&&c&&b(u,o.prototype,r)}}function g(t){var o,r;Object.freeze(t);for(r in t)o=t[r],t.hasOwnProperty(r)&&"object"==typeof o&&!Object.isFrozen(o)&&g(o)}function O(t,o){o||(o=t,t=0);var r,e,n,p,i,c,u,f,s,l,y,a=0,$={constructor:1,$singleton:1,$static:1,$statics:1,prototype:1,$super:1,$superp:1,main:1,toString:0},b=O.plugins;o=("function"==typeof o?o():o)||{},e=o.hasOwnProperty("constructor")?o.constructor:null,n=o.$singleton,p=o.$statics||o.$static;for(i in b)$[i]=1;for(t=!t||t instanceof Array?t:[t],u=t&&t.length,s=t[0],r=n?function(){}:e?e:function(){s&&s.apply(this,arguments)},!n&&u&&(l=s.prototype&&s===s.prototype.constructor&&s,l?(y=function(){},y.prototype=l.prototype,y.prototype.constructor=y,r.prototype=new y,r.prototype.constructor=r,l.prototype.constructor=l):r.prototype=s),c=n?r:r.prototype;u>a;){f=t[a++];for(i in f)$[i]||(r[i]=f[i]);if(!n&&0!==a)for(i in f.prototype)$[i]||(c[i]=f.prototype[i])}for(i in o)if(!$[i]){var g=o[i];g&&(g.get||g.set)?(g.enumerable=!0,Object.defineProperty(c,i,g)):c[i]=g}for(i in p)r[i]=p[i];f=t&&s||t,r.$super=f,r.$superp=f&&f.prototype||f;for(i in b)b[i](r,t,o);return"function"==typeof o.main&&o.main.call(r,r),r}O.plugins={$ready:function h(t,o,r,e){for(var n,c,u,f=r.$ready,s=o?o.length:0,l=s,a=s&&o[0].$super;s--;)for(c=0;i>c&&(u=p[c],n=o[s],n===u[0]&&(u[1].call(n,t,o,r),l--),l);c++);a&&h(t,[a],r,!0),!e&&y(f)&&(f.call(t,t,o,r),p.push([t,f]),i++)},$const:function(t,o,r){var e,n=r.$const;for(e in n)Object.defineProperty(t,e,{enumerable:!0,value:n[e]}),"object"!=typeof t[e]||Object.isFrozen(t[e])||g(t[e])}},f={Class:O,extend:b,mapOrNil:s,arrayOrNil:l,functionOrNil:y,classOrNil:a},"undefined"!=typeof module&&module.exports?module.exports=f:(u=t.Class,t.Class=O,t.jsface=f,f.noConflict=function(){t.Class=u})}(this,"object","number","length",Object.prototype.toString,[],0);
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4027,9 +4046,9 @@ var Environment = Class({
 // export the Environment class
 module.exports = Environment;
 
-},{"./../compiler":3,"./../console":6,"./../core":13,"./../dependencies/jsface":23,"./../errors":27,"./../language":60,"./../utils":78,"./program":26}],25:[function(require,module,exports){
+},{"./../compiler":3,"./../console":7,"./../core":14,"./../dependencies/jsface":24,"./../errors":28,"./../language":61,"./../utils":79,"./program":27}],26:[function(require,module,exports){
 module.exports = require("./environment");
-},{"./environment":24}],26:[function(require,module,exports){
+},{"./environment":25}],27:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4147,7 +4166,7 @@ var Program = Class({
 // export the Program class
 module.exports = Program;
 
-},{"./../console":6,"./../dependencies/jsface":23,"./../errors":27,"./../interpreter":30}],27:[function(require,module,exports){
+},{"./../console":7,"./../dependencies/jsface":24,"./../errors":28,"./../interpreter":31}],28:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4304,7 +4323,7 @@ module.exports = {
 };
 
 
-},{"./console":6}],28:[function(require,module,exports){
+},{"./console":7}],29:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4341,7 +4360,7 @@ if (typeof window !== "undefined") {
 
 // export main object
 module.exports = adder;
-},{"./compiler":3,"./compiler/lexer":4,"./compiler/parser":5,"./console":6,"./core":13,"./defs":22,"./environment":25,"./interpreter":30,"./language/index":60,"./utils":78}],29:[function(require,module,exports){
+},{"./compiler":3,"./compiler/lexer":4,"./compiler/parser":5,"./console":7,"./core":14,"./defs":23,"./environment":26,"./interpreter":31,"./language/index":61,"./utils":79}],30:[function(require,module,exports){
 "use strict";
 
 module.exports = {
@@ -4356,9 +4375,9 @@ module.exports = {
     removeBuiltins: [],             // a list of builtin objects and functions you want to remove from language.
 };
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 module.exports = require("./interpreter");
-},{"./interpreter":31}],31:[function(require,module,exports){
+},{"./interpreter":32}],32:[function(require,module,exports){
 "use strict";
 
 /**
@@ -4944,7 +4963,7 @@ var Interpreter = Class({
 module.exports = Interpreter;
 
 
-},{"./../compiler":3,"./../console":6,"./../core":13,"./../dependencies/jsface":23,"./../errors":27,"./../language":60,"./../utils":78,"./default_flags":29}],32:[function(require,module,exports){
+},{"./../compiler":3,"./../console":7,"./../core":14,"./../dependencies/jsface":24,"./../errors":28,"./../language":61,"./../utils":79,"./default_flags":30}],33:[function(require,module,exports){
 "use strict";
 
 // general defs
@@ -4964,7 +4983,7 @@ var consts = {
 module.exports = consts;
 
 
-},{"./../../defs":22}],33:[function(require,module,exports){
+},{"./../../defs":23}],34:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5006,7 +5025,7 @@ var defs = {
 module.exports = defs;
 
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5037,7 +5056,7 @@ module.exports = Core.BuiltinFunc.create(function()
     },
     null, null);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],35:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],36:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5085,7 +5104,7 @@ module.exports = Core.BuiltinFunc.create(function()
     },
     null, null);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],36:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],37:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5113,7 +5132,7 @@ module.exports = Core.BuiltinFunc.create(function(val)
     },
     1, null);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],37:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],38:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5141,7 +5160,7 @@ module.exports = Core.BuiltinFunc.create(function(val)
     },
     1, null);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],38:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],39:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5170,7 +5189,7 @@ module.exports = Core.BuiltinFunc.create(function(val)
     },
     1, null);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],39:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],40:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5198,7 +5217,7 @@ module.exports = Core.BuiltinFunc.create(function(val)
     },
     1, null);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],40:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],41:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5242,7 +5261,7 @@ module.exports = Core.BuiltinFunc.create(function(a, b)
     },
     2, null);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],41:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],42:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5273,7 +5292,7 @@ module.exports = Core.BuiltinFunc.create(function(variable)
     },
     1, 0, false);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],42:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],43:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5304,7 +5323,7 @@ module.exports = Core.BuiltinFunc.create(function()
     },
     0, 0, false);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../../utils":78}],43:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../../utils":79}],44:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5344,7 +5363,7 @@ module.exports = Core.BuiltinFunc.create(function(obj)
     },
     0, 1, false);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],44:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],45:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5373,7 +5392,7 @@ module.exports = Core.BuiltinFunc.create(function(a, b)
     },
     2, null);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],45:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],46:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5401,7 +5420,7 @@ module.exports = Core.BuiltinFunc.create(function(variable)
     },
     1, 0, false);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],46:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],47:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5429,7 +5448,7 @@ module.exports = Core.BuiltinFunc.create(function(val)
     },
     1, null);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],47:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],48:[function(require,module,exports){
 "use strict";
 
 // all functions
@@ -5470,7 +5489,7 @@ for (var key in functions)
 // export
 module.exports = functions;
 
-},{"./all":34,"./any":35,"./bin":36,"./bool":37,"./callable":38,"./chr":39,"./cmp":40,"./delete":41,"./dict":42,"./dir":43,"./equal":44,"./exist":45,"./float":46,"./int":48,"./len":49,"./list":50,"./ord":51,"./print":52,"./range":53,"./repr":54,"./reversed":55,"./set":56,"./str":57,"./test":58,"./type":59}],48:[function(require,module,exports){
+},{"./all":35,"./any":36,"./bin":37,"./bool":38,"./callable":39,"./chr":40,"./cmp":41,"./delete":42,"./dict":43,"./dir":44,"./equal":45,"./exist":46,"./float":47,"./int":49,"./len":50,"./list":51,"./ord":52,"./print":53,"./range":54,"./repr":55,"./reversed":56,"./set":57,"./str":58,"./test":59,"./type":60}],49:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5498,7 +5517,7 @@ module.exports = Core.BuiltinFunc.create(function(val, base)
     },
     1, 1);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],49:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],50:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5531,7 +5550,7 @@ module.exports = Core.BuiltinFunc.create(function(val)
     },
     1, null);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],50:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],51:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5562,7 +5581,7 @@ module.exports = Core.BuiltinFunc.create(function()
     },
     null, null, false);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../../utils":78}],51:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../../utils":79}],52:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5604,7 +5623,7 @@ module.exports = Core.BuiltinFunc.create(function(val)
     },
     1, null);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],52:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],53:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5640,7 +5659,7 @@ module.exports = Core.BuiltinFunc.create(function()
     },
     0, 100);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../../utils":78}],53:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../../utils":79}],54:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5708,7 +5727,7 @@ module.exports = Core.BuiltinFunc.create(function(start, stop, step)
     },
     1, 2);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],54:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],55:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5735,7 +5754,7 @@ module.exports = Core.BuiltinFunc.create(function(val)
         return val.toRepr();
     },
     1, null);
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],55:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],56:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5769,7 +5788,7 @@ module.exports = Core.BuiltinFunc.create(function(val)
     },
     1, null);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],56:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],57:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5800,7 +5819,7 @@ module.exports = Core.BuiltinFunc.create(function()
     },
     null, null, false);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../../utils":78}],57:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../../utils":79}],58:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5827,7 +5846,7 @@ module.exports = Core.BuiltinFunc.create(function(val)
         return val.toString();
     },
     1, null);
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],58:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],59:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -5864,7 +5883,7 @@ module.exports = Core.BuiltinFunc.create(function(args)
     null, null);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../../utils":78}],59:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../../utils":79}],60:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5892,7 +5911,7 @@ module.exports = Core.BuiltinFunc.create(function(val)
     },
     1, null);
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],60:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],61:[function(require,module,exports){
 "use strict";
 
 // basic language stuff
@@ -5909,7 +5928,7 @@ var language = {
 // export language defs
 module.exports = language;
 
-},{"./consts":32,"./defs":33,"./functions":47,"./modules":62,"./statements":74}],61:[function(require,module,exports){
+},{"./consts":33,"./defs":34,"./functions":48,"./modules":63,"./statements":75}],62:[function(require,module,exports){
 "use strict";
 
 /**
@@ -5963,7 +5982,7 @@ var AlertModule = Class(Core.Module, {
 // export the Alert class
 module.exports = AlertModule;
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],62:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],63:[function(require,module,exports){
 "use strict";
 
 // all built-in modules
@@ -5975,7 +5994,7 @@ module.exports = AlertModule;
 };
 
 
-},{"./alert":61,"./input":63,"./math":64,"./random":65}],63:[function(require,module,exports){
+},{"./alert":62,"./input":64,"./math":65,"./random":66}],64:[function(require,module,exports){
 "use strict";
 
 /**
@@ -6030,7 +6049,7 @@ var Input = Class(Core.Module, {
 // export the Input class
 module.exports = Input;
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],64:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],65:[function(require,module,exports){
 "use strict";
 
 /**
@@ -6225,7 +6244,7 @@ var MathModule = Class(Core.Module, {
 // export the Math class
 module.exports = MathModule;
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../../utils":78}],65:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../../utils":79}],66:[function(require,module,exports){
 "use strict";
 
 /**
@@ -6343,7 +6362,7 @@ var RandomModule = Class(Core.Module, {
 // export the Random class
 module.exports = RandomModule;
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../../utils":78}],66:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../../utils":79}],67:[function(require,module,exports){
 "use strict";
 
 /**
@@ -6413,7 +6432,7 @@ var Break = Class(Core.Statement, {
 // export the Break class
 module.exports = Break;
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../defs":33}],67:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../defs":34}],68:[function(require,module,exports){
 "use strict";
 
 /**
@@ -6481,7 +6500,7 @@ var Continue = Class(Core.Statement, {
 module.exports = Continue;
 
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../defs":33}],68:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../defs":34}],69:[function(require,module,exports){
 "use strict";
 
 /**
@@ -6576,7 +6595,7 @@ var Def = Class(Core.Statement, {
 module.exports = Def;
 
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../defs":33}],69:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../defs":34}],70:[function(require,module,exports){
 "use strict";
 
 /**
@@ -6678,7 +6697,7 @@ var Elif = Class(Core.Statement, {
 // export the Elif class
 module.exports = Elif;
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../defs":33}],70:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../defs":34}],71:[function(require,module,exports){
 "use strict";
 
 /**
@@ -6765,7 +6784,7 @@ var Else = Class(Core.Statement, {
 // export the Else class
 module.exports = Else;
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../defs":33}],71:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../defs":34}],72:[function(require,module,exports){
 "use strict";
 
 /**
@@ -6839,7 +6858,7 @@ var EvaluateExpression = Class(Core.Statement, {
 module.exports = EvaluateExpression;
 
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27}],72:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28}],73:[function(require,module,exports){
 "use strict";
 
 /**
@@ -6981,7 +7000,7 @@ var For = Class(Core.Statement, {
 // export the For class
 module.exports = For;
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../defs":33}],73:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../defs":34}],74:[function(require,module,exports){
 "use strict";
 
 /**
@@ -7066,7 +7085,7 @@ var If = Class(Core.Statement, {
 // export the If class
 module.exports = If;
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../defs":33}],74:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../defs":34}],75:[function(require,module,exports){
 "use strict";
 
 // all statements
@@ -7093,7 +7112,7 @@ for (var key in statements)
 // export
 module.exports = statements;
 
-},{"./break":66,"./continue":67,"./def":68,"./elif":69,"./else":70,"./evaluate_expression":71,"./for":72,"./if":73,"./pass":75,"./return":76,"./while":77}],75:[function(require,module,exports){
+},{"./break":67,"./continue":68,"./def":69,"./elif":70,"./else":71,"./evaluate_expression":72,"./for":73,"./if":74,"./pass":76,"./return":77,"./while":78}],76:[function(require,module,exports){
 "use strict";
 
 /**
@@ -7158,7 +7177,7 @@ var Pass = Class(Core.Statement, {
 module.exports = Pass;
 
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../defs":33}],76:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../defs":34}],77:[function(require,module,exports){
 "use strict";
 
 /**
@@ -7244,7 +7263,7 @@ var Return = Class(Core.Statement, {
 module.exports = Return;
 
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../defs":33}],77:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../defs":34}],78:[function(require,module,exports){
 "use strict";
 
 /**
@@ -7388,7 +7407,7 @@ var While = Class(Core.Statement, {
 // export the While class
 module.exports = While;
 
-},{"./../../core":13,"./../../dependencies/jsface":23,"./../../errors":27,"./../defs":33}],78:[function(require,module,exports){
+},{"./../../core":14,"./../../dependencies/jsface":24,"./../../errors":28,"./../defs":34}],79:[function(require,module,exports){
 "use strict";
 
 // include errors
@@ -7463,5 +7482,5 @@ module.exports = {
     getTime: getTime,
     replaceAll: replaceAll,
 };
-},{"./errors":27}]},{},[28])(28)
+},{"./errors":28}]},{},[29])(29)
 });

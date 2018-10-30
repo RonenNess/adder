@@ -23,6 +23,9 @@ var LanguageDefs = require("./../language/defs");
 // set of operators that are words
 var wordOperators = Utils.toSet(Object.keys(LanguageDefs.keywords));
 
+// get all token types
+var TokenTypes = require("./tokens");
+
 // global scope that holds the current tokens and position we are parsing.
 // these are used internally in all the helper and parsing functions.
 var gscope = {
@@ -202,21 +205,21 @@ var tokenToSymbol = function (token) {
     var type;
     switch (token.t)
     {
-        case 'o':
-        case 'p':
+        case TokenTypes.operator:
+        case TokenTypes.punctuation:
             if (token.v === ':') {type = 'blockopen';}
             else {type = token.v;}
             break;
 
-        case 'n':
+        case TokenTypes.number:
             type = 'number';
             break;
 
-        case 'v':
+        case TokenTypes.identifier:
             type = 'identifier';
             break;
 
-        case 's':
+        case TokenTypes.string:
             type = 'string';
             break;
 

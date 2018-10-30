@@ -33,6 +33,9 @@ var commentPrefix = '#';
 // get utils
 var Utils = require("./../utils");
 
+// all token types
+var TokenTypes = require("./tokens");
+
 // values that break between words
 // note: undefined is to identify out-of-string-range.
 var breakingSigns = [' ', '(', ')', '[',  ']', undefined, ',', ':', ';', '\n', '\\'];
@@ -296,7 +299,7 @@ var Lexer = Class({
                 if (inlineBlocks > 0)
                 {
                     lastBlockIndent -= inlineBlocks;
-                    ret.push(this.makeToken('_', lastBlockIndent));
+                    ret.push(this.makeToken(TokenTypes.cblock, lastBlockIndent));
                     inlineBlocks = 0;
                 }
                 // if its a regular block and line break was'nt ';'
@@ -314,7 +317,7 @@ var Lexer = Class({
                     // calc current block
                     var blockIndent = spacesInRow / spacesForIndent;
                     if (blockIndent !== lastBlockIndent) {
-                        ret.push(this.makeToken('_', blockIndent));
+                        ret.push(this.makeToken(TokenTypes.cblock, blockIndent));
                         lastBlockIndent = blockIndent;
                     }
                 }
@@ -336,7 +339,7 @@ var Lexer = Class({
                 {
                     this.lineIndex++;
                     wasLineBreak = true;
-                    ret.push(this.makeToken('b', '\n'));
+                    ret.push(this.makeToken(TokenTypes.lbreak, '\n'));
                 }
 
                 // continue to next character
@@ -355,7 +358,7 @@ var Lexer = Class({
                 } else {
                     lastC = c;
                     wasLineBreak = true;
-                    ret.push(this.makeToken('b', c));
+                    ret.push(this.makeToken(TokenTypes.lbreak, c));
                 }
                 continue;
             }
@@ -372,9 +375,9 @@ var Lexer = Class({
             if (lastC === ":") {
 
                 // add break + open block
-                ret.push(this.makeToken('b', ";"));
+                ret.push(this.makeToken(TokenTypes.lbreak, ";"));
                 lastBlockIndent++;
-                ret.push(this.makeToken('_', lastBlockIndent));
+                ret.push(this.makeToken(TokenTypes.cblock, lastBlockIndent));
                 inlineBlocks++;
             }
 
@@ -397,7 +400,7 @@ var Lexer = Class({
                 var token = tokenData[0]; i = tokenData[1];
 
                 // add punctuation to tokens list
-                ret.push(this.makeToken("p", token));
+                ret.push(this.makeToken(TokenTypes.punctuation, token));
                 continue;
             }
 
@@ -409,7 +412,7 @@ var Lexer = Class({
                 var token = tokenData[0]; i = tokenData[1];
 
                 // add punctuation to tokens list
-                ret.push(this.makeToken("n", token));
+                ret.push(this.makeToken(TokenTypes.number, token));
                 continue;
             }
 
@@ -422,7 +425,7 @@ var Lexer = Class({
                 var token = tokenData[0]; i = tokenData[1];
 
                 // add operator to tokens list
-                ret.push(this.makeToken("o", token));
+                ret.push(this.makeToken(TokenTypes.operator, token));
                 continue;
             }
 
@@ -434,7 +437,7 @@ var Lexer = Class({
                 var token = tokenData[0]; i = tokenData[1];
 
                 // add operator to tokens list
-                ret.push(this.makeToken("s", token));
+                ret.push(this.makeToken(TokenTypes.string, token));
                 continue;
             }
 
@@ -449,7 +452,7 @@ var Lexer = Class({
             }
 
             // add operator to tokens list
-            ret.push(this.makeToken("v", token));
+            ret.push(this.makeToken(TokenTypes.identifier, token));
 
         }
 

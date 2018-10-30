@@ -22,6 +22,9 @@ var Lexer = require("./lexer");
 // include the parser
 var Parser = require("./parser");
 
+// all token types
+var TokenTypes = require("./tokens");
+
 // include default flags
 var defaultFlags = require("./default_flags");
 
@@ -51,11 +54,7 @@ var Compiler = Class({
         }
 
         // how many spaces equal one tab
-        this._spacesPerTab = ''
-        for (var i = 0; i < this._flags.spacesNeededForBlockIndent; ++i)
-        {
-            this._spacesPerTab += ' ';
-        }
+        this._spacesPerTab = ' '.repeat(this._flags.spacesNeededForBlockIndent);
 
         // create the lexer
         this._lexer = new Lexer(this._flags);
@@ -65,17 +64,21 @@ var Compiler = Class({
     // return value is a list of AST expressions and their corresponding line number ([ast, line]).
 	// @param code - code to compile. Must be English only and use \n as line breaks, no \r\n.
 	// @param flags - different compilation flags:
-	//					fixLineBreaks: if true (default), will fix line breaks to be \n without \r.
+    //					fixLineBreaks: if true (default), will fix line breaks to be \n without \r.
     compile: function(code, flags)
     {
 		// default flags
 		flags = flags || {};
 		
-		// remove illegal characters
-		if (flags.fixLineBreaks !== false)
-		{
+		// remove illegal line breaks
+		if (flags.fixLineBreaks || flags.fixLineBreaks === undefined) {
 			code = code.trim().replace(/\r\n/g, "\n").replace(/\r/g, "");
-		}
+        }
+        
+        // make sure there's no \r in code
+        if (code.indexOf('\r') !== -1) {
+            throw new "Illegal character found in code: '\\r'! Please use '\\n' only for line breaks.";
+        }
 		
         // use the lexer to convert to tokens
         var tokens = this._lexer.parseExpression(code);
@@ -93,7 +96,7 @@ var Compiler = Class({
         for (var i = 0; i < tokens.length; ++i)
         {
             // if its a block indent change token
-            if (tokens[i].t === "_")
+            if (tokens[i].t === TokenTypes.cblock)
             {
                 // get current block indent
                 var currBlockIndent = tokens[i].v;
@@ -121,7 +124,7 @@ var Compiler = Class({
             // take chunk of tokens until break
             var j = i;
             var endToken = tokens[i];
-            while (endToken && endToken.t !== 'b') {
+            while (endToken && endToken.t !== TokenTypes.lbreak) {
                 endToken = tokens[++j];
             }
 
@@ -134,7 +137,7 @@ var Compiler = Class({
             var currTokens = tokens.slice(i, j);
 
             // remove breaks from the end of tokens
-            while (currTokens[currTokens.length-1] && currTokens[currTokens.length-1].t === "b") {
+            while (currTokens[currTokens.length-1] && currTokens[currTokens.length-1].t === TokenTypes.lbreak) {
                 currTokens.pop();
             }
 
