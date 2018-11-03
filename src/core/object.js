@@ -34,6 +34,7 @@ var _Object = Class({
     {
         // store context
         this._context = context;
+        this._unique = unique;
         if (unique) this.api = {};
     },
 
@@ -52,6 +53,18 @@ var _Object = Class({
     // convert to a native javascript object
     toNativeJs: function()
     {
+        // convert unique objects
+        if (this._unique)
+        {
+            var ret = {};
+            for (var key in this.api)
+            {
+                ret[key] = this.api[key].toNativeJs();
+            }
+            return ret;
+        }
+
+        // default conversion to string
         return this.toString();
     },
 
