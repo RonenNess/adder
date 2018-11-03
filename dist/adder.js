@@ -6687,10 +6687,14 @@ var Elif = Class(Core.Statement, {
     // check if condition and execute block
     execute: function()
     {
-        // make sure last if statement was false
-        if (this._prevStatement._conditionMet) {
+        // make sure last 'if' statement was false
+        if (this._prevStatement._conditionMet || this._prevStatement._lastIfWasTrue) {
+            this._lastIfWasTrue = true;
             return;
         }
+
+        // last 'if' statement was not true
+        this._lastIfWasTrue = false;
 
         // evaluate condition
         this._conditionMet = Boolean(this._condition.eval());
