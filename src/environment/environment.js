@@ -288,7 +288,7 @@ var Environment = Class({
     //
     toAdderObject: function(name, api, program) {
 
-        var ret = new Core.Object(program._context || program._interpreter._context);
+        var ret = new Core.Object(program._context || program._interpreter._context, true);
         for (var key in api) {
             ret.setAttr(key, api[key]);
         }

@@ -2627,10 +2627,12 @@ var _Object = Class({
 
     // Object constructor
     // @param context - context of program currently executed.
-    constructor: function(context)
+    // @param unique - if true, it means this object is one-of-kind and have private API.
+    constructor: function(context, unique)
     {
         // store context
         this._context = context;
+        if (unique) this.api = {};
     },
 
     // set attribute
@@ -4054,7 +4056,7 @@ var Environment = Class({
     //
     toAdderObject: function(name, api, program) {
 
-        var ret = new Core.Object(program._context || program._interpreter._context);
+        var ret = new Core.Object(program._context || program._interpreter._context, true);
         for (var key in api) {
             ret.setAttr(key, api[key]);
         }

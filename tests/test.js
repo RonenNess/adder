@@ -827,6 +827,29 @@ QUnit.test("else_statement", function( assert ) {
         "a"
     compareExpression(assert, code, 1);
 
+    var code = "" +
+        "a=0\n"+
+        "if False:\n" +
+        "    a = 1\n" +
+        "elif False:\n" +
+        "    a = 2\n" +
+        "elif True:\n" +
+        "    a = 5\n" +
+        "a"
+    compareExpression(assert, code, 5);
+
+    var code = "" +
+        "a=0\n"+
+        "if False:\n" +
+        "    a = 1\n" +
+        "elif True:\n" +
+        "    if False:\n" +
+        "        a = 2\n" +
+        "else:\n" +
+        "    a = 5\n" +
+        "a"
+    compareExpression(assert, code, 0);
+
     // invalid syntax
     assert.throws(function(){executeAndReturn('if True: a = 5; else foo')}, AdderScript.Errors.SyntaxError);
     assert.throws(function(){executeAndReturn('else: a = 5')}, AdderScript.Errors.SyntaxError);
