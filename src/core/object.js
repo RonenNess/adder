@@ -38,9 +38,12 @@ var _Object = Class({
     // set attribute
     setAttr: function(key, value)
     {
-        if (value.constructor !== Variable) {
+        // wrap value as variable (unless its already an adder variable)
+        if (value === null || value === undefined || value.constructor !== Variable) {
             value = new Variable(this._context, value);
         }
+
+        // set value
         this.api[key] = value;
     },
 
